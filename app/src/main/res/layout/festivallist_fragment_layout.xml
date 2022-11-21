@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/festivalFilterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="7dp"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:inputType="datetime"
+            android:hint="요일, 날짜"
+            android:layout_weight="1"
+            android:maxLines="1"/>
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="200dp"
+            app:closeIcon="@drawable/ic_baseline_clear_24"
+            app:iconifiedByDefault='false'
+            app:queryBackground="@color/gray"
+            android:layout_gravity="right"
+            app:queryHint="행사제목 검색"
+            app:searchIcon="@drawable/ic_baseline_search_24" />
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/festival_list"
+        tools:listitem="@layout/festival_info_recycler"
+        android:padding="7dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/festivalFilterLayout"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
