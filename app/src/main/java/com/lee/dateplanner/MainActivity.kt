@@ -1,6 +1,9 @@
 package com.lee.dateplanner
 
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Base64
@@ -42,9 +45,15 @@ class MainActivity : AppCompatActivity() {
                 with(binding){
                     with(ft){
                         when(param){
-                            "시간계획" -> {replace(R.id.tabContent,timeTableFragment).commit()}
-                            "축제 목록" -> {replace(R.id.tabContent,festivallistFragment).commit()}
-                            "주변정보 지도" -> {replace(R.id.tabContent,aroundMapFragment).commit()}
+                            "시간계획" -> {
+                                replace(R.id.tabContent,timeTableFragment).commit()
+                            }
+                            "축제 목록" -> {
+                                replace(R.id.tabContent,festivallistFragment).commit()
+                            }
+                            "주변정보 지도" -> {
+                                replace(R.id.tabContent,aroundMapFragment).commit()
+                            }
                             else -> throw IllegalAccessException("Unexpected value: " + tab.position)
                         }
                     }

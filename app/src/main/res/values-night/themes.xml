@@ -3,13 +3,15 @@
     <style name="Theme.DatePlanner" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="windowNoTitle">true</item>
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#FFEDE4ED</item>
-        <item name="android:textColorPrimary">#FFBFB9BF</item>
-        <item name="colorSurface">#FFEAE0E0</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">#E6B1E3</item>
+        <item name="android:textColorPrimary">#000000</item>
+        <item name="colorSurface">#D0CEC3C3</item>
+        <item name="colorAccent">#101010</item>
+        <item name="colorControlNormal">#101010</item>
+        <item name="colorPrimaryVariant">#101010</item>
         <item name="colorOnPrimary">@color/black</item>
-        <item name="colorControlHighlight">#FFA7A1A1</item>
-        <item name="android:windowBackground">#FF949796</item>
+        <item name="colorControlHighlight">#ECACE8</item>
+        <item name="android:windowBackground">#F6F6F6</item>
         <item name="backgroundTint">@color/white</item>
 
         <!-- Secondary brand color. -->

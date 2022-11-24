@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <androidx.cardview.widget.CardView
@@ -17,7 +17,7 @@
             android:layout_margin="10dp">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/poi_title"
+                android:id="@+id/poi_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="상점 이름"
@@ -34,26 +34,26 @@
                 android:textSize="20dp"
                 android:layout_marginLeft="10dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                app:layout_constraintLeft_toRightOf="@id/poi_title"
+                app:layout_constraintLeft_toRightOf="@id/poi_name"
                 app:layout_constraintTop_toTopOf="parent"/>
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/poi_place"
+                android:id="@+id/poi_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="주소"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textSize="20dp"
-                app:layout_constraintTop_toBottomOf="@id/poi_title"
+                app:layout_constraintTop_toBottomOf="@id/poi_name"
                 app:layout_constraintLeft_toLeftOf="parent"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/poi_cost"
+                android:id="@+id/poi_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="비용"
+                android:text="전화번호"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textSize="20dp"
-                app:layout_constraintTop_toBottomOf="@id/poi_place"
+                app:layout_constraintTop_toBottomOf="@id/poi_address"
                 app:layout_constraintLeft_toLeftOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
 }
+//local.properties
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
     namespace 'com.lee.dateplanner'
@@ -15,6 +18,12 @@ android {
         versionName "Lee_DatePlanner_V_0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        //key
+        buildConfigField "String","KAKAO_MAP_KEY",properties['kakao_map_key']
+        buildConfigField "String","KAKAO_REST_KEY",properties['kakao_rest_key']
+        buildConfigField "String","FESTIVAL_KEY",properties['festival_key']
+        manifestPlaceholders = [KAKAO_MAP_KEY: 'kakao_map_key']
     }
 
     buildTypes {
@@ -58,5 +67,8 @@ dependencies {
 
     //gson
     implementation 'com.google.code.gson:gson:2.9.0'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
 
 }

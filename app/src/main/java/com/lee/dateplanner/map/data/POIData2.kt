@@ -1,12 +1,10 @@
-package com.lee.dateplanner.map
+package com.lee.dateplanner.map.data
 
 
 import com.google.gson.annotations.SerializedName
 
-data class POIData(
-    @SerializedName("documents")
+data class POIData2(
     val documents: List<Document>,
-    @SerializedName("meta")
     val meta: Meta
 ) {
     data class Document(
@@ -18,11 +16,8 @@ data class POIData(
         val categoryGroupName: String,
         @SerializedName("category_name")
         val categoryName: String,
-        @SerializedName("distance")
         val distance: String,
-        @SerializedName("id")
         val id: String,
-        @SerializedName("phone")
         val phone: String,
         @SerializedName("place_name")
         val placeName: String,
@@ -30,9 +25,7 @@ data class POIData(
         val placeUrl: String,
         @SerializedName("road_address_name")
         val roadAddressName: String,
-        @SerializedName("x")
         val x: String,
-        @SerializedName("y")
         val y: String
     )
 

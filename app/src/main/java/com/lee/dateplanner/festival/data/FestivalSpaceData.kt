@@ -1,4 +1,4 @@
-package com.lee.dateplanner.festival
+package com.lee.dateplanner.festival.data
 
 
 import com.google.gson.annotations.SerializedName

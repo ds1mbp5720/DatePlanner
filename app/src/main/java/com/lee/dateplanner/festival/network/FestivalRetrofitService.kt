@@ -1,19 +1,23 @@
-package com.lee.dateplanner.festival
+package com.lee.dateplanner.festival.network
 
+import com.lee.dateplanner.BuildConfig
+import com.lee.dateplanner.festival.data.FestivalInfoData
+import com.lee.dateplanner.festival.data.FestivalSpaceData
 import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
 import retrofit2.http.POST
 
-const val FESTIVAL_ADDRESS = "http://openapi.seoul.go.kr:8088/4e4e7365496473313639784864686f/json/"
+const val FESTIVAL_ADDRESS = "http://openapi.seoul.go.kr:8088/${BuildConfig.FESTIVAL_KEY}/json/"
 
 interface FestivalRetrofitService {
-    @POST("culturalEventInfo/1/1000/") // 행사 정보 api
-    fun getFestivalInfo(): Call<ResponseBody>
-
-    @POST("culturalSpaceInfo/1/819/") // 행사 장소 정보 api
-    fun getFestivalPlace(): Call<ResponseBody>
+    @GET("culturalEventInfo/1/1000/") // 행사 정보 api
+    suspend fun getFestivalInfo(): Response<List<FestivalInfoData>>
+    @GET("culturalSpaceInfo/1/819/") // 행사 장소 정보 api
+    suspend fun getFestivalPlace(): Response<List<FestivalSpaceData>>
 
     companion object {
         var retrofitService: FestivalRetrofitService? = null
