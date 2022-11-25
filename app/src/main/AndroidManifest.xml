@@ -33,7 +33,7 @@
         </activity>
         <meta-data
             android:name="com.kakao.sdk.AppKey"
-            android:value="fb8ce5f0212109ec4c74b84fb459b42e"/>
+            android:value="@string/kakao_map_key"/>
     </application>
 
 </manifest>

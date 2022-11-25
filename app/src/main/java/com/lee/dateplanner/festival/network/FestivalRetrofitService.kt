@@ -15,9 +15,9 @@ const val FESTIVAL_ADDRESS = "http://openapi.seoul.go.kr:8088/${BuildConfig.FEST
 
 interface FestivalRetrofitService {
     @GET("culturalEventInfo/1/1000/") // 행사 정보 api
-    suspend fun getFestivalInfo(): Response<List<FestivalInfoData>>
+    suspend fun getFestivalInfo(): Response<FestivalInfoData>
     @GET("culturalSpaceInfo/1/819/") // 행사 장소 정보 api
-    suspend fun getFestivalPlace(): Response<List<FestivalSpaceData>>
+    suspend fun getFestivalPlace(): Response<FestivalSpaceData>
 
     companion object {
         var retrofitService: FestivalRetrofitService? = null

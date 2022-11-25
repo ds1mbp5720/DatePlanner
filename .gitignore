@@ -10,6 +10,20 @@
 .DS_Store
 /build
 /captures
+*.apk
+*.ap_
 .externalNativeBuild
 .cxx
+key_string.xml
 local.properties
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/

@@ -40,7 +40,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/festival_list"
         tools:listitem="@layout/festival_info_recycler"
-        android:padding="7dp"
+        android:padding="1dp"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -18,7 +18,6 @@ interface POIRetrofitService {
     @Headers("Authorization:KakaoAK ${BuildConfig.KAKAO_REST_KEY}")
     @GET("v2/local/search/category.json?category_group_code=CE7&y=37.5143225723&x=127.062831022&radius=2000") // poi 정보 api
     suspend fun getPOIInfo(
-        //@Header("Authorization") Authorization: String = "KakaoAK ed5cb7472b8541fdbcff5b65ca598064",
         /*@Path("code") code: String, // poi 종류 카테고리
         @Path("lat") lat: String, // 기준점 위도
         @Path("lng") lng: String,  // 기준점 경도

@@ -10,7 +10,6 @@
         android:id="@+id/tabContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignBottom="@id/tabLayout"
         app:layout_constraintBottom_toTopOf="@id/tabLayout"
         app:layout_constraintTop_toTopOf="parent"
         />

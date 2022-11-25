@@ -17,7 +17,7 @@ data class POIData(
         @SerializedName("category_group_name")
         val categoryGroupName: String,
         @SerializedName("category_name")
-        val categoryName: String,
+        var categoryName: String,
         @SerializedName("distance")
         val distance: String,
         @SerializedName("id")

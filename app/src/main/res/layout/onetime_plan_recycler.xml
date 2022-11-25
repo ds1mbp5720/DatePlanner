@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <androidx.cardview.widget.CardView
@@ -24,6 +24,8 @@
                     android:text="시간"
                     android:textSize="30dp"
                     app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     android:paddingRight="20dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
@@ -33,6 +35,7 @@
                     android:layout_height="wrap_content"
                     android:text="행사 이름 or 일정 이름"
                     app:layout_constraintLeft_toRightOf="@id/schedule_time"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -45,9 +48,12 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/delete_time_btn"
-                    android:layout_width="50dp"
+                    android:layout_width="45dp"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     app:icon="@drawable/ic_baseline_settings_24"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
