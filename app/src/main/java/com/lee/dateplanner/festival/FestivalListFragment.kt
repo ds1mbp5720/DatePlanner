@@ -33,9 +33,6 @@ class FestivalListFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /**
-         *
-         */
         val viewModel: FestivalViewModel = ViewModelProvider(this, FestivalViewModelFactory(
             FestivalRepository(FestivalRetrofitService.getInstance())
         )
@@ -55,4 +52,5 @@ class FestivalListFragment:Fragment() {
         }
         viewModel.getAllFestivalFromViewModel()
     }
+
 }
