@@ -9,7 +9,7 @@ import kotlinx.coroutines.*
 
 class POIViewModel(private val repository:POIRepository):ViewModel() {
 
-    val poiList = MutableLiveData<POIData>()
+    val poiList = MutableLiveData<POIData>() // rest api 저장
     val errorMessage = MutableLiveData<String>()
 
     val isLoading = MutableLiveData<Boolean>()
@@ -41,6 +41,7 @@ class POIViewModel(private val repository:POIRepository):ViewModel() {
         val categoryList: MutableList<String> = category.split(">") as MutableList<String>
         return categoryList[categoryList.size-1]
     }
+
     private fun onError(message: String){
         errorMessage.postValue(message)
         //isLoading.postValue(false)
