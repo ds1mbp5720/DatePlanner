@@ -4,27 +4,26 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.lee.dateplanner.festival.FestivalRepository
 import com.lee.dateplanner.timetable.time.room.Timetable
 
-class TimetableViewModel(private var repository: TimetableRepository): ViewModel() {
-    private val allProducts: LiveData<List<Timetable>>? = repository.alltimetables
+class TimetableViewModel(application: Application): AndroidViewModel(application) {
+    private val repository: TimetableRepository = TimetableRepository(application)
+    private val allTimetables: LiveData<List<Timetable>>? = repository.alltimetables
     private val searchResults: MutableLiveData<List<Timetable>> = repository.searchResults
 
-    fun insertProduct(product: Timetable){
-        repository.insertProduct(product)
+    fun insertTimeTable(timetable: Timetable){
+        repository.insertTimetable(timetable)
     }
-    fun findProduct(name: String){
-        repository.findProduct(name)
+    fun findTimetable(name: String){
+        repository.findTimetable(name)
     }
-    fun deleteProduct(name: String){
-        repository.deleteProduct(name)
+    fun deleteTimetable(name: String){
+        repository.deleteTimetable(name)
     }
     fun getSearchResults(): MutableLiveData<List<Timetable>> {
         return searchResults
     }
-    fun getAllProducts(): LiveData<List<Timetable>>?{
-        return allProducts
+    fun getAllTimetables(): LiveData<List<Timetable>>?{
+        return allTimetables
     }
 }

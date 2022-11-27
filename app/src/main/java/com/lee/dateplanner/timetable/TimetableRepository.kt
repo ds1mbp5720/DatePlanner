@@ -17,34 +17,34 @@ class TimetableRepository(application: Application) {
     val alltimetables: LiveData<List<Timetable>>?
 
     init {
-        val db: com.lee.dateplanner.timetable.time.room.ProductRoomDatabase? = com.lee.dateplanner.timetable.time.room.ProductRoomDatabase.getDatabase(application)
-        timetableDao = db?.productDao()
-        alltimetables = timetableDao?.getAllProduct()
+        val db: com.lee.dateplanner.timetable.time.room.TimeTableRoomDatabase? = com.lee.dateplanner.timetable.time.room.TimeTableRoomDatabase.getDatabase(application)
+        timetableDao = db?.timetableDao()
+        alltimetables = timetableDao?.getAllTimetable()
     }
     // data 입력 함수
-    fun insertProduct(newTimetable: Timetable){
+    fun insertTimetable(newTimetable: Timetable){
         coroutineScope.launch(Dispatchers.IO){
             asyncInsert(newTimetable)
         }
     }
     private fun asyncInsert(timetable: Timetable){
-        timetableDao?.insertProduct(timetable)
+        timetableDao?.insertTimetable(timetable)
     }
-    fun deleteProduct(name: String){
+    fun deleteTimetable(name: String){
         coroutineScope.launch(Dispatchers.IO){
             asyncDelete(name)
         }
     }
     private fun asyncDelete(name:String){
-        timetableDao?.deleteProduct(name)
+        timetableDao?.deleteTimetable(name)
     }
-    fun findProduct(name: String){
+    fun findTimetable(name: String){
         coroutineScope.launch(Dispatchers.Main) {
             searchResults.value = asyncFind(name)
         }
     }
     private suspend fun asyncFind(name:String): List<Timetable>? =
         coroutineScope.async(Dispatchers.IO) {
-            return@async timetableDao?.findProduct(name)
+            return@async timetableDao?.findTimetable(name)
         }.await()
 }

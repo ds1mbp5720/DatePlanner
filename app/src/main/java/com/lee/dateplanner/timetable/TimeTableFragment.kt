@@ -1,7 +1,8 @@
 package com.lee.dateplanner.timetable
 
 import android.annotation.SuppressLint
-import android.os.Binder
+import android.app.Application
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +12,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.TimetablelistFragmentLayoutBinding
-import com.lee.dateplanner.festival.FestivalRepository
-import com.lee.dateplanner.festival.FestivalViewModel
-import com.lee.dateplanner.festival.FestivalViewModelFactory
-import com.lee.dateplanner.festival.network.FestivalRetrofitService
 import com.lee.dateplanner.timetable.time.adapter.TimetableRecyclerAdapter
 
 class TimeTableFragment:Fragment() {
@@ -36,8 +33,12 @@ class TimeTableFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        /*val viewModel: TimetableViewModel = ViewModelProvider(this, TimeTableViewModelFactory(
+            TimetableRepository(context as Application))
+        ).get(TimetableViewModel::class.java)*/
+
         listenerSetup()
-        observerSetup()
+        //observerSetup(viewModel)
         uiSetup()
     }
 
@@ -47,7 +48,10 @@ class TimeTableFragment:Fragment() {
     //@SuppressLint("SetTextI18n")
     private fun listenerSetup(){
         binding.addBtn.setOnClickListener {
-
+            val intent = Intent(context, InsertTimeTableActivity::class.java)
+            // 시간계획 추가 버튼에 전달할 정보 있을시
+            //intent.putExtra("",)
+            startActivity(intent)
         }
     }
 
@@ -55,8 +59,8 @@ class TimeTableFragment:Fragment() {
      * 옵저버 셋팅
      */
     @SuppressLint("SetTextI18n")
-    private fun observerSetup(){
-        viewModel.getAllProducts()?.observe(viewLifecycleOwner){ timetable ->
+    private fun observerSetup(viewModel: TimetableViewModel){
+        viewModel.getAllTimetables()?.observe(viewLifecycleOwner){ timetable ->
             timetable?.let {
                 timetableAdapter?.setTimetableList(it)
             }

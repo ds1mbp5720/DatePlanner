@@ -1,5 +1,6 @@
 package com.lee.dateplanner
 
+import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.ColorFilter
@@ -32,6 +33,9 @@ class MainActivity : AppCompatActivity() {
             festivallistFragment = FestivalListFragment()
             aroundMapFragment = AroundMapFragment()
         }
+        //초기 보여질 화면
+        supportFragmentManager.beginTransaction().replace(R.id.tabContent,timeTableFragment).commit()
+
         val tabLayout = findViewById<TabLayout>(R.id.tabLayout) // tab 연결
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
@@ -63,5 +67,15 @@ class MainActivity : AppCompatActivity() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }

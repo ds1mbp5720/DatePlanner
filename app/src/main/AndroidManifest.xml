@@ -32,6 +32,7 @@
                 android:value="" />
         </activity>
         <activity android:name=".festival.WebViewFestivalActivity"/>
+        <activity android:name=".timetable.InsertTimeTableActivity"/>
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_map_key"/>

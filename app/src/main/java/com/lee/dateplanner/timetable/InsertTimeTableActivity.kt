@@ -2,6 +2,7 @@ package com.lee.dateplanner.timetable
 
 import android.app.Activity
 import android.os.Bundle
+import com.lee.dateplanner.databinding.FestivalWebviewActivityBinding
 import com.lee.dateplanner.databinding.InputScheduleLayoutBinding
 
 /**
@@ -12,8 +13,16 @@ class InsertTimeTableActivity: Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = InputScheduleLayoutBinding.inflate(layoutInflater).also {
-            setContentView(binding.root)
+        binding = InputScheduleLayoutBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        //뒤로가기 선택시
+        binding.inputBackBtn.setOnClickListener {
+            finish()
+        }
+        //등록 선택시
+        binding.insertBtn.setOnClickListener {
+
         }
     }
 }
