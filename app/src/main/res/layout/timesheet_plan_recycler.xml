@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#F1ECEC">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -49,9 +50,10 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/revise_btn"
-                    android:layout_width="45dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:paddingLeft="4dp"
                     app:icon="@drawable/ic_baseline_settings_24"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"

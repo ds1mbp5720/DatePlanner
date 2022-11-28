@@ -24,13 +24,13 @@ class FestivalViewModel(private var repository: FestivalRepository):ViewModel() 
 
     fun getAllFestivalFromViewModel(){
         job = CoroutineScope(Dispatchers.IO).launch(exceptionHandler) {
-            //isLoading.postValue(true)
+            isLoading.postValue(true)
             val infoResponse = repository.getFestivalInfo() // 행사 정보
             val placeResponse = repository.getFestivalPlace() // 행사 장소
             withContext(Dispatchers.Main){
                 if(infoResponse.isSuccessful){
                     festivalList.postValue(infoResponse.body())
-                    //isLoading.value = false
+                    isLoading.postValue(false)
                 }else{
                     onError("에러내용 : ${infoResponse.message()}")
                 }
@@ -45,7 +45,7 @@ class FestivalViewModel(private var repository: FestivalRepository):ViewModel() 
 
     private fun onError(message: String){
         errorMessage.value = message
-        //isLoading.value = false
+        isLoading.postValue(false)
     }
     override fun onCleared() {
         super.onCleared()

@@ -42,7 +42,7 @@ data class FestivalSpaceData(
             @SerializedName("FAC_DESC")
             val fACDESC: String,
             @SerializedName("FAC_NAME")
-            val fACNAME: String,
+            val fACNAME: String,  // 장소명, 검색떄 사용
             @SerializedName("FAX")
             val fAX: String,
             @SerializedName("GREEN")
@@ -68,9 +68,9 @@ data class FestivalSpaceData(
             @SerializedName("SUBWAY")
             val sUBWAY: String,
             @SerializedName("X_COORD")
-            val xCOORD: String,
+            val xCOORD: String, // 위도
             @SerializedName("Y_COORD")
-            val yCOORD: String,
+            val yCOORD: String, // 경도
             @SerializedName("YELLOW")
             val yELLOW: String
         )

@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">DatePlanner</string>
+    <string-array name="category">
+        <item>전체</item>
+        <item>클래식</item>
+        <item>국악</item>
+        <item>콘서트</item>
+        <item>전시/미술</item>
+        <item>문화교약/강좌</item>
+        <item>연극</item>
+        <item>기타</item>
+    </string-array>
 </resources>

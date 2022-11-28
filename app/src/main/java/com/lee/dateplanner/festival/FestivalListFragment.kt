@@ -1,6 +1,7 @@
 package com.lee.dateplanner.festival
 
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -38,6 +39,7 @@ class FestivalListFragment:Fragment() {
         )
         ).get(FestivalViewModel::class.java)
 
+
         viewModel.festivalList.observe(viewLifecycleOwner){
             with(binding.festivalList){
                 run{
@@ -46,7 +48,9 @@ class FestivalListFragment:Fragment() {
                     festivalAdapter
                 }
             }
+            binding.progressBar.visibility = View.GONE // 로딩
         }
+
         viewModel.errorMessage.observe(viewLifecycleOwner){
             Log.e(ContentValues.TAG,it)
         }

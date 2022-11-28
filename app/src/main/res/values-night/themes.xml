@@ -3,7 +3,7 @@
     <style name="Theme.DatePlanner" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="windowNoTitle">true</item>
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#E6B1E3</item>
+        <item name="colorPrimary">#F8DAF6</item>
         <item name="android:textColorPrimary">#000000</item>
         <item name="colorSurface">#D0CEC3C3</item>
         <item name="colorAccent">#101010</item>

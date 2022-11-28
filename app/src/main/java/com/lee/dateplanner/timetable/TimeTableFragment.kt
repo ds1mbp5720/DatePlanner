@@ -2,8 +2,10 @@ package com.lee.dateplanner.timetable
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +14,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.TimetablelistFragmentLayoutBinding
+import com.lee.dateplanner.timetable.onetime.TimeSheet
 import com.lee.dateplanner.timetable.time.adapter.TimetableRecyclerAdapter
+import com.lee.dateplanner.timetable.time.room.Timetable
 
 class TimeTableFragment:Fragment() {
     companion object{
@@ -38,7 +42,7 @@ class TimeTableFragment:Fragment() {
         ).get(TimetableViewModel::class.java)*/
 
         listenerSetup()
-        //observerSetup(viewModel)
+        observerSetup(viewModel)
         uiSetup()
     }
 
@@ -47,11 +51,14 @@ class TimeTableFragment:Fragment() {
      */
     //@SuppressLint("SetTextI18n")
     private fun listenerSetup(){
+        // 계획 추가 버튼 클릭시
         binding.addBtn.setOnClickListener {
-            val intent = Intent(context, InsertTimeTableActivity::class.java)
-            // 시간계획 추가 버튼에 전달할 정보 있을시
-            //intent.putExtra("",)
-            startActivity(intent)
+            var timeSheetList =  mutableListOf<TimeSheet>()
+            var emptyTimeSheet = TimeSheet("","","","","","")
+            timeSheetList.add(emptyTimeSheet)
+            var date = "00.00.(일)"
+
+            viewModel.insertTimeTable(Timetable(0,timeSheetList,date))
         }
     }
 

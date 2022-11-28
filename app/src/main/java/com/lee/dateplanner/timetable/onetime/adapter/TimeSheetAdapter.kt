@@ -27,6 +27,7 @@ class TimeSheetAdapter(private var timesheetList: List<TimeSheet>): RecyclerView
             scheduleTitle.text = timesheet.title
             scheduleTime.text = timesheet.time
             schedulePlace.text = timesheet.place
+
             //수정 버튼 클릭시
             reviseBtn.setOnClickListener {
                 val intent = Intent(holder.itemView.context,InsertTimeTableActivity::class.java)

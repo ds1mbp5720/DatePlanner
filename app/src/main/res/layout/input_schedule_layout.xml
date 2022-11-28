@@ -4,18 +4,19 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/input_back_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="52dp"
+        android:layout_height="45dp"
         app:icon="@drawable/ic_baseline_arrow_back_24"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="MM.DD.(요일) 일정"
+        android:textColor="@color/black"
         android:textSize="20dp"
         app:layout_constraintLeft_toRightOf="@id/input_back_btn"
         app:layout_constraintTop_toTopOf="parent"
@@ -36,7 +37,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:hint="일정 제목">
+            android:textColorHint="@color/black"
+            android:hint="일정 제목"
+            app:hintTextColor="@color/black">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_title"
                 android:layout_width="match_parent"
@@ -50,7 +53,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:hint="시간">
+            android:textColorHint="@color/black"
+            android:hint="시간"
+            app:hintTextColor="@color/black">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_time"
                 android:layout_width="match_parent"
@@ -64,7 +69,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:hint="장소 명">
+            android:textColorHint="@color/black"
+            android:hint="장소 명"
+            app:hintTextColor="@color/black">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_location"
                 android:layout_width="match_parent"
@@ -78,7 +85,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:hint="메모">
+            android:textColorHint="@color/black"
+            android:hint="메모"
+            app:hintTextColor="@color/black">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_memo"
                 android:layout_width="match_parent"
