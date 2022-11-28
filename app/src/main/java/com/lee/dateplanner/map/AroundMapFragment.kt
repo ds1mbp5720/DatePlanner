@@ -26,7 +26,10 @@ class AroundMapFragment:Fragment(){
     }
     lateinit var binding: AroundinfoMapFragmentLayoutBinding
     private val poiBallonListner = POIBallonClickListner(this.context) // info window 터치 객체
-    private lateinit var map: MapView
+
+    private var poiCategory: String = "CE7" // category 저장 변수
+    private var festivalLat: String = "37.5143225723" // 행사장 좌표
+    private var festivalLgt: String = "127.062831022" // 행사장 좌표
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,9 +46,11 @@ class AroundMapFragment:Fragment(){
             POIRepository(POIRetrofitService.getInstance())
         )).get(POIViewModel::class.java)
 
-        mapSetting() // 기본 kakao map 셋팅
+        mapSetting() // 기본 kakao map 설정
+        setCategoryBtn() // 상단 카테고리 버튼
         observerSetup(viewModel)
-        viewModel.getAllPoiFromViewModel()
+
+        viewModel.getAllPoiFromViewModel(poiCategory, festivalLat, festivalLgt)
     }
 
     // 옵저버 세팅
@@ -74,12 +79,11 @@ class AroundMapFragment:Fragment(){
             zoomOut(true)
             setPOIItemEventListener(poiBallonListner)
             setCalloutBalloonAdapter(POIWindowAdapter(this.context))
-            // 지금은 임시로 좌표 지정 -> 행사장소 변수 연결로 변경 예정
-            setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.5143225723, 127.062831022), false) // map 중심점
+            setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
         }
     }
-
-    var markerResolver: MutableMap<POIData.Document,MapPOIItem> = HashMap() // 정보 리스트와 maker 연동 목적
+    // 정보 리스트와 maker 연동 목적 map
+    var markerResolver: MutableMap<POIData.Document,MapPOIItem> = HashMap()
     //하나의 마커 설정 함수
     private fun addMapPoiMarker(data: POIData.Document):MapPOIItem{
         val marker = MapPOIItem()
@@ -99,6 +103,21 @@ class AroundMapFragment:Fragment(){
             removeAllPOIItems() // 기존 마커들 제거
             for(i in 0 until  data.documents.size){
                 addPOIItem(addMapPoiMarker(data.documents[i])) // 현 마커 추가
+            }
+        }
+    }
+
+    // 상단 주변상권정보 카테고리 선택 버튼
+    private fun setCategoryBtn(){
+        with(binding){
+            cafeBtn.setOnClickListener {
+                poiCategory = "CE7"
+            }
+            restaurantBtn.setOnClickListener {
+                poiCategory = "FD6"
+            }
+            etcBtn.setOnClickListener {
+                poiCategory = "CT1"
             }
         }
     }

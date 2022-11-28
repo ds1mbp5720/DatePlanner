@@ -19,14 +19,14 @@ class POIViewModel(private val repository:POIRepository):ViewModel() {
         onError("코루틴내 예외: ${throwable.localizedMessage}")
     }
 
-    fun getAllPoiFromViewModel(){
+    fun getAllPoiFromViewModel(category: String, lat:String, lgt:String){
         job = CoroutineScope(Dispatchers.IO).launch(exceptionHandler) {
             isLoading.postValue(true)
-            val response = repository.getPOIInfo()
+            val response = repository.getPOIInfo(category, lat, lgt)
             withContext(Dispatchers.Main){
                 if(response.isSuccessful){
                     poiList.postValue(response.body())
-                    //isLoading.value = false
+                    //isLoading.postValue(false)
                 }else{
                     onError("에러내용:  $response")
                 }

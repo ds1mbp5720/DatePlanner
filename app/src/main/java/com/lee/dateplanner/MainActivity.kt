@@ -72,10 +72,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        finish()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        finish()
     }
 }
