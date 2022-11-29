@@ -1,6 +1,7 @@
 package com.lee.dateplanner.timetable
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Application
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -12,6 +13,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.lee.dateplanner.MainActivity
 import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.TimetablelistFragmentLayoutBinding
 import com.lee.dateplanner.timetable.onetime.TimeSheet
@@ -25,6 +27,13 @@ class TimeTableFragment:Fragment() {
     private val viewModel: TimetableViewModel by viewModels()  // 뷰모델
     private var timetableAdapter: TimetableRecyclerAdapter? = null  // 시간계획 recyclerview adapter
     private lateinit var binding: TimetablelistFragmentLayoutBinding
+    private lateinit var mainActivity: MainActivity
+
+    //mainActivity 받기
+    override fun onAttach(activity: Activity) {
+        super.onAttach(activity)
+        mainActivity= getActivity() as MainActivity
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,7 +65,10 @@ class TimeTableFragment:Fragment() {
             var timeSheetList =  mutableListOf<TimeSheet>()
             var emptyTimeSheet = TimeSheet("","","","","","")
             timeSheetList.add(emptyTimeSheet)
-            var date = "00.00.(일)"
+            /**
+             * 계획 추가 버튼을 calender 로 하여 선택한 날짜를 바로 가져와서 변수에 넣기 (수정해야함)
+             */
+            var date = "00.00.(요일)"
 
             viewModel.insertTimeTable(Timetable(0,timeSheetList,date))
         }
@@ -80,7 +92,7 @@ class TimeTableFragment:Fragment() {
      */
     private fun uiSetup(){
         with(binding.allTimeTable){
-            timetableAdapter = TimetableRecyclerAdapter(R.layout.timetable_recycler_layout)
+            timetableAdapter = TimetableRecyclerAdapter(mainActivity,R.layout.timetable_recycler_layout)
             adapter = timetableAdapter
         }
     }

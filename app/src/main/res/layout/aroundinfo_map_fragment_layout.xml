@@ -54,7 +54,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/bottom_poiList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="700dp"
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
@@ -70,8 +70,5 @@
             tools:listitem="@layout/poi_list_recycler"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             />
-
     </androidx.cardview.widget.CardView>
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

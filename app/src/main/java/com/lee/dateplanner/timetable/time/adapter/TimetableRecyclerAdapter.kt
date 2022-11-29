@@ -6,13 +6,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.lee.dateplanner.MainActivity
 import com.lee.dateplanner.databinding.TimetableRecyclerLayoutBinding
-import com.lee.dateplanner.festival.WebViewFestivalActivity
+import com.lee.dateplanner.timemap.TimetableMapActivity
 import com.lee.dateplanner.timetable.InsertTimeTableActivity
 import com.lee.dateplanner.timetable.onetime.adapter.TimeSheetAdapter
 import com.lee.dateplanner.timetable.time.room.Timetable
 
-class TimetableRecyclerAdapter(private val timetableItemLayout: Int): RecyclerView.Adapter<TimetableViewHolder>() {
+class TimetableRecyclerAdapter(private val activity: MainActivity ,private val timetableItemLayout: Int): RecyclerView.Adapter<TimetableViewHolder>() {
     private lateinit var binding: TimetableRecyclerLayoutBinding
     private var timetableList: List<Timetable>? = null
 
@@ -32,9 +33,10 @@ class TimetableRecyclerAdapter(private val timetableItemLayout: Int): RecyclerVi
                 val intent = Intent(holder.itemView.context, InsertTimeTableActivity::class.java)
                 ContextCompat.startActivity(holder.itemView.context, intent, null)
             }
-            // 시간계획 지도 버튼
+            // 내 시간계획 지도 이동 버튼
             myMapBtn.setOnClickListener {
-
+                val intent = Intent(holder.itemView.context, TimetableMapActivity::class.java)
+                ContextCompat.startActivity(holder.itemView.context, intent, null)
             }
         }
     }

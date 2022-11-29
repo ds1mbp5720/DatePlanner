@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.lee.dateplanner.databinding.PoiListRecyclerBinding
 import com.lee.dateplanner.map.AroundMapFragment
 import com.lee.dateplanner.map.data.POIData
@@ -21,6 +22,7 @@ class POIRecyclerAdapter(private val owner:AroundMapFragment, private val pois: 
 
     override fun onBindViewHolder(holder: POIViewHolder, position: Int) {
         val poi = pois.documents[position]
+        val behavior = BottomSheetBehavior.from(owner.binding.bottomPoiList)
         with(holder.binding){
             poiCategory.text = poi.categoryName
             poiName.text = poi.placeName
@@ -30,16 +32,20 @@ class POIRecyclerAdapter(private val owner:AroundMapFragment, private val pois: 
             // poi정보 리스트 터치시
             root.setOnClickListener {
                 val marker = owner.markerResolver[poi]
-                val update = CameraUpdateFactory.newMapPoint(marker!!.mapPoint, 2F) // 중심점, zoom 변경
-                owner.binding.infoMap.animateCamera(update, object: net.daum.mf.map.api.CancelableCallback{
-                    override fun onFinish() {
-                        Log.e(TAG,"리스트 선택")
-                        owner.binding.infoMap.selectPOIItem(marker,true) // 선택한 상점 마커 선택
+                // 해당 위치로 지도 중심점 이동, 지도 확대
+                if(marker != null){
+                    val update = CameraUpdateFactory.newMapPoint(marker?.mapPoint, 2F)
+                    with(owner.binding){
+                        infoMap.animateCamera(update, object: net.daum.mf.map.api.CancelableCallback{
+                            override fun onFinish() {
+                                owner.binding.infoMap.selectPOIItem(marker,true) // 선택한 상점 마커 선택
+                            }
+                            override fun onCancel() {
+                            }
+                        })
+                        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     }
-
-                    override fun onCancel() {
-                    }
-                })
+                }
             }
         }
     }

@@ -1,26 +1,22 @@
 package com.lee.dateplanner
 
 import android.content.ContentValues.TAG
-import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import com.google.android.material.tabs.TabLayout
 import com.lee.dateplanner.databinding.ActivityMainBinding
 import com.lee.dateplanner.festival.FestivalListFragment
 import com.lee.dateplanner.map.AroundMapFragment
+import com.lee.dateplanner.timemap.TimetableMapActivity
 import com.lee.dateplanner.timetable.TimeTableFragment
-import java.security.MessageDigest
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var timeTableFragment: TimeTableFragment
-    private lateinit var festivallistFragment: FestivalListFragment
-    private lateinit var aroundMapFragment: AroundMapFragment
+    private lateinit var timeTableFragment: TimeTableFragment // 시간계획
+    private lateinit var festivallistFragment: FestivalListFragment // 축제정보
+    private lateinit var aroundMapFragment: AroundMapFragment // 주변 상권정보
+    private lateinit var timeTableMapFragment: TimetableMapActivity // 시간계획 지도
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,10 +28,8 @@ class MainActivity : AppCompatActivity() {
             timeTableFragment = TimeTableFragment()
             festivallistFragment = FestivalListFragment()
             aroundMapFragment = AroundMapFragment()
+            timeTableMapFragment = TimetableMapActivity()
         }
-        //초기 보여질 화면
-        supportFragmentManager.beginTransaction().replace(R.id.tabContent,timeTableFragment).commit()
-
         val tabLayout = findViewById<TabLayout>(R.id.tabLayout) // tab 연결
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
@@ -67,7 +61,13 @@ class MainActivity : AppCompatActivity() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
+        //초기 보여질 화면
+        supportFragmentManager.beginTransaction().replace(R.id.tabContent,timeTableFragment).commit()
 
+    }
+
+    override fun onStart() {
+        super.onStart()
     }
 
     override fun onStop() {

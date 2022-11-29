@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.AroundinfoMapFragmentLayoutBinding
 import com.lee.dateplanner.map.adpter.POIRecyclerAdapter
@@ -80,7 +81,19 @@ class AroundMapFragment:Fragment(){
             setPOIItemEventListener(poiBallonListner)
             setCalloutBalloonAdapter(POIWindowAdapter(this.context))
             setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
+            addPOIItem(settingFestivalMarker()) // 행사위치 핑
         }
+    }
+    //선택한 행사장 위치 Maker 생성 함수
+    private fun settingFestivalMarker():MapPOIItem{
+        val marker = MapPOIItem()
+        with(marker){
+            tag = 0
+            markerType = MapPOIItem.MarkerType.RedPin // 마커 색
+            mapPoint = MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()) // poi장소 좌표
+            itemName = "선택한 축제 장소" // 장소명
+        }
+        return marker
     }
     // 정보 리스트와 maker 연동 목적 map
     var markerResolver: MutableMap<POIData.Document,MapPOIItem> = HashMap()
@@ -100,7 +113,7 @@ class AroundMapFragment:Fragment(){
     // 전체 마커 map 표시 함수
     private fun displayPOI(data: POIData){
         with(binding.infoMap){
-            removeAllPOIItems() // 기존 마커들 제거
+            //removeAllPOIItems() // 기존 마커들 제거
             for(i in 0 until  data.documents.size){
                 addPOIItem(addMapPoiMarker(data.documents[i])) // 현 마커 추가
             }

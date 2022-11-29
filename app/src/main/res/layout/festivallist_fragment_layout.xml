@@ -15,34 +15,35 @@
         android:indeterminateTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/festivalFilterLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:background="#D0CEC3C3"
         app:layout_constraintTop_toTopOf="parent"
         android:padding="7dp"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_time"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:inputType="datetime"
-            android:hint="요일, 날짜"
-            android:layout_weight="1"
-            android:maxLines="1"/>
-
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/categorySpinner"
-            android:background="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:inputType="datetime"
+            android:hint="요일, 날짜"
+            android:maxLines="1"/>
+
+        <Spinner
+            android:id="@+id/categorySpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             android:entries="@array/category"
             android:spinnerMode="dropdown"
             />
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView
