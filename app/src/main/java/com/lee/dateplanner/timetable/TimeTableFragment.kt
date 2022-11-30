@@ -28,6 +28,7 @@ class TimeTableFragment:Fragment() {
     private var timetableAdapter: TimetableRecyclerAdapter? = null  // 시간계획 recyclerview adapter
     private lateinit var binding: TimetablelistFragmentLayoutBinding
     private lateinit var mainActivity: MainActivity
+    private var tableCount = 0
 
     //mainActivity 받기
     override fun onAttach(activity: Activity) {
@@ -63,14 +64,17 @@ class TimeTableFragment:Fragment() {
         // 계획 추가 버튼 클릭시
         binding.addBtn.setOnClickListener {
             var timeSheetList =  mutableListOf<TimeSheet>()
-            var emptyTimeSheet = TimeSheet("","","","","","")
+            var emptyTimeSheet = TimeSheet("11","11","11","11","1","1")
+            timeSheetList.add(emptyTimeSheet)
+            timeSheetList.add(emptyTimeSheet)
             timeSheetList.add(emptyTimeSheet)
             /**
-             * 계획 추가 버튼을 calender 로 하여 선택한 날짜를 바로 가져와서 변수에 넣기 (수정해야함)
+             * 계획 추가 버튼을 calender 로 하여 선택한 날짜를 바로 가져와서 변수에 넣기
              */
             var date = "00.00.(요일)"
 
-            viewModel.insertTimeTable(Timetable(0,timeSheetList,date))
+            viewModel.insertTimeTable(Timetable(tableCount,timeSheetList ,date))
+            tableCount++
         }
     }
 
@@ -84,7 +88,6 @@ class TimeTableFragment:Fragment() {
                 timetableAdapter?.setTimetableList(it)
             }
         }
-
     }
 
     /**

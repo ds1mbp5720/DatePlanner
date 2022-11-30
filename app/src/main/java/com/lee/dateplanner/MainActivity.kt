@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity() {
         })
         //초기 보여질 화면
         supportFragmentManager.beginTransaction().replace(R.id.tabContent,timeTableFragment).commit()
-
     }
 
     override fun onStart() {

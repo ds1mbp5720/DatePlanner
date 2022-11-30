@@ -14,16 +14,21 @@ class TimetableViewModel(application: Application): AndroidViewModel(application
     fun insertTimeTable(timetable: Timetable){
         repository.insertTimetable(timetable)
     }
-    fun findTimetable(name: String){
-        repository.findTimetable(name)
+    fun updateTiemtable(timetable: Timetable){
+        repository.updateTimetable(timetable)
     }
-    fun deleteTimetable(name: String){
-        repository.deleteTimetable(name)
+    fun findTimetable(id: Int){
+        repository.findTimetable(id)
     }
+
+    fun deleteTimetable(id: Int){
+        repository.deleteTimetable(id)
+    }
+
     fun getSearchResults(): MutableLiveData<List<Timetable>> {
         return searchResults
     }
-    fun getAllTimetables(): LiveData<List<Timetable>>?{
+    fun getAllTimetables(): LiveData<List<Timetable>>? {
         return allTimetables
     }
 }

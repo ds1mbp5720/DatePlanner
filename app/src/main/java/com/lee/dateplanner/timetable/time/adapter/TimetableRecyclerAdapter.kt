@@ -1,15 +1,19 @@
 package com.lee.dateplanner.timetable.time.adapter
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.lee.dateplanner.MainActivity
 import com.lee.dateplanner.databinding.TimetableRecyclerLayoutBinding
 import com.lee.dateplanner.timemap.TimetableMapActivity
 import com.lee.dateplanner.timetable.InsertTimeTableActivity
+import com.lee.dateplanner.timetable.onetime.TimeSheet
 import com.lee.dateplanner.timetable.onetime.adapter.TimeSheetAdapter
 import com.lee.dateplanner.timetable.time.room.Timetable
 
@@ -25,18 +29,25 @@ class TimetableRecyclerAdapter(private val activity: MainActivity ,private val t
     override fun onBindViewHolder(holder: TimetableViewHolder, position: Int) {
         with(holder.binding){
             timetableList.let {
-                dayTimeTable.adapter = TimeSheetAdapter(it!![position].timeSheetList!!)
-                tableDate.text = it!![position].date.toString()
+                // view 설정
+                dayTimeTable.adapter = TimeSheetAdapter(it!![position].timeSheetList!!)  // 일일 계획
+                Log.e(TAG,"${it!![position].timeSheetList!!}")
+                tableDate.text = it!![position].date.toString()  // 날짜
             }
+
             // 시간계획 추가 버튼
             addTimesheetBtn.setOnClickListener {
                 val intent = Intent(holder.itemView.context, InsertTimeTableActivity::class.java)
-                ContextCompat.startActivity(holder.itemView.context, intent, null)
+                intent.putExtra("Time",(timetableList!![position])) // 전달할 timesheet
+                intent.putExtra("id",(timetableList!![position].id)) // 전달할 timesheet
+                startActivity(holder.itemView.context, intent, null)
             }
+
             // 내 시간계획 지도 이동 버튼
             myMapBtn.setOnClickListener {
                 val intent = Intent(holder.itemView.context, TimetableMapActivity::class.java)
-                ContextCompat.startActivity(holder.itemView.context, intent, null)
+                intent.putExtra("id",(timetableList!![position].id)) // 전달할 timesheet
+                startActivity(holder.itemView.context, intent, null)
             }
         }
     }
