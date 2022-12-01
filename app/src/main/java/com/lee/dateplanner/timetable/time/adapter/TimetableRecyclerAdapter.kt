@@ -8,16 +8,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
-import com.lee.dateplanner.MainActivity
 import com.lee.dateplanner.databinding.TimetableRecyclerLayoutBinding
 import com.lee.dateplanner.timemap.TimetableMapActivity
 import com.lee.dateplanner.timetable.InsertTimeTableActivity
-import com.lee.dateplanner.timetable.onetime.TimeSheet
+import com.lee.dateplanner.timetable.TimetableViewModel
 import com.lee.dateplanner.timetable.onetime.adapter.TimeSheetAdapter
 import com.lee.dateplanner.timetable.time.room.Timetable
 
-class TimetableRecyclerAdapter(private val activity: MainActivity ,private val timetableItemLayout: Int): RecyclerView.Adapter<TimetableViewHolder>() {
+class TimetableRecyclerAdapter(private val viewModel: TimetableViewModel, private val timetableItemLayout: Int): RecyclerView.Adapter<TimetableViewHolder>() {
     private lateinit var binding: TimetableRecyclerLayoutBinding
     private var timetableList: List<Timetable>? = null
 
@@ -30,7 +30,7 @@ class TimetableRecyclerAdapter(private val activity: MainActivity ,private val t
         with(holder.binding){
             timetableList.let {
                 // view 설정
-                dayTimeTable.adapter = TimeSheetAdapter(it!![position].timeSheetList!!)  // 일일 계획
+                dayTimeTable.adapter = TimeSheetAdapter(it!![position].id,it!![position].timeSheetList!!)  // 일일 계획
                 Log.e(TAG,"${it!![position].timeSheetList!!}")
                 tableDate.text = it!![position].date.toString()  // 날짜
             }
@@ -48,6 +48,9 @@ class TimetableRecyclerAdapter(private val activity: MainActivity ,private val t
                 val intent = Intent(holder.itemView.context, TimetableMapActivity::class.java)
                 intent.putExtra("id",(timetableList!![position].id)) // 전달할 timesheet
                 startActivity(holder.itemView.context, intent, null)
+            }
+            deleteTimeBtn.setOnClickListener {
+                viewModel.deleteTimetable(timetableList!![position].id)
             }
         }
     }

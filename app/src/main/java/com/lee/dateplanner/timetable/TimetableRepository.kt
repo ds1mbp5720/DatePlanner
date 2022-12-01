@@ -34,14 +34,14 @@ class TimetableRepository(application: Application) {
     }
 
     //일일 timetable 수정
-    fun updateTimetable(newTimetable: Timetable){
+    /*fun updateTimetable(id: Int){
         coroutineScope.launch(Dispatchers.IO){
-            asyncUpdate(newTimetable)
+            asyncUpdate(id)
         }
     }
-    private fun asyncUpdate(timetable: Timetable){
-        timetableDao?.updateTimetable(timetable)
-    }
+    private fun asyncUpdate(id:Int){
+        timetableDao?.updateTimetable(id)
+    }*/
 
     // 일일 timetable 삭제
     fun deleteTimetable(id: Int){

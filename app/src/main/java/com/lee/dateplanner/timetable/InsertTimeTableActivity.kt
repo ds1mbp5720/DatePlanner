@@ -5,17 +5,14 @@ import android.app.Activity
 import android.app.Application
 import android.content.ContentValues.TAG
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.lee.dateplanner.databinding.FestivalWebviewActivityBinding
 import com.lee.dateplanner.databinding.InputScheduleLayoutBinding
 import com.lee.dateplanner.timetable.onetime.TimeSheet
 import com.lee.dateplanner.timetable.time.room.Timetable
-import kotlin.math.log
 
 /**
  * 시간계획 입력 창
@@ -66,11 +63,12 @@ class InsertTimeTableActivity: AppCompatActivity() {
 
             if(timeTable != null){
                 timeTable.timeSheetList = timeSheetList
-                Log.e(TAG,"결과는 ${timeTable.timeSheetList}")
                 //업데이트 부분 수정해야함
                 viewModel.insertTimeTable(Timetable(timeTable.timeSheetList!!,timeTable.date))
                 viewModel.deleteTimetable(id)
+
             }
+            finish()
         }
         //뒤로가기 선택시
         binding.inputBackBtn.setOnClickListener {

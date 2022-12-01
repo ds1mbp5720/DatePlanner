@@ -64,16 +64,22 @@ class TimeTableFragment:Fragment() {
         // 계획 추가 버튼 클릭시
         binding.addBtn.setOnClickListener {
             var timeSheetList =  mutableListOf<TimeSheet>()
-            var emptyTimeSheet = TimeSheet("11","11","11","11","1","1")
-            timeSheetList.add(emptyTimeSheet)
-            timeSheetList.add(emptyTimeSheet)
-            timeSheetList.add(emptyTimeSheet)
+            // 입력 확인용 예시 데이터
+            var emptyTimeSheet1 = TimeSheet("000공연","13:30","서울시 00동 00","공연","37.5143225723","127.062831022")
+            var emptyTimeSheet2 = TimeSheet("000카페","16:30","서울시 00동 00","커피","37.510404219518","127.06429358258")
+            var emptyTimeSheet3 = TimeSheet("000식당","17:30","서울시 00동 00","밥","37.51486885062181","127.05880695418199")
+            var emptyTimeSheet4 = TimeSheet("메가박스","19:30","서울 강남구 삼성동 15","영화","37.5130779481089","127.058215118259")
+            timeSheetList.add(emptyTimeSheet1)
+            timeSheetList.add(emptyTimeSheet2)
+            timeSheetList.add(emptyTimeSheet3)
+            timeSheetList.add(emptyTimeSheet4)
             /**
-             * 계획 추가 버튼을 calender 로 하여 선택한 날짜를 바로 가져와서 변수에 넣기
+             * 계획 추가 버튼을 dialog 로 하여 선택한 날짜를 바로 가져와서 변수에 넣기
              */
             var date = "00.00.(요일)"
 
             viewModel.insertTimeTable(Timetable(tableCount,timeSheetList ,date))
+            Log.e(TAG,"${tableCount}")
             tableCount++
         }
     }
@@ -95,7 +101,7 @@ class TimeTableFragment:Fragment() {
      */
     private fun uiSetup(){
         with(binding.allTimeTable){
-            timetableAdapter = TimetableRecyclerAdapter(mainActivity,R.layout.timetable_recycler_layout)
+            timetableAdapter = TimetableRecyclerAdapter(viewModel,R.layout.timetable_recycler_layout)
             adapter = timetableAdapter
         }
     }

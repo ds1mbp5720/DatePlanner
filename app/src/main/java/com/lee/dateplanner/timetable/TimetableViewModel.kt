@@ -14,9 +14,9 @@ class TimetableViewModel(application: Application): AndroidViewModel(application
     fun insertTimeTable(timetable: Timetable){
         repository.insertTimetable(timetable)
     }
-    fun updateTiemtable(timetable: Timetable){
-        repository.updateTimetable(timetable)
-    }
+    /*fun updateTiemtable(id: Int){
+        repository.updateTimetable(id)
+    }*/
     fun findTimetable(id: Int){
         repository.findTimetable(id)
     }
