@@ -48,21 +48,15 @@
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/_time"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/input_time_Btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="시간"
+            android:textSize="16dp"
+            android:gravity="left"
             android:layout_margin="4dp"
-            android:textColorHint="@color/black"
-            android:hint="시간"
-            app:hintTextColor="@color/black">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="datetime"
-                android:maxLines="1"/>
-        </com.google.android.material.textfield.TextInputLayout>
+            android:backgroundTint="@color/white" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/_location"

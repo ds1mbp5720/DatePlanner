@@ -3,16 +3,22 @@ package com.lee.dateplanner.timetable
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
+import com.lee.dateplanner.common.*
 import com.lee.dateplanner.databinding.InputScheduleLayoutBinding
 import com.lee.dateplanner.timetable.onetime.TimeSheet
 import com.lee.dateplanner.timetable.time.room.Timetable
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * 시간계획 입력 창
@@ -43,13 +49,24 @@ class InsertTimeTableActivity: AppCompatActivity() {
     }
 
     private fun setListner(id: Int, timeTable : Timetable){
+        // 시간 버튼 클릭
+        binding.inputTimeBtn.setOnClickListener {
+            val cal = Calendar.getInstance()
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+                val time = "$hourOfDay:$minute"
+                binding.inputTimeBtn.text = time
+            }
+            TimePickerDialog(this,timeSetListener,cal.get(Calendar.HOUR_OF_DAY), cal.get(
+                Calendar.MINUTE), android.text.format.DateFormat.is24HourFormat(this)).show()
+
+        }
         //등록 선택시
         binding.insertBtn.setOnClickListener {
             val timeSheetList = timeTable?.timeSheetList as ArrayList<TimeSheet>?
             //입력값들 일정표에 저장
             with(binding){
                 val title = inputTitle.text.toString()
-                val time = inputTime.text.toString()
+                val time = inputTimeBtn.text.toString()
                 val place = inputLocation.text.toString()
                 val memo = inputMemo.text.toString()
                 timeSheetList!!.add(TimeSheet(title,time,place,memo,"","")) // 저장용 timesheet

@@ -16,7 +16,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var timeTableFragment: TimeTableFragment // 시간계획
     private lateinit var festivalListFragment: FestivalListFragment // 축제정보
     private lateinit var aroundMapFragment: AroundMapFragment // 주변 상권정보
-    private lateinit var timeTableMapFragment: TimetableMapActivity // 시간계획 지도
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +27,6 @@ class MainActivity : AppCompatActivity() {
             timeTableFragment = TimeTableFragment()
             festivalListFragment = FestivalListFragment()
             aroundMapFragment = AroundMapFragment()
-            timeTableMapFragment = TimetableMapActivity()
         }
         val tabLayout = findViewById<TabLayout>(R.id.tabLayout) // tab 연결
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -41,21 +39,19 @@ class MainActivity : AppCompatActivity() {
                     else -> throw IllegalAccessException("Unexpected value: " + tab.position)
                 }
                 val ft = supportFragmentManager.beginTransaction() // fragment 관리
-                with(binding){
-                    with(ft){
-                        // 선택에 따른 fragment 이동
-                        when(param){
-                            getString(R.string.main_tab_1) -> {
-                                replace(R.id.tabContent,timeTableFragment).commit()
-                            }
-                            getString(R.string.main_tab_2) -> {
-                                replace(R.id.tabContent,festivalListFragment).commit()
-                            }
-                            getString(R.string.main_tab_3) -> {
-                                replace(R.id.tabContent,aroundMapFragment).commit()
-                            }
-                            else -> throw IllegalAccessException("Unexpected value: " + tab.position)
+                with(ft){
+                    // 선택에 따른 fragment 이동
+                    when(param){
+                        getString(R.string.main_tab_1) -> {
+                            replace(R.id.tabContent,timeTableFragment).commit()
                         }
+                        getString(R.string.main_tab_2) -> {
+                            replace(R.id.tabContent,festivalListFragment).commit()
+                        }
+                        getString(R.string.main_tab_3) -> {
+                            replace(R.id.tabContent,aroundMapFragment).commit()
+                        }
+                        else -> throw IllegalAccessException("Unexpected value: " + tab.position)
                     }
                 }
             }

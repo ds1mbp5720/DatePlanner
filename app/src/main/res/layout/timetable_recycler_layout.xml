@@ -23,11 +23,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/table_date"
+                <Button
+                    android:id="@+id/table_date_Btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="MM.DD.(요일)"
+                    android:backgroundTint="@color/white"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />

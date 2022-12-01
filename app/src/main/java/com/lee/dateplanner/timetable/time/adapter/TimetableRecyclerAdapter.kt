@@ -1,6 +1,7 @@
 package com.lee.dateplanner.timetable.time.adapter
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.util.Log
@@ -8,16 +9,20 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
+import com.lee.dateplanner.common.makeDatePickerDialog
 import com.lee.dateplanner.databinding.TimetableRecyclerLayoutBinding
 import com.lee.dateplanner.timemap.TimetableMapActivity
 import com.lee.dateplanner.timetable.InsertTimeTableActivity
+import com.lee.dateplanner.timetable.TimeTableFragment
 import com.lee.dateplanner.timetable.TimetableViewModel
 import com.lee.dateplanner.timetable.onetime.adapter.TimeSheetAdapter
 import com.lee.dateplanner.timetable.time.room.Timetable
+import java.util.*
 
-class TimetableRecyclerAdapter(private val viewModel: TimetableViewModel, private val timetableItemLayout: Int): RecyclerView.Adapter<TimetableViewHolder>() {
+class TimetableRecyclerAdapter(private val viewModel: TimetableViewModel, private val fragment: TimeTableFragment): RecyclerView.Adapter<TimetableViewHolder>() {
     private lateinit var binding: TimetableRecyclerLayoutBinding
     private var timetableList: List<Timetable>? = null
 
@@ -31,7 +36,20 @@ class TimetableRecyclerAdapter(private val viewModel: TimetableViewModel, privat
             timetableList.let {
                 // view 설정
                 dayTimeTable.adapter = TimeSheetAdapter(it!![position].id,it!![position].timeSheetList!!)  // 일일 계획
-                tableDate.text = it!![position].date.toString()  // 일정날짜
+                tableDateBtn.text = it!![position].date.toString()  // 일정날짜
+            }
+            //날짜 선택 버튼
+            tableDateBtn.setOnClickListener {
+                val cal = Calendar.getInstance()
+                val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                    val date = "$month 월 $dayOfMonth 일"
+                    binding.tableDateBtn.text = date
+                }
+                fragment.context?.let { it1 ->
+                    DatePickerDialog(
+                        it1,dateSetListener,cal.get(Calendar.YEAR), cal.get(
+                            Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show()
+                }
             }
 
             // 시간계획 추가 버튼

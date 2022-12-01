@@ -100,7 +100,7 @@ class TimeTableFragment:Fragment() {
      */
     private fun uiSetup(){
         with(binding.allTimeTable){
-            timetableAdapter = TimetableRecyclerAdapter(viewModel,R.layout.timetable_recycler_layout)
+            timetableAdapter = TimetableRecyclerAdapter(viewModel,this@TimeTableFragment)
             adapter = timetableAdapter
         }
     }

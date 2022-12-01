@@ -1,22 +1,21 @@
 package com.lee.dateplanner.festival
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.lee.dateplanner.common.makeDatePickerDialog
 import com.lee.dateplanner.databinding.FestivallistFragmentLayoutBinding
 import com.lee.dateplanner.festival.adapter.FestivalRecyclerAdapter
 import com.lee.dateplanner.festival.network.FestivalRetrofitService
-import com.lee.dateplanner.map.POIRepository
-import com.lee.dateplanner.map.POIViewModel
-import com.lee.dateplanner.map.POIViewModelFactory
-import com.lee.dateplanner.map.adpter.POIRecyclerAdapter
-import com.lee.dateplanner.map.network.POIRetrofitService
+import java.util.*
 
 class FestivalListFragment:Fragment() {
     companion object{
@@ -39,7 +38,7 @@ class FestivalListFragment:Fragment() {
         )
         ).get(FestivalViewModel::class.java)
 
-
+        listenerSetup()
         viewModel.festivalList.observe(viewLifecycleOwner){
             with(binding.festivalList){
                 run{
@@ -56,5 +55,17 @@ class FestivalListFragment:Fragment() {
         }
         viewModel.getAllFestivalFromViewModel()
     }
-
+    // 리스너 셋팅 함수
+    private fun listenerSetup(){
+        // 날짜 선택
+        binding.inputDate.setOnClickListener {
+            val cal = Calendar.getInstance()
+            val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                val date = "$month 월 $dayOfMonth 일"
+                binding.inputDate.text = date
+            }
+            this.context?.let { it1 -> DatePickerDialog(it1,dateSetListener,cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show() }
+        }
+        // 카테고리 선택 스피너
+    }
 }
