@@ -20,6 +20,9 @@ import com.lee.dateplanner.timetable.onetime.TimeSheet
 import com.lee.dateplanner.timetable.time.adapter.TimetableRecyclerAdapter
 import com.lee.dateplanner.timetable.time.room.Timetable
 
+/**
+ * 저장된 시간계획 제공 fragment
+ */
 class TimeTableFragment:Fragment() {
     companion object{
         fun newInstance() = TimeTableFragment()
@@ -27,14 +30,7 @@ class TimeTableFragment:Fragment() {
     private val viewModel: TimetableViewModel by viewModels()  // 뷰모델
     private var timetableAdapter: TimetableRecyclerAdapter? = null  // 시간계획 recyclerview adapter
     private lateinit var binding: TimetablelistFragmentLayoutBinding
-    private lateinit var mainActivity: MainActivity
     private var tableCount = 0
-
-    //mainActivity 받기
-    override fun onAttach(activity: Activity) {
-        super.onAttach(activity)
-        mainActivity= getActivity() as MainActivity
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,7 +60,10 @@ class TimeTableFragment:Fragment() {
         // 계획 추가 버튼 클릭시
         binding.addBtn.setOnClickListener {
             var timeSheetList =  mutableListOf<TimeSheet>()
-            // 입력 확인용 예시 데이터
+
+            /**
+             * 결과 출력 확인용 hard coding data 들
+             */
             var emptyTimeSheet1 = TimeSheet("000공연","13:30","서울시 00동 00","공연","37.5143225723","127.062831022")
             var emptyTimeSheet2 = TimeSheet("000카페","16:30","서울시 00동 00","커피","37.510404219518","127.06429358258")
             var emptyTimeSheet3 = TimeSheet("000식당","17:30","서울시 00동 00","밥","37.51486885062181","127.05880695418199")
@@ -73,13 +72,13 @@ class TimeTableFragment:Fragment() {
             timeSheetList.add(emptyTimeSheet2)
             timeSheetList.add(emptyTimeSheet3)
             timeSheetList.add(emptyTimeSheet4)
+
             /**
              * 계획 추가 버튼을 dialog 로 하여 선택한 날짜를 바로 가져와서 변수에 넣기
              */
             var date = "00.00.(요일)"
-
+            // room db 추가
             viewModel.insertTimeTable(Timetable(tableCount,timeSheetList ,date))
-            Log.e(TAG,"${tableCount}")
             tableCount++
         }
     }
@@ -97,7 +96,7 @@ class TimeTableFragment:Fragment() {
     }
 
     /**
-     * ui셋팅 함수
+     * ui 셋팅 함수
      */
     private fun uiSetup(){
         with(binding.allTimeTable){

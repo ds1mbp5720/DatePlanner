@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.lee.dateplanner.timetable.onetime.TimeSheet
 
 @Dao
 interface TimetableDAO {
@@ -18,8 +19,9 @@ interface TimetableDAO {
     @Query("SELECT * FROM timetable_tbl WHERE timetableId = :id")
     fun findTimetable(id: Int): List<Timetable>
 
-    /*@Query("UPDATE FROM timetable_tbl WHERE timetableId = :id")
-    fun updateTimetable(id: Int)*/
+    // 추가
+    @Query("UPDATE timetable_tbl SET timeSheetList = :timesheet WHERE timetableId = :id")
+    fun updateTimetable(timesheet: List<TimeSheet> ,id: Int)
 
     //삭제
     @Query("DELETE FROM timetable_tbl WHERE timetableId = :id")

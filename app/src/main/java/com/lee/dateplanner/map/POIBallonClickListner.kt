@@ -7,6 +7,9 @@ import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
 
+/**
+ * poi 정보의 marker window 터치에 대한 이벤트 처리 class
+ */
 class POIBallonClickListner(context: Context?):MapView.POIItemEventListener {
     // 말풍선 클릭시 이벤트 정의 함수
     override fun onCalloutBalloonOfPOIItemTouched(mapView: MapView?, poiItem: MapPOIItem?, buttonType: MapPOIItem.CalloutBalloonButtonType?) {

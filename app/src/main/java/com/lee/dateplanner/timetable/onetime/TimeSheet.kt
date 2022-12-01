@@ -1,10 +1,9 @@
 package com.lee.dateplanner.timetable.onetime
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 
-// 한타임 계획 data 양식
-@Parcelize
+/**
+ * 일일단위 timetable 에서 계획  1개 data 양식
+ */
 data class TimeSheet(
     var title: String, // 일정 제목
     var time: String, // 일정 시간
@@ -12,4 +11,4 @@ data class TimeSheet(
     var memo: String, // 일정 메모
     var lat: String, // 장소 위도
     var lgt: String  // 장소 경도
-): Parcelable
+)

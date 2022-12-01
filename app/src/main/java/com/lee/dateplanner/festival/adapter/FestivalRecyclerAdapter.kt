@@ -13,7 +13,9 @@ import com.lee.dateplanner.databinding.FestivalInfoRecyclerBinding
 import com.lee.dateplanner.festival.WebViewFestivalActivity
 import com.lee.dateplanner.festival.data.FestivalInfoData
 
-
+/**
+ * 행사 정보 출력 adapter
+ */
 class FestivalRecyclerAdapter(private var festivalList: FestivalInfoData):RecyclerView.Adapter<FestivalViewHolder>() {
     private lateinit var binding: FestivalInfoRecyclerBinding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FestivalViewHolder {
@@ -28,11 +30,11 @@ class FestivalRecyclerAdapter(private var festivalList: FestivalInfoData):Recycl
             festivalPlace.text = festival.pLACE
             festivalCost.text = festival.uSEFEE
             festivalDate.text = festival.dATE
-            Glide.with(this.festivalPoster.context).load("""${festival.mAINIMG}""").into(this.festivalPoster)
+            Glide.with(this.festivalPoster.context).load("""${festival.mAINIMG}""").into(this.festivalPoster)// 이미지 처리
 
             //포스터 클릭 정의
             festivalPoster.setOnClickListener{
-                // 홈페이지 링크 전달 및 activity 이동
+                // 홈페이지 링크 전달 및 webView 수행 activity 이동
                 val intent = Intent(holder.itemView.context,WebViewFestivalActivity::class.java)
                 intent.putExtra("homepage",festival.oRGLINK)
                 startActivity(holder.itemView.context, intent,null)

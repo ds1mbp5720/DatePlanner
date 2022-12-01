@@ -31,26 +31,24 @@ class TimetableRecyclerAdapter(private val viewModel: TimetableViewModel, privat
             timetableList.let {
                 // view 설정
                 dayTimeTable.adapter = TimeSheetAdapter(it!![position].id,it!![position].timeSheetList!!)  // 일일 계획
-                Log.e(TAG,"${it!![position].timeSheetList!!}")
-                tableDate.text = it!![position].date.toString()  // 날짜
+                tableDate.text = it!![position].date.toString()  // 일정날짜
             }
 
             // 시간계획 추가 버튼
             addTimesheetBtn.setOnClickListener {
                 val intent = Intent(holder.itemView.context, InsertTimeTableActivity::class.java)
-                intent.putExtra("Time",(timetableList!![position])) // 전달할 timesheet
                 intent.putExtra("id",(timetableList!![position].id)) // 전달할 timesheet
-                startActivity(holder.itemView.context, intent, null)
+                startActivity(holder.itemView.context, intent, null) // 추가 계획 입력 페이지 이동
             }
 
             // 내 시간계획 지도 이동 버튼
             myMapBtn.setOnClickListener {
                 val intent = Intent(holder.itemView.context, TimetableMapActivity::class.java)
                 intent.putExtra("id",(timetableList!![position].id)) // 전달할 timesheet
-                startActivity(holder.itemView.context, intent, null)
+                startActivity(holder.itemView.context, intent, null) // 일정 지도 페이지 이동
             }
             deleteTimeBtn.setOnClickListener {
-                viewModel.deleteTimetable(timetableList!![position].id)
+                viewModel.deleteTimetable(timetableList!![position].id) // 해당 일일 일정 삭제
             }
         }
     }

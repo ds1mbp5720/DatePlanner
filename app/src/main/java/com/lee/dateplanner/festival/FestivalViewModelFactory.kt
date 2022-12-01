@@ -2,6 +2,7 @@ package com.lee.dateplanner.festival
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.lee.dateplanner.R
 import com.lee.dateplanner.map.POIRepository
 import com.lee.dateplanner.map.POIViewModel
 
@@ -11,7 +12,7 @@ class FestivalViewModelFactory(private var repository: FestivalRepository): View
         return if(modelClass.isAssignableFrom(FestivalViewModel::class.java)){
             FestivalViewModel(repository) as T
         }else{
-            throw IllegalArgumentException("해당 뷰모델 못찾을수 없습니다.")
+            throw IllegalArgumentException(R.string.notFindViewModel.toString())
         }
     }
 }

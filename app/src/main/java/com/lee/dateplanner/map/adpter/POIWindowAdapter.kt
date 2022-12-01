@@ -11,8 +11,11 @@ import com.lee.dateplanner.R
 import net.daum.mf.map.api.CalloutBalloonAdapter
 import net.daum.mf.map.api.MapPOIItem
 
-// 마커 선택시 info window 정의
+/**
+ * 마커 선택시 나타날 info window(말풍선) 정의 함수
+  */
 class POIWindowAdapter(context: Context):CalloutBalloonAdapter {
+    // xml view 연결
     private var mCalloutBalloon: View = LayoutInflater.from(context).inflate(R.layout.poi_window, null)
 
     override fun getCalloutBalloon(poiItem: MapPOIItem): View {

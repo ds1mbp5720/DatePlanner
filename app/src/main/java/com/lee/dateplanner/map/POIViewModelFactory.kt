@@ -2,6 +2,7 @@ package com.lee.dateplanner.map
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.lee.dateplanner.R
 
 @Suppress("UNCHECKED_CAST")
 class POIViewModelFactory (private var repository:POIRepository):ViewModelProvider.Factory{
@@ -10,7 +11,7 @@ class POIViewModelFactory (private var repository:POIRepository):ViewModelProvid
         return if(modelClass.isAssignableFrom(POIViewModel::class.java)){
             POIViewModel(repository) as T
         }else{
-            throw IllegalArgumentException("해당 뷰모델 못찾을수 없습니다.")
+            throw IllegalArgumentException(R.string.notFindViewModel.toString())
         }
     }
 }

@@ -5,6 +5,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.lee.dateplanner.timetable.onetime.TimeSheet
 import com.lee.dateplanner.timetable.time.room.Timetable
 import com.lee.dateplanner.timetable.time.room.TimetableDAO
 import kotlinx.coroutines.CoroutineScope
@@ -13,15 +14,15 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class TimetableRepository(application: Application) {
-    private var timetableDao: TimetableDAO?
-    private var coroutineScope = CoroutineScope(Dispatchers.IO)
-    val alltimetables: LiveData<List<Timetable>>?
-    var searchResults = MutableLiveData<List<Timetable>>()
+    private var timetableDao: TimetableDAO? // dao 호출
+    private var coroutineScope = CoroutineScope(Dispatchers.IO)  // 입출력 코루틴 동작
+    val allTimetables: LiveData<List<Timetable>>? // room db 전체 저장
+    var searchResults = MutableLiveData<List<Timetable>>()  // 특정 timetable 반환
 
     init {
         val db: com.lee.dateplanner.timetable.time.room.TimeTableRoomDatabase? = com.lee.dateplanner.timetable.time.room.TimeTableRoomDatabase.getDatabase(application)
         timetableDao = db?.timetableDao()
-        alltimetables = timetableDao?.getAllTimetable()
+        allTimetables = timetableDao?.getAllTimetable()
     }
     // 일일 timetable 추가
     fun insertTimetable(newTimetable: Timetable){
@@ -34,14 +35,14 @@ class TimetableRepository(application: Application) {
     }
 
     //일일 timetable 수정
-    /*fun updateTimetable(id: Int){
+    fun updateTimetable(timesheetList: List<TimeSheet>, id: Int){
         coroutineScope.launch(Dispatchers.IO){
-            asyncUpdate(id)
+            asyncUpdate(timesheetList,id)
         }
     }
-    private fun asyncUpdate(id:Int){
-        timetableDao?.updateTimetable(id)
-    }*/
+    private fun asyncUpdate(timesheetList: List<TimeSheet>,id:Int){
+        timetableDao?.updateTimetable(timesheetList, id)
+    }
 
     // 일일 timetable 삭제
     fun deleteTimetable(id: Int){

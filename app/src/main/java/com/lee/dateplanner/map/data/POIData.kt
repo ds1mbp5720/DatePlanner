@@ -3,6 +3,9 @@ package com.lee.dateplanner.map.data
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * poi 정보 rest api 받을 data class
+ */
 data class POIData(
     @SerializedName("documents")
     val documents: List<Document>,

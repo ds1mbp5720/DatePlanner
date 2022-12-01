@@ -17,9 +17,7 @@ const val POI_ADDRESS = "https://dapi.kakao.com/"
 interface POIRetrofitService {
 
     @Headers("Authorization:KakaoAK ${BuildConfig.KAKAO_REST_KEY}")
-    //@GET("v2/local/search/category.json?category_group_code={code}&y={lat}&x={lng}&radius={radius}") // poi 정보 api
     @GET("v2/local/search/category.json") // poi 정보 api
-    //@GET("v2/local/search/category.json?category_group_code=CE7&y=37.5143225723&x=127.062831022&radius=2000") // poi 정보 api
     suspend fun getPOIInfo(
         @Query("category_group_code") category_group_code: String, // poi 종류 카테고리
         @Query("y") y: String, // 기준점 위도

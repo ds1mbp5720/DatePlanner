@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">DatePlanner</string>
+    <string name="main_tab_1">시간계획</string>
+    <string name="main_tab_2">축제 목록</string>
+    <string name="main_tab_3">주변정보 지도</string>
+    <string name="poi_category_1">CE7</string>
+    <string name="poi_category_2">FD6</string>
+    <string name="poi_category_3">CT1</string>
+    <string name="notFindViewModel">해당 뷰모델 못찾을수 없습니다.</string>
     <string-array name="category">
         <item>전체</item>
         <item>클래식</item>

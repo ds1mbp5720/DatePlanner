@@ -29,7 +29,6 @@ class TimetableMapActivity:AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = MyScheduleMapActivityLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         viewModel = ViewModelProvider(this).get(TimetableViewModel::class.java)
 
         val id = intent.getIntExtra("id",0)
@@ -40,6 +39,7 @@ class TimetableMapActivity:AppCompatActivity() {
             timetable?.let {
                 with(binding.scheduleInfoRecycler){
                     run{
+                        // bottomsheet에 보여질 list 에 대한 adpater 연결
                         val scheduleAdapter = TimetableMapAdapter(this@TimetableMapActivity,timetable[0])
                         adapter = scheduleAdapter
                         scheduleAdapter
@@ -62,6 +62,7 @@ class TimetableMapActivity:AppCompatActivity() {
             setCalloutBalloonAdapter(POIWindowAdapter(this.context))
         }
     }
+    //recyclerView 에서 터치시 해당 maker 로 이동하기 위한 map
     var markerResolver: MutableMap<TimeSheet,MapPOIItem> = HashMap()
     private fun addMapPoiMarker(data: TimeSheet): MapPOIItem {
         val marker = MapPOIItem()
@@ -71,7 +72,7 @@ class TimetableMapActivity:AppCompatActivity() {
             mapPoint = MapPoint.mapPointWithGeoCoord(data.lat.toDouble(), data.lgt.toDouble()) // poi장소 좌표
             itemName = data.title // 일정 이름
         }
-        markerResolver[data] = marker
+        markerResolver[data] = marker // 마커와 list 연결
         return marker
     }
 
@@ -81,13 +82,20 @@ class TimetableMapActivity:AppCompatActivity() {
             removeAllPOIItems() // 기존 마커들 제거
             if(data.timeSheetList != null){
                 for(i in 0 until (data.timeSheetList!!.size)){
-                    addPOIItem(addMapPoiMarker(data.timeSheetList!![i])) // 현 마커 추가
+                    // 위치 좌표가 없는 일정의 경우 마커 생성 생략
+                    if(data.timeSheetList!![i].lat != "" && data.timeSheetList!![i].lat != "" ){
+                        addPOIItem(addMapPoiMarker(data.timeSheetList!![i])) // 현 마커 추가
+                    }
                 }
-                setMapCenterPoint(net.daum.mf.map.api.MapPoint.mapPointWithGeoCoord(data.timeSheetList!![0].lat.toDouble(),data.timeSheetList!![0].lgt.toDouble()), false) // map 중심점
+                //일정 map 실행시 최초 지도 중심점을 첫번째 일정의 위치로
+                if(data.timeSheetList!![0].lat != "" && data.timeSheetList!![0].lat != "")
+                {
+                    setMapCenterPoint(net.daum.mf.map.api.MapPoint.mapPointWithGeoCoord(data.timeSheetList!![0].lat.toDouble(),data.timeSheetList!![0].lgt.toDouble()), false)
+                }
             }
         }
     }
-
+    // 종료시
     override fun onDestroy() {
         super.onDestroy()
         finish()

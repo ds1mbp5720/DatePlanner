@@ -19,6 +19,7 @@ class TimeSheetAdapter(private var id: Int, private var timesheetList: List<Time
     override fun onBindViewHolder(holder: TimeSheetViewHolder, position: Int) {
         val timesheet = timesheetList[position]
         with(holder.binding){
+            // 기존 정보들  입력 받은 정보들
             scheduleTitle.text = timesheet.title
             scheduleTime.text = timesheet.time
             schedulePlace.text = timesheet.place

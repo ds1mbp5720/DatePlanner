@@ -3,6 +3,7 @@ package com.lee.dateplanner.timetable
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.lee.dateplanner.R
 
 @Suppress("UNCHECKED_CAST")
 class TimeTableViewModelFactory (private var repository: TimetableRepository): ViewModelProvider.Factory {
@@ -10,7 +11,7 @@ class TimeTableViewModelFactory (private var repository: TimetableRepository): V
         return if (modelClass.isAssignableFrom(TimetableViewModel::class.java)) {
             TimetableViewModel(application = Application()) as T
         } else {
-            throw IllegalArgumentException("해당 뷰모델 못찾을수 없습니다.")
+            throw IllegalArgumentException(R.string.notFindViewModel.toString())
         }
     }
 }

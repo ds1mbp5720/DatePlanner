@@ -34,7 +34,6 @@ class WebViewFestivalActivity: Activity() {
     // 뒤로가기시 activity 완전 종료
     override fun onPause() {
         super.onPause()
-        Log.e(TAG,"종료됨")
         finish()
     }
 }

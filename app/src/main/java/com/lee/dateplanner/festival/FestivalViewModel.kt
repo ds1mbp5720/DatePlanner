@@ -8,6 +8,9 @@ import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.festival.data.FestivalSpaceData
 import kotlinx.coroutines.*
 
+/**
+ * 행사정보 viewModel
+ */
 class FestivalViewModel(private var repository: FestivalRepository):ViewModel() {
 
     val festivalList = MutableLiveData<FestivalInfoData>()
@@ -44,7 +47,7 @@ class FestivalViewModel(private var repository: FestivalRepository):ViewModel() 
     }
 
     private fun onError(message: String){
-        errorMessage.value = message
+        errorMessage.postValue(message)
         isLoading.postValue(false)
     }
     override fun onCleared() {

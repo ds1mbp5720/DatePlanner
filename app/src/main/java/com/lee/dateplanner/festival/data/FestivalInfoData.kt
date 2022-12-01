@@ -3,6 +3,9 @@ package com.lee.dateplanner.festival.data
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * 문화행사정보 rest api 저장 data class
+ */
 data class FestivalInfoData(
     @SerializedName("culturalEventInfo")
     val culturalEventInfo: CulturalEventInfo

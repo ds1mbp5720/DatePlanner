@@ -1,17 +1,14 @@
 package com.lee.dateplanner.timetable.time.room
 
-import android.os.Parcelable
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.lee.dateplanner.timetable.onetime.TimeSheet
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 @Entity(tableName = "timetable_tbl")
-class Timetable() : Parcelable {
+class Timetable(){
     @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "timetableId") // 구분 id

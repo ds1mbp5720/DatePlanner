@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import com.lee.dateplanner.timetable.onetime.TimeSheet
 
 /**
- * room db에 timesheet list저장용 형변환 변환 class
+ * room db에 timesheet list 저장용 형변환 변환 class
   */
 class TimeSheetListConverters {
     @TypeConverter

@@ -28,19 +28,13 @@ class InsertTimeTableActivity: AppCompatActivity() {
         setContentView(binding.root)
         viewModel = ViewModelProvider(this).get(TimetableViewModel::class.java)
 
-        val id = intent.getIntExtra("id",0)
+        val id = intent.getIntExtra("id",0) // 터치한 계획표 id 값 받기
         viewModel.findTimetable(id)
         viewModel.getSearchResults().observe(this){ timetable ->
             timetable?.let {
-                Log.e(TAG,"inner ${timetable[0].timeSheetList}")
-                var timeTable = timetable[0]
-
                 setListner(id,timetable[0])
-
-                Log.e(TAG, "${timeTable!!.timeSheetList}")
             }
         }
-
     }
 
     override fun onDestroy() {
@@ -52,7 +46,7 @@ class InsertTimeTableActivity: AppCompatActivity() {
         //등록 선택시
         binding.insertBtn.setOnClickListener {
             val timeSheetList = timeTable?.timeSheetList as ArrayList<TimeSheet>?
-            //입력값들 저장
+            //입력값들 일정표에 저장
             with(binding){
                 val title = inputTitle.text.toString()
                 val time = inputTime.text.toString()
@@ -63,10 +57,8 @@ class InsertTimeTableActivity: AppCompatActivity() {
 
             if(timeTable != null){
                 timeTable.timeSheetList = timeSheetList
-                //업데이트 부분 수정해야함
-                viewModel.insertTimeTable(Timetable(timeTable.timeSheetList!!,timeTable.date))
-                viewModel.deleteTimetable(id)
-
+                //추가한 timesheet 업데이트
+                timeTable.timeSheetList?.let { it1 -> viewModel.updateTiemtable(it1,id) }
             }
             finish()
         }

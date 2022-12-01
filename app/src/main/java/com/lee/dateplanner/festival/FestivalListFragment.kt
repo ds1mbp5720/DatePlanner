@@ -48,7 +48,7 @@ class FestivalListFragment:Fragment() {
                     festivalAdapter
                 }
             }
-            binding.progressBar.visibility = View.GONE // 로딩
+            binding.progressBar.visibility = View.GONE // rest 완료시 progressbar 제거
         }
 
         viewModel.errorMessage.observe(viewLifecycleOwner){

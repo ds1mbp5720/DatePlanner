@@ -6,6 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
+/**
+ * room db 가져오는 역할
+ */
 @Database(entities = [(Timetable::class)], exportSchema = false, version = 1)
 @TypeConverters(TimeSheetListConverters::class)
 abstract class TimeTableRoomDatabase:RoomDatabase() {

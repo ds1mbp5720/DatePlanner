@@ -21,6 +21,9 @@ import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
 
+/**
+ * 주변 상권정보 카테고리별 제공 fragment
+ */
 class AroundMapFragment:Fragment(){
     companion object{
         fun newInstance() = AroundMapFragment()
@@ -91,7 +94,7 @@ class AroundMapFragment:Fragment(){
             tag = 0
             markerType = MapPOIItem.MarkerType.RedPin // 마커 색
             mapPoint = MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()) // poi장소 좌표
-            itemName = "선택한 축제 장소" // 장소명
+            itemName = "전달받을 축제 장소" // 장소명
         }
         return marker
     }
@@ -124,13 +127,16 @@ class AroundMapFragment:Fragment(){
     private fun setCategoryBtn(){
         with(binding){
             cafeBtn.setOnClickListener {
-                poiCategory = "CE7"
+                poiCategory = getString(R.string.poi_category_1)
+                Log.e(TAG,"누른 카테고리 $poiCategory")
             }
             restaurantBtn.setOnClickListener {
-                poiCategory = "FD6"
+                poiCategory = getString(R.string.poi_category_2)
+                Log.e(TAG,"누른 카테고리 $poiCategory")
             }
             etcBtn.setOnClickListener {
-                poiCategory = "CT1"
+                poiCategory = getString(R.string.poi_category_3)
+                Log.e(TAG,"누른 카테고리 $poiCategory")
             }
         }
     }

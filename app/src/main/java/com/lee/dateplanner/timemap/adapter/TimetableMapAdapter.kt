@@ -11,6 +11,9 @@ import com.lee.dateplanner.timetable.time.room.Timetable
 import net.daum.mf.map.api.CameraUpdateFactory
 import net.daum.mf.map.api.CancelableCallback
 
+/**
+ * 개인 일정 map(TimetableMapActivity) 의 bottomsheet에 보여질 일정 adapter
+ */
 class TimetableMapAdapter(private val owner: TimetableMapActivity, private val timetable: Timetable): RecyclerView.Adapter<TimetableMapViewHolder>() {
     private lateinit var binding: TimesheetPlanRecyclerBinding
 
@@ -23,13 +26,14 @@ class TimetableMapAdapter(private val owner: TimetableMapActivity, private val t
         val behavior = BottomSheetBehavior.from(owner.binding.bottomScheduleList)
         if(timeSheet != null) {
             with(holder.binding) {
+                // view 연결
                 scheduleTitle.text = timeSheet.title
                 scheduleTime.text = timeSheet.time
                 schedulePlace.text = timeSheet.place
 
                 // 리스트 터치시
                 root.setOnClickListener {
-                    val marker = owner.markerResolver[timeSheet]
+                    val marker = owner.markerResolver[timeSheet] // 마커와 리스트 map을 통한 연결
                     // 해당 위치로 지도 중심점 이동, 지도 확대
                     if (marker != null) {
                         val update = CameraUpdateFactory.newMapPoint(marker?.mapPoint, 2F)
@@ -40,13 +44,13 @@ class TimetableMapAdapter(private val owner: TimetableMapActivity, private val t
                                 }
                                 override fun onCancel() {}
                             })
+                            // 리스트 구성 선택시 bottomsheet 내리기
                             behavior.state = BottomSheetBehavior.STATE_COLLAPSED
                         }
                     }
                 }
                 // bottomsheet의 일정 리스트에서 추가 버튼 클릭
                 reviseBtn.setOnClickListener {
-
                 }
             }
         }
@@ -57,6 +61,7 @@ class TimetableMapAdapter(private val owner: TimetableMapActivity, private val t
             timetable.timeSheetList!!.size
         }else{ 0 }
     }
+
     // 클릭 이벤트 설정 함수
     private fun listenerSetup(timeSheet: TimeSheet){
         val behavior = BottomSheetBehavior.from(owner.binding.bottomScheduleList)
