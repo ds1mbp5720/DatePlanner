@@ -43,6 +43,15 @@ class TimetableRepository(application: Application) {
     private fun asyncUpdate(timesheetList: List<TimeSheet>,id:Int){
         timetableDao?.updateTimetable(timesheetList, id)
     }
+    // timetable의 date 수정 함수
+    fun updateDate(Date: String, id: Int){
+        coroutineScope.launch(Dispatchers.IO){
+            asyncUpdateDate(Date, id)
+        }
+    }
+    private fun asyncUpdateDate(Date : String, id: Int){
+        timetableDao?.updateDate(Date, id )
+    }
 
     // 일일 timetable 삭제
     fun deleteTimetable(id: Int){

@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
+import com.lee.dateplanner.common.dateStringFormat
 import com.lee.dateplanner.common.makeDatePickerDialog
 import com.lee.dateplanner.databinding.TimetableRecyclerLayoutBinding
 import com.lee.dateplanner.timemap.TimetableMapActivity
@@ -42,23 +43,20 @@ class TimetableRecyclerAdapter(private val viewModel: TimetableViewModel, privat
             tableDateBtn.setOnClickListener {
                 val cal = Calendar.getInstance()
                 val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                    val date = "${month+1} 월 $dayOfMonth 일" // month 0월 부터 시작함
-                    tableDateBtn.text = date
-                    timetableList!![position]?.date = tableDateBtn.text as String
+                    val date = dateStringFormat(month,dayOfMonth) // string 양식에 맞춰서 저장
+                    tableDateBtn.text = date // 날짜 버튼 text 선택한 날짜로 변경
+                    // roomDB 해당 일정 date 최신화
+                    viewModel.updateDate(tableDateBtn.text.toString(), timetableList!![position]?.id as Int)
                 }
-                fragment.context?.let { it1 ->
-                    DatePickerDialog(
-                        it1,dateSetListener,cal.get(Calendar.YEAR), cal.get(
-                            Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show()
+                //달력 띄우기
+                fragment.context?.let { it1 -> DatePickerDialog(it1,dateSetListener,cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show()
                 }
-                /**
-                 * room에 바뀐 날짜로 update 하기
-                 */
             }
 
             // 시간계획 추가 버튼
             addTimesheetBtn.setOnClickListener {
                 val intent = Intent(holder.itemView.context, InsertTimeTableActivity::class.java)
+                intent.putExtra("inputTypeSignal","add") // 입력신호 추가
                 intent.putExtra("id",(timetableList!![position].id)) // 전달할 timesheet
                 startActivity(holder.itemView.context, intent, null) // 추가 계획 입력 페이지 이동
             }

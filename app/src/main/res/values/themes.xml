@@ -2,15 +2,15 @@
     <!-- Base application theme. -->
     <style name="Theme.DatePlanner" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="windowNoTitle">true</item>
-        <item name="colorPrimary">#F8DAF6</item>
+        <item name="colorPrimary">#FAF5FA</item>
         <item name="android:textColorPrimary">#000000</item>
         <item name="colorSurface">#D0CEC3C3</item>
         <item name="colorAccent">#DFBBDD</item>
-        <item name="colorControlNormal">#F3B5EF</item>
+        <item name="colorControlNormal">#FAF5FA</item>
         <item name="colorPrimaryVariant">#101010</item>
         <item name="colorOnPrimary">@color/black</item>
-        <item name="colorControlHighlight">#ECACE8</item>
-        <item name="android:windowBackground">#F6F6F6</item>
+        <item name="colorControlHighlight">#FAF5FA</item>
+        <item name="android:windowBackground">#FAF5FA</item>
         <item name="backgroundTint">@color/white</item>
 
         <!-- Secondary brand color. -->

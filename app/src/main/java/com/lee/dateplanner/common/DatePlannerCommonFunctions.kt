@@ -1,26 +1,27 @@
 package com.lee.dateplanner.common
 
-import android.app.Activity
 import android.app.DatePickerDialog
-import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.ContentValues.TAG
-import android.os.Bundle
-import android.text.format.DateFormat
 import android.util.Log
-import android.view.View
-import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import com.lee.dateplanner.timetable.InsertTimeTableActivity
 import java.util.*
 
 // toast 사용 목적 함수
 fun toastMessage(message: String){
     Toast.makeText(DatePlannerApplication.getAppInstance(),message,Toast.LENGTH_SHORT).show()
 }
+// 시간 string format
+fun timeStringFormat(hour: Int, minute: Int): String{
+    return "$hour:$minute"
+}
+// 날짜 string format
+fun dateStringFormat(month: Int, day: Int):String{
+    return "${month+1}월 ${day}일"  // month 0월 부터 시작함
+}
+
 // 시간 dialog 함수
 fun makeTimePickerDialog(activity: AppCompatActivity): String{
     var text:String = ""

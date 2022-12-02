@@ -19,9 +19,13 @@ interface TimetableDAO {
     @Query("SELECT * FROM timetable_tbl WHERE timetableId = :id")
     fun findTimetable(id: Int): List<Timetable>
 
-    // 추가
+    // 추가, 일정 추가
     @Query("UPDATE timetable_tbl SET timeSheetList = :timesheet WHERE timetableId = :id")
     fun updateTimetable(timesheet: List<TimeSheet> ,id: Int)
+
+    //날짜 정보 변경
+    @Query("UPDATE timetable_tbl SET date = :date WHERE timetableId = :id")
+    fun updateDate(date: String, id: Int)
 
     //삭제
     @Query("DELETE FROM timetable_tbl WHERE timetableId = :id")

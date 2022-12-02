@@ -18,6 +18,10 @@ class TimetableViewModel(application: Application): AndroidViewModel(application
     fun updateTiemtable(timesheetList: List<TimeSheet>, id: Int){
         repository.updateTimetable(timesheetList, id)
     }
+    fun updateDate(Date: String, id:Int){
+        repository.updateDate(Date, id)
+    }
+
     fun findTimetable(id: Int){
         repository.findTimetable(id)
     }

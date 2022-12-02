@@ -31,7 +31,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".festival.WebViewFestivalActivity"/>
+        <activity android:name=".festival.webview.WebViewFestivalActivity"/>
         <activity android:name=".timetable.InsertTimeTableActivity"/>
         <activity android:name=".timemap.TimetableMapActivity"/>
         <meta-data

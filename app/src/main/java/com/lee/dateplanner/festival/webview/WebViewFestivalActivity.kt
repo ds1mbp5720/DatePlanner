@@ -1,4 +1,4 @@
-package com.lee.dateplanner.festival
+package com.lee.dateplanner.festival.webview
 
 import android.annotation.SuppressLint
 import android.app.Activity

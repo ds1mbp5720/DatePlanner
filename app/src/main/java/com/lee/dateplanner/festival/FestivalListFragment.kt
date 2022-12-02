@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.lee.dateplanner.common.dateStringFormat
 import com.lee.dateplanner.common.makeDatePickerDialog
 import com.lee.dateplanner.databinding.FestivallistFragmentLayoutBinding
 import com.lee.dateplanner.festival.adapter.FestivalRecyclerAdapter
@@ -61,8 +62,11 @@ class FestivalListFragment:Fragment() {
         binding.inputDate.setOnClickListener {
             val cal = Calendar.getInstance()
             val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                val date = "${month+1} 월 $dayOfMonth 일"
-                binding.inputDate.text = date
+                val date = dateStringFormat(month,dayOfMonth)
+                binding.inputDate.text = date // 날짜 버튼 text 변경
+                /**
+                 * adapter filter 필요시 해당 위치에 코드 작성
+                 */
             }
             this.context?.let { it1 -> DatePickerDialog(it1,dateSetListener,cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show() }
         }

@@ -27,6 +27,7 @@ class TimeSheetAdapter(private var id: Int, private var timesheetList: List<Time
             //수정 버튼 클릭시
             reviseBtn.setOnClickListener {
                 val intent = Intent(holder.itemView.context,InsertTimeTableActivity::class.java)
+                intent.putExtra("inputTypeSignal","change") // 입력신호 수정
                 intent.putExtra("title",timesheet.title)
                 intent.putExtra("Time",timesheet.time)
                 intent.putExtra("place",timesheet.place)
