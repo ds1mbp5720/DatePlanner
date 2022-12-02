@@ -61,7 +61,7 @@ class FestivalListFragment:Fragment() {
         binding.inputDate.setOnClickListener {
             val cal = Calendar.getInstance()
             val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                val date = "$month 월 $dayOfMonth 일"
+                val date = "${month+1} 월 $dayOfMonth 일"
                 binding.inputDate.text = date
             }
             this.context?.let { it1 -> DatePickerDialog(it1,dateSetListener,cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show() }

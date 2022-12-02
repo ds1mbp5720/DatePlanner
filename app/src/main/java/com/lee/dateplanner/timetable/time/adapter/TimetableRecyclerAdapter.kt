@@ -35,21 +35,25 @@ class TimetableRecyclerAdapter(private val viewModel: TimetableViewModel, privat
         with(holder.binding){
             timetableList.let {
                 // view 설정
-                dayTimeTable.adapter = TimeSheetAdapter(it!![position].id,it!![position].timeSheetList!!)  // 일일 계획
+                dayTimeTable.adapter = TimeSheetAdapter(it!![position].id, it!![position].timeSheetList!!)  // 일일 계획
                 tableDateBtn.text = it!![position].date.toString()  // 일정날짜
             }
             //날짜 선택 버튼
             tableDateBtn.setOnClickListener {
                 val cal = Calendar.getInstance()
                 val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                    val date = "$month 월 $dayOfMonth 일"
-                    binding.tableDateBtn.text = date
+                    val date = "${month+1} 월 $dayOfMonth 일" // month 0월 부터 시작함
+                    tableDateBtn.text = date
+                    timetableList!![position]?.date = tableDateBtn.text as String
                 }
                 fragment.context?.let { it1 ->
                     DatePickerDialog(
                         it1,dateSetListener,cal.get(Calendar.YEAR), cal.get(
                             Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show()
                 }
+                /**
+                 * room에 바뀐 날짜로 update 하기
+                 */
             }
 
             // 시간계획 추가 버튼
@@ -65,8 +69,10 @@ class TimetableRecyclerAdapter(private val viewModel: TimetableViewModel, privat
                 intent.putExtra("id",(timetableList!![position].id)) // 전달할 timesheet
                 startActivity(holder.itemView.context, intent, null) // 일정 지도 페이지 이동
             }
+
+            // 해당 일일 일정 삭제
             deleteTimeBtn.setOnClickListener {
-                viewModel.deleteTimetable(timetableList!![position].id) // 해당 일일 일정 삭제
+                viewModel.deleteTimetable(timetableList!![position].id)
             }
         }
     }

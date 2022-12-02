@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             android:inputType="datetime"
-            android:hint="요일, 날짜"
+            android:hint="날짜"
             android:maxLines="1"/>
 
         <Spinner

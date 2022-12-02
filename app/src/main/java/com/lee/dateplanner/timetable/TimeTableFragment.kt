@@ -76,7 +76,7 @@ class TimeTableFragment:Fragment() {
             /**
              * 계획 추가 버튼을 dialog 로 하여 선택한 날짜를 바로 가져와서 변수에 넣기
              */
-            var date = "00.00.(요일)"
+            var date = "00.00"
             // room db 추가
             viewModel.insertTimeTable(Timetable(tableCount,timeSheetList ,date))
             tableCount++
