@@ -6,10 +6,11 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.FestivalInfoRecyclerBinding
 import com.lee.dateplanner.festival.webview.WebViewFestivalActivity
 import com.lee.dateplanner.festival.data.FestivalInfoData
-import com.lee.dateplanner.timetable.InsertTimeTableActivity
+import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
 
 /**
  * 행사 정보 출력 adapter
@@ -39,8 +40,8 @@ class FestivalRecyclerAdapter(private var festivalList: FestivalInfoData):Recycl
             }
             // 일정 추가 버튼
             festivalInsertBtn.setOnClickListener {
-                val intent = Intent(holder.itemView.context,InsertTimeTableActivity::class.java)
-                intent.putExtra("inputTypeSignal","festival") // 일정 입력 창 종류
+                val intent = Intent(holder.itemView.context, InsertTimeSheetActivity::class.java)
+                intent.putExtra(R.string.input_signal.toString(),"festival") // 일정 입력 창 종류
                 intent.putExtra("festivalTitle",festival.tITLE)
                 intent.putExtra("festivalPlace",festival.pLACE)
                 startActivity(holder.itemView.context, intent,null)

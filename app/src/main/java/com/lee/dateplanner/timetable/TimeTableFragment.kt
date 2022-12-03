@@ -1,22 +1,14 @@
 package com.lee.dateplanner.timetable
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.Application
-import android.content.ContentValues.TAG
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import com.lee.dateplanner.MainActivity
-import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.TimetablelistFragmentLayoutBinding
-import com.lee.dateplanner.timetable.onetime.TimeSheet
+import com.lee.dateplanner.timetable.timesheet.TimeSheet
 import com.lee.dateplanner.timetable.time.adapter.TimetableRecyclerAdapter
 import com.lee.dateplanner.timetable.time.room.Timetable
 
@@ -78,7 +70,8 @@ class TimeTableFragment:Fragment() {
              */
             var date = "00.00"
             // room db 추가
-            viewModel.insertTimeTable(Timetable(tableCount,timeSheetList ,date))
+            //viewModel.insertTimeTable(Timetable(tableCount,timeSheetList ,date))
+            viewModel.insertTimeTable(Timetable(timeSheetList ,date))
             tableCount++
         }
     }

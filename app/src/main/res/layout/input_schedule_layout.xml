@@ -33,7 +33,7 @@
         android:paddingTop="16dp">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/_title"
+            android:id="@+id/layout_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
@@ -59,7 +59,7 @@
             android:backgroundTint="@color/white" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/_location"
+            android:id="@+id/layout_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
@@ -75,7 +75,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/_memo"
+            android:id="@+id/layout_memo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"

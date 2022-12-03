@@ -1,13 +1,14 @@
-package com.lee.dateplanner.timetable.onetime.adapter
+package com.lee.dateplanner.timetable.timesheet.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.TimesheetPlanRecyclerBinding
-import com.lee.dateplanner.timetable.InsertTimeTableActivity
-import com.lee.dateplanner.timetable.onetime.TimeSheet
+import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
+import com.lee.dateplanner.timetable.timesheet.TimeSheet
 
 class TimeSheetAdapter(private var id: Int, private var timesheetList: List<TimeSheet>): RecyclerView.Adapter<TimeSheetViewHolder>() {
     private lateinit var binding: TimesheetPlanRecyclerBinding
@@ -26,12 +27,14 @@ class TimeSheetAdapter(private var id: Int, private var timesheetList: List<Time
 
             //수정 버튼 클릭시
             reviseBtn.setOnClickListener {
-                val intent = Intent(holder.itemView.context,InsertTimeTableActivity::class.java)
-                intent.putExtra("inputTypeSignal","change") // 입력신호 수정
+                val intent = Intent(holder.itemView.context, InsertTimeSheetActivity::class.java)
+                intent.putExtra("input_signal","edit") // 입력신호 수정
                 intent.putExtra("title",timesheet.title)
-                intent.putExtra("Time",timesheet.time)
+                intent.putExtra("time",timesheet.time)
                 intent.putExtra("place",timesheet.place)
-                intent.putExtra("id",(id)) // 전달할 timesheet
+                intent.putExtra("memo",timesheet.memo)
+                intent.putExtra("position",position) // 선택한 위치
+                intent.putExtra("id",id) // 전달할 timesheet
                 // id 값 받아서 넘겨주기
                 ContextCompat.startActivity(holder.itemView.context, intent, null)
             }

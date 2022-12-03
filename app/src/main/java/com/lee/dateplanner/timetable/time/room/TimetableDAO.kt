@@ -3,10 +3,8 @@ package com.lee.dateplanner.timetable.time.room
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
-import com.lee.dateplanner.timetable.onetime.TimeSheet
+import com.lee.dateplanner.timetable.timesheet.TimeSheet
 
 @Dao
 interface TimetableDAO {

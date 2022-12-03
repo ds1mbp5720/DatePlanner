@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.lee.dateplanner.timetable.onetime.TimeSheet
+import com.lee.dateplanner.timetable.timesheet.TimeSheet
 
 @Entity(tableName = "timetable_tbl")
 class Timetable(){

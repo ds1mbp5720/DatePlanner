@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.lee.dateplanner.timetable.onetime.TimeSheet
+import com.lee.dateplanner.timetable.timesheet.TimeSheet
 import com.lee.dateplanner.timetable.time.room.Timetable
 
 class TimetableViewModel(application: Application): AndroidViewModel(application) {
@@ -15,7 +15,7 @@ class TimetableViewModel(application: Application): AndroidViewModel(application
     fun insertTimeTable(timetable: Timetable){
         repository.insertTimetable(timetable)
     }
-    fun updateTiemtable(timesheetList: List<TimeSheet>, id: Int){
+    fun updateTimetable(timesheetList: List<TimeSheet>, id: Int){
         repository.updateTimetable(timesheetList, id)
     }
     fun updateDate(Date: String, id:Int){

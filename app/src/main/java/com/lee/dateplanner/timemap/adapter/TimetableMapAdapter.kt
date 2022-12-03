@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.lee.dateplanner.databinding.TimesheetPlanRecyclerBinding
 import com.lee.dateplanner.timemap.TimetableMapActivity
-import com.lee.dateplanner.timetable.onetime.TimeSheet
+import com.lee.dateplanner.timetable.timesheet.TimeSheet
 import com.lee.dateplanner.timetable.time.room.Timetable
 import net.daum.mf.map.api.CameraUpdateFactory
 import net.daum.mf.map.api.CancelableCallback

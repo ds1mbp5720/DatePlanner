@@ -32,7 +32,7 @@
                 android:value="" />
         </activity>
         <activity android:name=".festival.webview.WebViewFestivalActivity"/>
-        <activity android:name=".timetable.InsertTimeTableActivity"/>
+        <activity android:name=".timetable.insert.InsertTimeSheetActivity"/>
         <activity android:name=".timemap.TimetableMapActivity"/>
         <meta-data
             android:name="com.kakao.sdk.AppKey"

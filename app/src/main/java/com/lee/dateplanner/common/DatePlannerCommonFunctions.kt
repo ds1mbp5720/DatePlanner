@@ -15,7 +15,9 @@ fun toastMessage(message: String){
 }
 // 시간 string format
 fun timeStringFormat(hour: Int, minute: Int): String{
-    return "$hour:$minute"
+    return if(minute < 10){ // minute이 한자리일 경우 0* 으로 보이게 변경
+        "$hour:0${minute}"
+    } else "$hour:${minute}"
 }
 // 날짜 string format
 fun dateStringFormat(month: Int, day: Int):String{

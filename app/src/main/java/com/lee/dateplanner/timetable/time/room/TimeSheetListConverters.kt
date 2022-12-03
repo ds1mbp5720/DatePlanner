@@ -1,9 +1,8 @@
 package com.lee.dateplanner.timetable.time.room
 
 import androidx.room.TypeConverter
-import androidx.room.TypeConverters
 import com.google.gson.Gson
-import com.lee.dateplanner.timetable.onetime.TimeSheet
+import com.lee.dateplanner.timetable.timesheet.TimeSheet
 
 /**
  * room db에 timesheet list 저장용 형변환 변환 class

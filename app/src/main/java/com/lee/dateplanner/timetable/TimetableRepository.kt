@@ -1,11 +1,9 @@
 package com.lee.dateplanner.timetable
 
 import android.app.Application
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.lee.dateplanner.timetable.onetime.TimeSheet
+import com.lee.dateplanner.timetable.timesheet.TimeSheet
 import com.lee.dateplanner.timetable.time.room.Timetable
 import com.lee.dateplanner.timetable.time.room.TimetableDAO
 import kotlinx.coroutines.CoroutineScope

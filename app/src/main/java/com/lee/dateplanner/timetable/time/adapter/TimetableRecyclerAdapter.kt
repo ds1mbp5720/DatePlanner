@@ -2,24 +2,19 @@ package com.lee.dateplanner.timetable.time.adapter
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.content.ContentValues.TAG
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
+import com.lee.dateplanner.R
 import com.lee.dateplanner.common.dateStringFormat
-import com.lee.dateplanner.common.makeDatePickerDialog
 import com.lee.dateplanner.databinding.TimetableRecyclerLayoutBinding
 import com.lee.dateplanner.timemap.TimetableMapActivity
-import com.lee.dateplanner.timetable.InsertTimeTableActivity
+import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
 import com.lee.dateplanner.timetable.TimeTableFragment
 import com.lee.dateplanner.timetable.TimetableViewModel
-import com.lee.dateplanner.timetable.onetime.adapter.TimeSheetAdapter
+import com.lee.dateplanner.timetable.timesheet.adapter.TimeSheetAdapter
 import com.lee.dateplanner.timetable.time.room.Timetable
 import java.util.*
 
@@ -55,8 +50,8 @@ class TimetableRecyclerAdapter(private val viewModel: TimetableViewModel, privat
 
             // 시간계획 추가 버튼
             addTimesheetBtn.setOnClickListener {
-                val intent = Intent(holder.itemView.context, InsertTimeTableActivity::class.java)
-                intent.putExtra("inputTypeSignal","add") // 입력신호 추가
+                val intent = Intent(holder.itemView.context, InsertTimeSheetActivity::class.java)
+                intent.putExtra("input_signal","add") // 입력신호 추가
                 intent.putExtra("id",(timetableList!![position].id)) // 전달할 timesheet
                 startActivity(holder.itemView.context, intent, null) // 추가 계획 입력 페이지 이동
             }
