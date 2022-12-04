@@ -42,6 +42,7 @@
             app:layout_constraintRight_toRightOf="parent"
             android:entries="@array/category"
             android:spinnerMode="dropdown"
+
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

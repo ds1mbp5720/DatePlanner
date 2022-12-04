@@ -26,12 +26,19 @@
 
     <string-array name="category">
         <item>전체</item>
-        <item>클래식</item>
+        <item>전시/미술</item>
+        <item>뮤지컬/오페라</item>
+        <item>연극</item>
+        <item>무용</item>
+        <item>영화</item>
         <item>국악</item>
         <item>콘서트</item>
-        <item>전시/미술</item>
-        <item>문화교약/강좌</item>
-        <item>연극</item>
+        <item>축제-문화/예술</item>
+        <item>축제-전통/역사</item>
+        <item>축제-시민화합</item>
+        <item>클래식</item>
+        <item>축제-기타</item>
+        <item>독주/독창회</item>
         <item>기타</item>
     </string-array>
 </resources>

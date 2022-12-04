@@ -1,18 +1,15 @@
 package com.lee.dateplanner.map.adpter
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.lee.dateplanner.databinding.PoiListRecyclerBinding
-import com.lee.dateplanner.map.AroundMapFragment
+import com.lee.dateplanner.map.POIMapFragment
 import com.lee.dateplanner.map.data.POIData
 import net.daum.mf.map.api.CameraUpdateFactory
-import net.daum.mf.map.api.MapView
 
-class POIRecyclerAdapter(private val owner:AroundMapFragment, private val pois: POIData): RecyclerView.Adapter<POIViewHolder>() {
+class POIRecyclerAdapter(private val owner:POIMapFragment, private val pois: POIData): RecyclerView.Adapter<POIViewHolder>() {
     private lateinit var binding: PoiListRecyclerBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): POIViewHolder {

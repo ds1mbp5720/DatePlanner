@@ -25,10 +25,10 @@ class FestivalViewModel(private var repository: FestivalRepository):ViewModel() 
     }
 
 
-    fun getAllFestivalFromViewModel(){
+    fun getAllFestivalFromViewModel(category: String){
         job = CoroutineScope(Dispatchers.IO).launch(exceptionHandler) {
             isLoading.postValue(true)
-            val infoResponse = repository.getFestivalInfo() // 행사 정보
+            val infoResponse = repository.getFestivalInfo(category) // 행사 정보
             val placeResponse = repository.getFestivalPlace() // 행사 장소
             withContext(Dispatchers.Main){
                 if(infoResponse.isSuccessful){

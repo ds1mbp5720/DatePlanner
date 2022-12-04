@@ -1,21 +1,19 @@
 package com.lee.dateplanner
 
-import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
 import com.lee.dateplanner.databinding.ActivityMainBinding
 import com.lee.dateplanner.festival.FestivalListFragment
-import com.lee.dateplanner.map.AroundMapFragment
-import com.lee.dateplanner.timemap.TimetableMapActivity
+import com.lee.dateplanner.map.POIMapFragment
 import com.lee.dateplanner.timetable.TimeTableFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var timeTableFragment: TimeTableFragment // 시간계획
     private lateinit var festivalListFragment: FestivalListFragment // 축제정보
-    private lateinit var aroundMapFragment: AroundMapFragment // 주변 상권정보
+    private lateinit var poiMapFragment: POIMapFragment // 주변 상권정보
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         if(savedInstanceState == null){
             timeTableFragment = TimeTableFragment()
             festivalListFragment = FestivalListFragment()
-            aroundMapFragment = AroundMapFragment()
+            poiMapFragment = POIMapFragment()
         }
         val tabLayout = findViewById<TabLayout>(R.id.tabLayout) // tab 연결
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -49,13 +47,12 @@ class MainActivity : AppCompatActivity() {
                             replace(R.id.tabContent,festivalListFragment).commit()
                         }
                         getString(R.string.main_tab_3) -> {
-                            replace(R.id.tabContent,aroundMapFragment).commit()
+                            replace(R.id.tabContent,poiMapFragment).commit()
                         }
                         else -> throw IllegalAccessException("Unexpected value: " + tab.position)
                     }
                 }
             }
-
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })

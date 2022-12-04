@@ -6,11 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.AroundinfoMapFragmentLayoutBinding
 import com.lee.dateplanner.map.adpter.POIRecyclerAdapter
@@ -24,13 +22,13 @@ import net.daum.mf.map.api.MapView
 /**
  * 주변 상권정보 카테고리별 제공 fragment
  */
-class AroundMapFragment:Fragment(){
+class POIMapFragment:Fragment(){
     companion object{
-        fun newInstance() = AroundMapFragment()
+        fun newInstance() = POIMapFragment()
     }
     lateinit var binding: AroundinfoMapFragmentLayoutBinding
+    private lateinit var viewModel: POIViewModel
     private val poiBallonListner = POIBallonClickListner(this.context) // info window 터치 객체
-
     private var poiCategory: String = "CE7" // category 저장 변수
     private var festivalLat: String = "37.5143225723" // 행사장 좌표
     private var festivalLgt: String = "127.062831022" // 행사장 좌표
@@ -46,15 +44,14 @@ class AroundMapFragment:Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewModel: POIViewModel = ViewModelProvider(this, POIViewModelFactory(
+        viewModel = ViewModelProvider(this, POIViewModelFactory(
             POIRepository(POIRetrofitService.getInstance())
         )).get(POIViewModel::class.java)
 
+        getFestivalPosition()
         mapSetting() // 기본 kakao map 설정
-        setCategoryBtn() // 상단 카테고리 버튼
         observerSetup(viewModel)
-
-        viewModel.getAllPoiFromViewModel(poiCategory, festivalLat, festivalLgt)
+        setCategoryBtn() // 상단 카테고리 버튼
     }
 
     // 옵저버 세팅
@@ -62,7 +59,7 @@ class AroundMapFragment:Fragment(){
         viewModel.poiList.observe(viewLifecycleOwner){
             with(binding.poiInfoRecycler){
                 run{
-                    val poiAdapter = POIRecyclerAdapter(this@AroundMapFragment,it)
+                    val poiAdapter = POIRecyclerAdapter(this@POIMapFragment,it)
                     adapter = poiAdapter
                     poiAdapter
                 }
@@ -72,6 +69,19 @@ class AroundMapFragment:Fragment(){
         viewModel.errorMessage.observe(viewLifecycleOwner){
             Log.e(TAG,it)
         }
+    }
+    // 전달받은 행사장 좌표값
+    /**
+     * 1번은 되는데 2번째 전달부터 null 발생
+     */
+    private fun getFestivalPosition(){
+        setFragmentResultListener("latitudeKey"){ requestKey, bundle ->
+            festivalLat = bundle.getDouble("latitude").toString()
+        }
+        setFragmentResultListener("longitudeKey"){ requestKey, bundle ->
+            festivalLgt = bundle.getString("longitude").toString()
+        }
+        Log.e(TAG,"수신결과: $festivalLat , $festivalLgt")
     }
     //카카오 지도 설정
     private fun mapSetting() {
@@ -93,7 +103,7 @@ class AroundMapFragment:Fragment(){
         with(marker){
             tag = 0
             markerType = MapPOIItem.MarkerType.RedPin // 마커 색
-            mapPoint = MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()) // poi장소 좌표
+            mapPoint = MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()) // poi 장소 좌표
             itemName = "전달받을 축제 장소" // 장소명
         }
         return marker
@@ -116,7 +126,8 @@ class AroundMapFragment:Fragment(){
     // 전체 마커 map 표시 함수
     private fun displayPOI(data: POIData){
         with(binding.infoMap){
-            //removeAllPOIItems() // 기존 마커들 제거
+            removeAllPOIItems() // 기존 마커들 제거
+            addPOIItem(settingFestivalMarker()) // 행사위치 핑
             for(i in 0 until  data.documents.size){
                 addPOIItem(addMapPoiMarker(data.documents[i])) // 현 마커 추가
             }
@@ -128,15 +139,15 @@ class AroundMapFragment:Fragment(){
         with(binding){
             cafeBtn.setOnClickListener {
                 poiCategory = getString(R.string.poi_category_1)
-                Log.e(TAG,"누른 카테고리 $poiCategory")
+                viewModel.getAllPoiFromViewModel(poiCategory, festivalLat, festivalLgt)
             }
             restaurantBtn.setOnClickListener {
                 poiCategory = getString(R.string.poi_category_2)
-                Log.e(TAG,"누른 카테고리 $poiCategory")
+                viewModel.getAllPoiFromViewModel(poiCategory, festivalLat, festivalLgt)
             }
             etcBtn.setOnClickListener {
                 poiCategory = getString(R.string.poi_category_3)
-                Log.e(TAG,"누른 카테고리 $poiCategory")
+                viewModel.getAllPoiFromViewModel(poiCategory, festivalLat, festivalLgt)
             }
         }
     }
