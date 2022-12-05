@@ -85,9 +85,9 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
             geoCoder?.getFromLocationName(festival.pLACE,1,object: GeocodeListener{
                 override fun onGeocode(addresses: MutableList<Address>) {
                     if(addresses != null){
-                        Log.e(TAG,"geo 결과: ${addresses[0].latitude} , ${addresses[0].longitude}")
                         latitude = addresses[0].latitude
                         longitude = addresses[0].longitude
+                        toastMessage("행사 장소 주변 정보를 얻었습니다.")
                     }
                     else{ // geocoder 실패시 api 활용
                         getFestivalPositionFromFestivalPlaceData(festival)
@@ -98,9 +98,9 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
             var festivalPosition = geoCoder?.getFromLocationName(festival.pLACE,1)
             if (festivalPosition != null) {
                 if (festivalPosition.isNotEmpty()){ // geocoder 변환 성공시
-                    Log.e(TAG,"geo 구버전 결과: ${festivalPosition[0].latitude} , ${festivalPosition[0].longitude}")
                     latitude = festivalPosition[0].latitude
                     longitude = festivalPosition[0].longitude
+                    toastMessage("행사 장소 주변 정보를 얻었습니다.")
                 }
                 else{ // geocoder 실패시 api 활용
                     getFestivalPositionFromFestivalPlaceData(festival)
@@ -115,9 +115,9 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
         while (placeCount != searchPlace.size){
             if(searchPlace[placeCount].fACNAME.contains(festival.pLACE) || searchPlace[placeCount].fACDESC.contains(festival.pLACE)||
                 festival.pLACE.contains(searchPlace[placeCount].fACNAME)){
-                Log.e(TAG,"장소 api 활용: ${searchPlace[placeCount].fACNAME} 좌표: ${searchPlace[placeCount].xCOORD} ${searchPlace[placeCount].yCOORD}")
                 latitude = searchPlace[placeCount].xCOORD.toDouble()
                 longitude = searchPlace[placeCount].yCOORD.toDouble()
+                toastMessage("행사 장소 주변 정보를 얻었습니다.")
                 break
             }
             placeCount ++
@@ -128,8 +128,7 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
     }
     // 좌표값 AroundMapFragment 로 보내기
     private fun sendPositionToOtherFragment(){
-        fragment.setFragmentResult("latitudeKey", bundleOf("latitude" to latitude))
-        fragment.setFragmentResult("longitudeKey", bundleOf("longitude" to longitude))
+        fragment.setFragmentResult("positionKey", bundleOf("latitude" to latitude, "longitude" to longitude))
     }
     override fun getItemCount() = festivalList.culturalEventInfo.row.size
 }

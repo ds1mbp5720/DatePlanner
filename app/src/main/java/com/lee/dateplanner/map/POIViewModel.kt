@@ -1,7 +1,9 @@
 package com.lee.dateplanner.map
 
 import android.content.ContentValues.TAG
+import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.lee.dateplanner.map.data.POIData
@@ -14,7 +16,6 @@ class POIViewModel(private val repository:POIRepository):ViewModel() {
 
     val poiList = MutableLiveData<POIData>() // rest api 저장
     val errorMessage = MutableLiveData<String>()
-
     val isLoading = MutableLiveData<Boolean>()
     private var job : Job? = null
 
@@ -29,7 +30,11 @@ class POIViewModel(private val repository:POIRepository):ViewModel() {
             val response = repository.getPOIInfo(category, lat, lgt) // 기준점, 카테고리 전달
             withContext(Dispatchers.Main){
                 if(response.isSuccessful){
+                    /**
+                     * setValue로 / Dispatchers.main
+                     */
                     poiList.postValue(response.body())
+                    //poiList.value = response.body()
                     //isLoading.postValue(false)
                 }else{
                     onError("에러내용:  $response")

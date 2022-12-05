@@ -39,13 +39,5 @@
                 android:textSize="13sp" />
         </LinearLayout>
 
-        <ImageButton
-        android:id="@+id/poiaddbtn"
-        android:layout_width="30dp"
-        android:layout_height="match_parent"
-        android:layout_marginRight="2dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/ic_baseline_add_24" />
-
     </LinearLayout>
 </LinearLayout>

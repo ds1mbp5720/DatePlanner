@@ -28,7 +28,7 @@ class POIMapFragment:Fragment(){
     }
     lateinit var binding: AroundinfoMapFragmentLayoutBinding
     private lateinit var viewModel: POIViewModel
-    private val poiBallonListner = POIBallonClickListner(this.context) // info window 터치 객체
+    private val poiBalloonListener = POIBallonClickListner(this.context) // info window 터치 객체
     private var poiCategory: String = "CE7" // category 저장 변수
     private var festivalLat: String = "37.5143225723" // 행사장 좌표
     private var festivalLgt: String = "127.062831022" // 행사장 좌표
@@ -47,11 +47,11 @@ class POIMapFragment:Fragment(){
         viewModel = ViewModelProvider(this, POIViewModelFactory(
             POIRepository(POIRetrofitService.getInstance())
         )).get(POIViewModel::class.java)
-
         getFestivalPosition()
         mapSetting() // 기본 kakao map 설정
         observerSetup(viewModel)
         setCategoryBtn() // 상단 카테고리 버튼
+        viewModel.getAllPoiFromViewModel(poiCategory, festivalLat, festivalLgt)
     }
 
     // 옵저버 세팅
@@ -71,29 +71,24 @@ class POIMapFragment:Fragment(){
         }
     }
     // 전달받은 행사장 좌표값
-    /**
-     * 1번은 되는데 2번째 전달부터 null 발생
-     */
     private fun getFestivalPosition(){
-        setFragmentResultListener("latitudeKey"){ requestKey, bundle ->
+        setFragmentResultListener("positionKey"){ requestKey, bundle ->
             festivalLat = bundle.getDouble("latitude").toString()
+            festivalLgt = bundle.getDouble("longitude").toString()
+            Log.e(TAG,"받은좌표 값: ${bundle.getDouble("latitude").toString()} ${bundle.getDouble("longitude")}")
+            // 내부에서만 값이 실시간 반영이 되므로 retrofit 함수는 여기서 실행
+            viewModel.getAllPoiFromViewModel(poiCategory, festivalLat, festivalLgt)
         }
-        setFragmentResultListener("longitudeKey"){ requestKey, bundle ->
-            festivalLgt = bundle.getString("longitude").toString()
-        }
-        Log.e(TAG,"수신결과: $festivalLat , $festivalLgt")
     }
     //카카오 지도 설정
     private fun mapSetting() {
         with(binding.infoMap) {
-            setDaumMapApiKey(R.string.kakao_map_key.toString())
             mapType = MapView.MapType.Standard
             setZoomLevel(3, true)
             zoomIn(true)
             zoomOut(true)
-            setPOIItemEventListener(poiBallonListner)
+            setPOIItemEventListener(poiBalloonListener)
             setCalloutBalloonAdapter(POIWindowAdapter(this.context))
-            setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
             addPOIItem(settingFestivalMarker()) // 행사위치 핑
         }
     }
@@ -110,6 +105,7 @@ class POIMapFragment:Fragment(){
     }
     // 정보 리스트와 maker 연동 목적 map
     var markerResolver: MutableMap<POIData.Document,MapPOIItem> = HashMap()
+    var markerResolver2: MutableMap<MapPOIItem,POIData.Document> = HashMap()
     //하나의 마커 설정 함수
     private fun addMapPoiMarker(data: POIData.Document):MapPOIItem{
         val marker = MapPOIItem()
@@ -120,6 +116,7 @@ class POIMapFragment:Fragment(){
             itemName = data.placeName // 장소명
         }
         markerResolver[data] = marker
+        markerResolver2[marker] = data
         return marker
     }
 
@@ -127,6 +124,7 @@ class POIMapFragment:Fragment(){
     private fun displayPOI(data: POIData){
         with(binding.infoMap){
             removeAllPOIItems() // 기존 마커들 제거
+            setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
             addPOIItem(settingFestivalMarker()) // 행사위치 핑
             for(i in 0 until  data.documents.size){
                 addPOIItem(addMapPoiMarker(data.documents[i])) // 현 마커 추가

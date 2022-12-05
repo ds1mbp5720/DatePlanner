@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:paddingLeft="4dp"
-                    app:icon="@drawable/ic_baseline_settings_24"
+                    app:icon="@drawable/ic_baseline_edit_24"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent" />

@@ -20,9 +20,6 @@ class POIWindowAdapter(context: Context):CalloutBalloonAdapter {
 
     override fun getCalloutBalloon(poiItem: MapPOIItem): View {
         (mCalloutBalloon.findViewById<View>(R.id.window_title) as TextView).text = poiItem.itemName
-        mCalloutBalloon.findViewById<ImageButton>(R.id.poiaddbtn).setOnClickListener {
-            Log.e(TAG,"추가 클릭")
-        }
         return mCalloutBalloon
     }
 
