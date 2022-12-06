@@ -37,6 +37,7 @@ class POIRecyclerAdapter(private val owner:POIMapFragment, private val pois: POI
             root.setOnClickListener {
                 moveToMarker(poi)
                 sendSelectRecyclerInfo(poi)
+                owner.binding.infoMap.refreshMapTiles()
                 behavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
         }

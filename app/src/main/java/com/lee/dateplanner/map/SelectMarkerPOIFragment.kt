@@ -1,13 +1,16 @@
 package com.lee.dateplanner.map
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.lee.dateplanner.databinding.SelectedMarkerPoiFragmentBinding
+import com.lee.dateplanner.webview.WebViewActivity
 
 /**
  * 선택한 marker 의 poi 정보를 보여주는 fragment
@@ -41,9 +44,8 @@ class SelectMarkerPOIFragment:Fragment() {
                 selectPoiName.text= bundle.getString("placeName").toString()
                 selectPoiAddress.text = bundle.getString("addressName").toString()
                 selectPoiPhone.text = bundle.getString("phone").toString()
-                selectPoiDistance.text = bundle.getString("distance").toString()
+                selectPoiDistance.text = "거리: " + bundle.getString("distance").toString() + "m"
                 url = bundle.getString("placeUrl").toString()
-                Log.e(TAG,"넘어온 값 ${bundle.getString("phone")}")
             }
         }
     }
@@ -55,6 +57,9 @@ class SelectMarkerPOIFragment:Fragment() {
             }
             selectPoiWebViewBtn.setOnClickListener {
                 Log.e(TAG,"webView 버튼")
+                val intent = Intent(context, WebViewActivity::class.java)
+                intent.putExtra("homepage",url)
+                context?.let { it1 -> ContextCompat.startActivity(it1, intent, null) }
             }
         }
 

@@ -1,17 +1,15 @@
-package com.lee.dateplanner.festival.webview
+package com.lee.dateplanner.webview
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import android.webkit.WebViewClient
 import com.lee.dateplanner.databinding.FestivalWebviewActivityBinding
 
 /**
  * 행사 주최측 홈페이지 webview
  */
-class WebViewFestivalActivity: Activity() {
+class WebViewActivity: Activity() {
     private lateinit var binding: FestivalWebviewActivityBinding
 
     @SuppressLint("SetJavaScriptEnabled")

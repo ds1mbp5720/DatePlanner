@@ -1,31 +1,23 @@
 package com.lee.dateplanner.festival.adapter
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.location.Geocoder.GeocodeListener
-import android.location.Location
 import android.os.Build
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.lee.dateplanner.R
 import com.lee.dateplanner.common.toastMessage
 import com.lee.dateplanner.databinding.FestivalInfoRecyclerBinding
 import com.lee.dateplanner.festival.FestivalListFragment
-import com.lee.dateplanner.festival.webview.WebViewFestivalActivity
+import com.lee.dateplanner.webview.WebViewActivity
 import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.festival.data.FestivalSpaceData
-import com.lee.dateplanner.map.POIMapFragment
 import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
 
 /**
@@ -52,7 +44,7 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
             //포스터 클릭 정의
             festivalPoster.setOnClickListener{
                 // 홈페이지 링크 전달 및 webView 수행 activity 이동
-                val intent = Intent(holder.itemView.context, WebViewFestivalActivity::class.java)
+                val intent = Intent(holder.itemView.context, WebViewActivity::class.java)
                 intent.putExtra("homepage",festival.oRGLINK)
                 startActivity(holder.itemView.context, intent,null)
             }
