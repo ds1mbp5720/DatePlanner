@@ -15,6 +15,7 @@ import com.lee.dateplanner.map.adpter.POIRecyclerAdapter
 import com.lee.dateplanner.map.adpter.POIWindowAdapter
 import com.lee.dateplanner.map.data.POIData
 import com.lee.dateplanner.map.network.POIRetrofitService
+import kotlinx.coroutines.Job
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
@@ -28,10 +29,13 @@ class POIMapFragment:Fragment(){
     }
     lateinit var binding: AroundinfoMapFragmentLayoutBinding
     private lateinit var viewModel: POIViewModel
-    private val poiBalloonListener = POIBallonClickListner(this.context) // info window 터치 객체
+    private val poiBalloonListener = POIBallonClickListner(this.context,this) // info window 터치 객체
     private var poiCategory: String = "CE7" // category 저장 변수
     private var festivalLat: String = "37.5143225723" // 행사장 좌표
     private var festivalLgt: String = "127.062831022" // 행사장 좌표
+    private var job : Job? = null
+    private lateinit var poiwindow : POIWindowAdapter
+    var selectMarkerPOIFragment = SelectMarkerPOIFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,17 +58,25 @@ class POIMapFragment:Fragment(){
         viewModel.getAllPoiFromViewModel(poiCategory, festivalLat, festivalLgt)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        poiBalloonListener.job?.cancel()
+        job?.cancel()
+    }
+
     // 옵저버 세팅
     private fun observerSetup(viewModel: POIViewModel){
         viewModel.poiList.observe(viewLifecycleOwner){
             with(binding.poiInfoRecycler){
                 run{
                     val poiAdapter = POIRecyclerAdapter(this@POIMapFragment,it)
+                    job = poiAdapter.job
                     adapter = poiAdapter
                     poiAdapter
                 }
             }
             displayPOI(it)
+            binding.poiProgressBar.visibility = View.GONE
         }
         viewModel.errorMessage.observe(viewLifecycleOwner){
             Log.e(TAG,it)
@@ -75,7 +87,6 @@ class POIMapFragment:Fragment(){
         setFragmentResultListener("positionKey"){ requestKey, bundle ->
             festivalLat = bundle.getDouble("latitude").toString()
             festivalLgt = bundle.getDouble("longitude").toString()
-            Log.e(TAG,"받은좌표 값: ${bundle.getDouble("latitude").toString()} ${bundle.getDouble("longitude")}")
             // 내부에서만 값이 실시간 반영이 되므로 retrofit 함수는 여기서 실행
             viewModel.getAllPoiFromViewModel(poiCategory, festivalLat, festivalLgt)
         }
@@ -88,7 +99,8 @@ class POIMapFragment:Fragment(){
             zoomIn(true)
             zoomOut(true)
             setPOIItemEventListener(poiBalloonListener)
-            setCalloutBalloonAdapter(POIWindowAdapter(this.context))
+            poiwindow = POIWindowAdapter(this.context)
+            setCalloutBalloonAdapter(poiwindow)
             addPOIItem(settingFestivalMarker()) // 행사위치 핑
         }
     }
@@ -98,6 +110,7 @@ class POIMapFragment:Fragment(){
         with(marker){
             tag = 0
             markerType = MapPOIItem.MarkerType.RedPin // 마커 색
+            showAnimationType = MapPOIItem.ShowAnimationType.NoAnimation
             mapPoint = MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()) // poi 장소 좌표
             itemName = "전달받을 축제 장소" // 장소명
         }
@@ -112,6 +125,7 @@ class POIMapFragment:Fragment(){
         with(marker){
             tag = 0
             markerType = MapPOIItem.MarkerType.BluePin // 마커 색
+            showAnimationType = MapPOIItem.ShowAnimationType.SpringFromGround
             mapPoint = MapPoint.mapPointWithGeoCoord(data.y.toDouble(), data.x.toDouble()) // poi장소 좌표
             itemName = data.placeName // 장소명
         }

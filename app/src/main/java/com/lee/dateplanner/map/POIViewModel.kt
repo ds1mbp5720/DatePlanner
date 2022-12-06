@@ -34,8 +34,7 @@ class POIViewModel(private val repository:POIRepository):ViewModel() {
                      * setValue로 / Dispatchers.main
                      */
                     poiList.postValue(response.body())
-                    //poiList.value = response.body()
-                    //isLoading.postValue(false)
+                    isLoading.postValue(false)
                 }else{
                     onError("에러내용:  $response")
                 }
@@ -55,7 +54,7 @@ class POIViewModel(private val repository:POIRepository):ViewModel() {
 
     private fun onError(message: String){
         errorMessage.postValue(message)
-        //isLoading.postValue(false)
+        isLoading.postValue(false)
     }
     override fun onCleared() {
         super.onCleared()

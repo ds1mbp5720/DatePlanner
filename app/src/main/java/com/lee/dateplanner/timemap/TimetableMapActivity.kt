@@ -19,7 +19,7 @@ import net.daum.mf.map.api.MapPoint
 class TimetableMapActivity:AppCompatActivity() {
     lateinit var binding: MyScheduleMapActivityLayoutBinding
     private lateinit var viewModel: TimetableViewModel
-    private val poiBallonListner = POIBallonClickListner(this) // info window 터치 객체
+    //private val poiBallonListner = POIBallonClickListner(this) // info window 터치 객체
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +54,7 @@ class TimetableMapActivity:AppCompatActivity() {
             setZoomLevel(3, true)
             zoomIn(true)
             zoomOut(true)
-            setPOIItemEventListener(poiBallonListner)
+            //setPOIItemEventListener(poiBallonListner)
             setCalloutBalloonAdapter(POIWindowAdapter(this.context))
         }
     }

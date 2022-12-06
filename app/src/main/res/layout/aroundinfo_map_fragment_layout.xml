@@ -59,14 +59,28 @@
         app:behavior_hideable = "false"
         app:behavior_peekHeight = "100dp"
         app:cardCornerRadius="30dp">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/poi_info_recycler"
+        <ProgressBar
+            android:id="@+id/poi_progressBar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/black" />
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            tools:listitem="@layout/poi_list_recycler"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            />
-    </androidx.cardview.widget.CardView>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <FrameLayout
+                android:id="@+id/selected_marker_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/poi_info_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                tools:listitem="@layout/poi_list_recycler"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                />
+        </LinearLayout>
+        </androidx.cardview.widget.CardView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
