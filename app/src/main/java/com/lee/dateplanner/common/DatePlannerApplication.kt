@@ -6,8 +6,6 @@ import android.app.Application
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 
-
-const val DAUM_MAPS_ANDROID_APP_API_KEY = "fb8ce5f0212109ec4c74b84fb459b42e"
 /**
  * 최초 실행코드
  * App scope class,file 에서 호출할수있는 코드

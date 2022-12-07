@@ -50,10 +50,13 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
             }
             // 일정 추가 버튼
             festivalInsertBtn.setOnClickListener {
+                getFestivalPosition(festival)
                 val intent = Intent(holder.itemView.context, InsertTimeSheetActivity::class.java)
-                intent.putExtra("input_signal","festival") // 일정 입력 창 종류
-                intent.putExtra("festivalTitle",festival.tITLE)
-                intent.putExtra("festivalPlace",festival.pLACE)
+                intent.putExtra("input_signal","apiInput") // 일정 입력 창 종류
+                intent.putExtra("title",festival.tITLE)
+                intent.putExtra("place",festival.pLACE)
+                intent.putExtra("latitude",latitude.toString())
+                intent.putExtra("longitude",longitude.toString())
                 startActivity(holder.itemView.context, intent,null)
             }
             // 주변정보 보기 버튼

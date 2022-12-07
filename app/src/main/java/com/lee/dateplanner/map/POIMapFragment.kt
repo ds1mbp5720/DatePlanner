@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBar.LayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
@@ -46,6 +47,28 @@ class POIMapFragment:Fragment(){
         return binding.root
     }
 
+    override fun onPause() {
+        super.onPause()
+        binding.root.removeView(binding.root.findViewById(R.id.info_map))
+        Log.e(TAG,"${binding.root.indexOfChild(binding.root.findViewById<MapView>(R.id.info_map))}")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(binding.root.findViewById<MapView>(R.id.info_map) == null){
+            binding.root.addView(createNewMap(),0)
+            mapSetting()
+            observerSetup(viewModel)
+            setCategoryBtn() // 상단 카테고리 버튼
+        }
+    }
+    private fun createNewMap(): MapView{
+        var poiMap = MapView(this.activity)
+        val layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        poiMap.layoutParams = layoutParams
+        poiMap.id=R.id.info_map
+        return poiMap
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, POIViewModelFactory(

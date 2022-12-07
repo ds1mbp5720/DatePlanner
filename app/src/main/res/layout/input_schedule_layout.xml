@@ -15,7 +15,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MM.DD."
+        android:text="일정 입력"
         android:textColor="@color/black"
         android:textSize="20dp"
         app:layout_constraintLeft_toRightOf="@id/input_back_btn"
@@ -89,7 +89,22 @@
                 android:inputType="text"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
-
+        <CheckBox
+            android:id="@+id/show_map_checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/background_dark"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+            android:text="지도 보기"
+            android:longClickable="false"
+            />
+        <net.daum.mf.map.api.MapView
+            android:id="@+id/insert_map"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/insert_btn"
             android:layout_width="wrap_content"

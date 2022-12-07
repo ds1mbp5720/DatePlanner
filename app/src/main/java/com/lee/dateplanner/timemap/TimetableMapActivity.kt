@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.lee.dateplanner.databinding.MyScheduleMapActivityLayoutBinding
-import com.lee.dateplanner.map.POIBallonClickListner
 import com.lee.dateplanner.map.adpter.POIWindowAdapter
 import com.lee.dateplanner.timemap.adapter.TimetableMapAdapter
 import com.lee.dateplanner.timetable.TimetableViewModel
@@ -49,7 +48,6 @@ class TimetableMapActivity:AppCompatActivity() {
     //카카오 지도 설정
     private fun mapSetting() {
         with(binding.scheduleMap) {
-            setDaumMapApiKey(com.lee.dateplanner.R.string.kakao_map_key.toString())
             mapType = net.daum.mf.map.api.MapView.MapType.Standard
             setZoomLevel(3, true)
             zoomIn(true)

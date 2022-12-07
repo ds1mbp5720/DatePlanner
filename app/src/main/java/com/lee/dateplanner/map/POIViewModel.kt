@@ -30,9 +30,6 @@ class POIViewModel(private val repository:POIRepository):ViewModel() {
             val response = repository.getPOIInfo(category, lat, lgt) // 기준점, 카테고리 전달
             withContext(Dispatchers.Main){
                 if(response.isSuccessful){
-                    /**
-                     * setValue로 / Dispatchers.main
-                     */
                     poiList.postValue(response.body())
                     isLoading.postValue(false)
                 }else{

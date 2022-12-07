@@ -33,6 +33,8 @@ class TimeSheetAdapter(private var id: Int, private var timesheetList: List<Time
                 intent.putExtra("time",timesheet.time)
                 intent.putExtra("place",timesheet.place)
                 intent.putExtra("memo",timesheet.memo)
+                intent.putExtra("latitude",timesheet.lat)
+                intent.putExtra("longitude",timesheet.lgt)
                 intent.putExtra("position",position) // 선택한 위치
                 intent.putExtra("id",id) // 전달할 timesheet
                 // id 값 받아서 넘겨주기

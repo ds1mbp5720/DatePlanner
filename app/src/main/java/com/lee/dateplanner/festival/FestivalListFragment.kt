@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.lee.dateplanner.R
 import com.lee.dateplanner.common.dateStringFormat
-import com.lee.dateplanner.common.makeDatePickerDialog
 import com.lee.dateplanner.databinding.FestivallistFragmentLayoutBinding
 import com.lee.dateplanner.festival.adapter.FestivalRecyclerAdapter
 import com.lee.dateplanner.festival.network.FestivalRetrofitService

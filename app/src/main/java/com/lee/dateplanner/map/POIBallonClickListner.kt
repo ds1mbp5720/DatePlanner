@@ -35,7 +35,7 @@ class POIBallonClickListner(context: Context?,private val owner: POIMapFragment)
             with(info){
                 job = CoroutineScope(kotlinx.coroutines.Dispatchers.Main).launch(exceptionHandler) {
                     owner.childFragmentManager.setFragmentResult("poiKey", bundleOf("placeName" to placeName, "addressName" to addressName,
-                        "phone" to phone, "distance" to distance, "placeUrl" to placeUrl)
+                        "phone" to phone, "distance" to distance, "placeUrl" to placeUrl, "longitude" to x, "latitude" to y)
                     )
                     owner.childFragmentManager.beginTransaction()
                         .replace(com.lee.dateplanner.R.id.selected_marker_info,owner.selectMarkerPOIFragment).addToBackStack(null).commit()
