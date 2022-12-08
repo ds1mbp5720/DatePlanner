@@ -1,5 +1,6 @@
 *.iml
 .gradle
+/key_string.xml
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -14,7 +15,6 @@
 *.ap_
 .externalNativeBuild
 .cxx
-key_string.xml
 local.properties
 
 # Files for the ART/Dalvik VM
@@ -27,3 +27,30 @@ local.properties
 bin/
 gen/
 out/
+
+# Built application files
+/*/build/
+/*/.cxx/
+*.apk
+*.ap_
+
+
+# Gradle files
+.gradle/
+build/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Log Files
+*.log
+
+# Android Studio Navigation editor temp files
+.navigation/
+# Intellij
+.idea/*
+!.idea/codeStyles/
+*.iml
+
+# External native build folder generated in Android Studio 2.2 and later
+.externalNativeBuild
