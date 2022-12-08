@@ -28,11 +28,11 @@ class DeleteTimeSheetDialog (private val owner: TimeTableFragment, private var i
     }
     private fun setUpListener(){
         binding.okBtn.setOnClickListener{ // 예 버튼
-            owner.dialogCallBack(true,id,position)
+            owner.timetableAdapter?.timeSheetAdapter?.dialogCallBack(true,position)
             dismiss() // 종료
         }
         binding.cancelBtn.setOnClickListener{  // 아니오 버튼
-            owner.dialogCallBack(false, id, position)
+            owner.timetableAdapter?.timeSheetAdapter?.dialogCallBack(false,position)
             dismiss() // 종료
         }
     }

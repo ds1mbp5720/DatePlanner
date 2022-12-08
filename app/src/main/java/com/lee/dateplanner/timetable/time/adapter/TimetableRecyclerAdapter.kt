@@ -23,6 +23,7 @@ import java.util.*
 class TimetableRecyclerAdapter(private val viewModel: TimetableViewModel, private val fragment: TimeTableFragment): RecyclerView.Adapter<TimetableViewHolder>() {
     private lateinit var binding: TimetableRecyclerLayoutBinding
     private var timetableList: List<Timetable>? = null
+    var timeSheetAdapter: TimeSheetAdapter? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimetableViewHolder {
         binding = TimetableRecyclerLayoutBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -33,7 +34,8 @@ class TimetableRecyclerAdapter(private val viewModel: TimetableViewModel, privat
         with(holder.binding){
             timetableList.let {
                 // view 설정
-                dayTimeTable.adapter = TimeSheetAdapter(it!![position].id, it!![position].timeSheetList!!,fragment)  // 일일 계획
+                timeSheetAdapter = TimeSheetAdapter(it!![position].id, it!![position].timeSheetList!!,fragment,it[position],viewModel)  // 일일 계획
+                dayTimeTable.adapter = timeSheetAdapter
                 tableDateBtn.text = it!![position].date.toString()  // 일정날짜
             }
             //날짜 선택 버튼

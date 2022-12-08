@@ -17,8 +17,10 @@ import com.lee.dateplanner.timetable.time.room.Timetable
 import com.lee.dateplanner.timetable.timesheet.TimeSheet
 import com.lee.dateplanner.timetable.timesheet.dialog.DeleteTimeSheetDialog
 
-class TimeSheetAdapter(private var id: Int, private var timesheetList: List<TimeSheet>,private val owner: TimeTableFragment): RecyclerView.Adapter<TimeSheetViewHolder>() {
+class TimeSheetAdapter(private var id: Int, private var timesheetList: List<TimeSheet>,private val owner: TimeTableFragment,
+                       private var timeTable: Timetable, private val viewModel: TimetableViewModel): RecyclerView.Adapter<TimeSheetViewHolder>() {
     private lateinit var binding: TimesheetPlanRecyclerBinding
+    var dialog: DeleteTimeSheetDialog? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeSheetViewHolder {
         binding = TimesheetPlanRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TimeSheetViewHolder(binding)
@@ -49,9 +51,25 @@ class TimeSheetAdapter(private var id: Int, private var timesheetList: List<Time
             }
             //삭제버튼 클릭시
             deleteTimesheetBtn.setOnClickListener {
-                val dialog = DeleteTimeSheetDialog(owner,id, position)
-                dialog.show()
+                    val timeSheetList = timeTable.timeSheetList as ArrayList<TimeSheet>?
+                    timeSheetList?.removeAt(position)
+                    if(timeTable != null){
+                        timeTable.timeSheetList = timeSheetList // 새로 추가된 list 로 교체
+                        //추가한 timesheet 업데이트
+                        timeTable.timeSheetList?.let { it1 ->
+                            viewModel.updateTimetable(it1,id)
+                        }
+                    }
+                //dialog = DeleteTimeSheetDialog(owner,id, position)
+                //dialog!!.show()
             }
+        }
+    }
+    fun dialogCallBack(select: Boolean, position: Int){
+        if(select){
+
+        }else{
+
         }
     }
     override fun getItemCount() = timesheetList.size

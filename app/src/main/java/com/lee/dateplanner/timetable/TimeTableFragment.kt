@@ -26,7 +26,7 @@ class TimeTableFragment:Fragment() {
         fun newInstance() = TimeTableFragment()
     }
     private val viewModel: TimetableViewModel by viewModels()  // 뷰모델
-    private var timetableAdapter: TimetableRecyclerAdapter? = null  // 시간계획 recyclerview adapter
+    var timetableAdapter: TimetableRecyclerAdapter? = null  // 시간계획 recyclerview adapter
     private lateinit var binding: TimetablelistFragmentLayoutBinding
     private var tableCount = 0
 
@@ -103,58 +103,4 @@ class TimeTableFragment:Fragment() {
             adapter = timetableAdapter
         }
     }
-    fun dialogCallBack(select: Boolean, id: Int, position: Int){
-        if(select){
-            // 타임시트 리스트에서 삭제 후 해당 타임테이블 업데이트 하기
-            findTimetable(id,position)
-        }else{
-            Log.e(TAG,"취소")
-        }
-    }
-    private fun findTimetable(id: Int, position: Int){
-        viewModel.findTimetable(id)
-        viewModel.getSearchResults().observe(viewLifecycleOwner){ timetable ->
-            timetable?.let {
-                deleteTimeSheet(it[0],id,position)
-                //fragment 갱신
-                val ft = activity?.supportFragmentManager?.beginTransaction()
-                ft!!.replace(R.id.tabContent,TimeTableFragment()).commit()
-            }
-        }
-
-    }
-    private fun deleteTimeSheet(timeTable : Timetable, id:Int, position: Int){
-        val timeSheetList = timeTable.timeSheetList as ArrayList<TimeSheet>?
-        timeSheetList?.removeAt(position)
-        if(timeTable != null){
-            timeTable.timeSheetList = timeSheetList // 새로 추가된 list 로 교체
-            //추가한 timesheet 업데이트
-            timeTable.timeSheetList?.let { it1 ->
-                viewModel.updateTimetable(it1,id)
-            }
-        }
-    }
-
-    /**
-     * dialogCallBack 함수의 observe 가 삭제할때마다 횟수가 중첩되어 여러번 실행되어 한번만하는 함수
-     */
-//    fun <T> LiveData<T>.(owner: LifecycleOwner, observer: (T) -> Unit) {
-//        var firstObservation = true
-//
-//        observe(owner, object: Observer<T>
-//        {
-//            override fun onChanged(value: T) {
-//                if(firstObservation)
-//                {
-//                    firstObservation = false
-//                }
-//                else
-//                {
-//                    removeObserver(this)
-//                    observer(value)
-//                }
-//            }
-//        })
-//    }
-
 }
