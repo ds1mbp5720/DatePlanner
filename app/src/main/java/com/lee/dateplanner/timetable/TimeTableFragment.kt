@@ -1,13 +1,19 @@
 package com.lee.dateplanner.timetable
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import com.lee.dateplanner.MainActivity
+import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.TimetablelistFragmentLayoutBinding
+import com.lee.dateplanner.map.POIMapFragment
 import com.lee.dateplanner.timetable.timesheet.TimeSheet
 import com.lee.dateplanner.timetable.time.adapter.TimetableRecyclerAdapter
 import com.lee.dateplanner.timetable.time.room.Timetable
@@ -40,7 +46,7 @@ class TimeTableFragment:Fragment() {
         ).get(TimetableViewModel::class.java)*/
 
         listenerSetup()
-        observerSetup(viewModel)
+        observerSetup()
         uiSetup()
     }
 
@@ -80,7 +86,7 @@ class TimeTableFragment:Fragment() {
      * 옵저버 셋팅
      */
     @SuppressLint("SetTextI18n")
-    private fun observerSetup(viewModel: TimetableViewModel){
+    private fun observerSetup(){
         viewModel.getAllTimetables()?.observe(viewLifecycleOwner){ timetable ->
             timetable?.let {
                 timetableAdapter?.setTimetableList(it)
@@ -97,4 +103,58 @@ class TimeTableFragment:Fragment() {
             adapter = timetableAdapter
         }
     }
+    fun dialogCallBack(select: Boolean, id: Int, position: Int){
+        if(select){
+            // 타임시트 리스트에서 삭제 후 해당 타임테이블 업데이트 하기
+            findTimetable(id,position)
+        }else{
+            Log.e(TAG,"취소")
+        }
+    }
+    private fun findTimetable(id: Int, position: Int){
+        viewModel.findTimetable(id)
+        viewModel.getSearchResults().observe(viewLifecycleOwner){ timetable ->
+            timetable?.let {
+                deleteTimeSheet(it[0],id,position)
+                //fragment 갱신
+                val ft = activity?.supportFragmentManager?.beginTransaction()
+                ft!!.replace(R.id.tabContent,TimeTableFragment()).commit()
+            }
+        }
+
+    }
+    private fun deleteTimeSheet(timeTable : Timetable, id:Int, position: Int){
+        val timeSheetList = timeTable.timeSheetList as ArrayList<TimeSheet>?
+        timeSheetList?.removeAt(position)
+        if(timeTable != null){
+            timeTable.timeSheetList = timeSheetList // 새로 추가된 list 로 교체
+            //추가한 timesheet 업데이트
+            timeTable.timeSheetList?.let { it1 ->
+                viewModel.updateTimetable(it1,id)
+            }
+        }
+    }
+
+    /**
+     * dialogCallBack 함수의 observe 가 삭제할때마다 횟수가 중첩되어 여러번 실행되어 한번만하는 함수
+     */
+//    fun <T> LiveData<T>.(owner: LifecycleOwner, observer: (T) -> Unit) {
+//        var firstObservation = true
+//
+//        observe(owner, object: Observer<T>
+//        {
+//            override fun onChanged(value: T) {
+//                if(firstObservation)
+//                {
+//                    firstObservation = false
+//                }
+//                else
+//                {
+//                    removeObserver(this)
+//                    observer(value)
+//                }
+//            }
+//        })
+//    }
+
 }

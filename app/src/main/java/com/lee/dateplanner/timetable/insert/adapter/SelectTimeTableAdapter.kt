@@ -6,14 +6,9 @@ import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.lee.dateplanner.common.dateStringFormat
 import com.lee.dateplanner.common.toastMessage
 import com.lee.dateplanner.databinding.SelectDialogRecyclerBinding
-import com.lee.dateplanner.timetable.TimeTableFragment
-import com.lee.dateplanner.timetable.TimetableViewModel
 import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
 import com.lee.dateplanner.timetable.time.room.Timetable
 import java.util.*

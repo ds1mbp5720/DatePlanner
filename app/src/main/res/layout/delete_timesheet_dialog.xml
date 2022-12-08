@@ -4,15 +4,14 @@
     android:layout_width="350dp"
     android:layout_height="250dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="32dp"
-    app:cardElevation="32dp"
-    android:padding="8dp"
+    app:cardCornerRadius="5dp"
+    android:padding="2dp"
     android:layout_gravity="center"
+    android:backgroundTint="@color/white"
     xmlns:tools="http://schemas.android.com/tools">
     <RelativeLayout
-        android:layout_width="340dp"
-        android:layout_height="240dp"
-        android:layout_marginBottom="50dp"
+        android:layout_width="350dp"
+        android:layout_height="250dp"
         >
         <TextView
             android:id="@+id/dialogMessage"
@@ -25,27 +24,29 @@
             android:textColor="@android:color/black"
             android:layout_marginTop="64dp"
             tools:text="정말 삭제 하시겠습니까?"/>
-        <TextView
-            android:id="@+id/cancelBtn"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/okBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
             android:layout_alignParentStart="true"
             android:layout_marginStart="32dp"
+            android:backgroundTint="@color/white"
             android:layout_below="@id/dialogMessage"
             android:textColor="@android:color/black"
             android:textSize="20sp"
-            android:text="아니오" />
-        <TextView
-            android:id="@+id/okBtn"
+            android:text="예" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancelBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
+            android:backgroundTint="@color/white"
             android:layout_below="@id/dialogMessage"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="32dp"
             android:textColor="@android:color/black"
             android:textSize="20sp"
-            android:text="예" />
+            android:text="아니요" />
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

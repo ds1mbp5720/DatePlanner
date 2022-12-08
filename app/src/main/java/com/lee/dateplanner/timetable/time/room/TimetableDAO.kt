@@ -10,8 +10,6 @@ import com.lee.dateplanner.timetable.timesheet.TimeSheet
 interface TimetableDAO {
     @Insert
     fun insertTimetable(timetable: Timetable)
-    /*@Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTimetable(vararg timetable: Timetable)*/
 
     // 찾기
     @Query("SELECT * FROM timetable_tbl WHERE timetableId = :id")

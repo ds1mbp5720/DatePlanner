@@ -2,7 +2,9 @@ package com.lee.dateplanner.timetable.time.adapter
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.ContentValues.TAG
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
@@ -31,7 +33,7 @@ class TimetableRecyclerAdapter(private val viewModel: TimetableViewModel, privat
         with(holder.binding){
             timetableList.let {
                 // view 설정
-                dayTimeTable.adapter = TimeSheetAdapter(it!![position].id, it!![position].timeSheetList!!)  // 일일 계획
+                dayTimeTable.adapter = TimeSheetAdapter(it!![position].id, it!![position].timeSheetList!!,fragment)  // 일일 계획
                 tableDateBtn.text = it!![position].date.toString()  // 일정날짜
             }
             //날짜 선택 버튼

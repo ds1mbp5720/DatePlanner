@@ -1,16 +1,23 @@
 package com.lee.dateplanner.timetable.timesheet.adapter
 
+import android.content.ContentValues.TAG
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.TimesheetPlanRecyclerBinding
+import com.lee.dateplanner.timetable.TimeTableFragment
+import com.lee.dateplanner.timetable.TimetableViewModel
 import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
+import com.lee.dateplanner.timetable.insert.dialog.SelectTimeTableDialog
+import com.lee.dateplanner.timetable.time.room.Timetable
 import com.lee.dateplanner.timetable.timesheet.TimeSheet
+import com.lee.dateplanner.timetable.timesheet.dialog.DeleteTimeSheetDialog
 
-class TimeSheetAdapter(private var id: Int, private var timesheetList: List<TimeSheet>): RecyclerView.Adapter<TimeSheetViewHolder>() {
+class TimeSheetAdapter(private var id: Int, private var timesheetList: List<TimeSheet>,private val owner: TimeTableFragment): RecyclerView.Adapter<TimeSheetViewHolder>() {
     private lateinit var binding: TimesheetPlanRecyclerBinding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeSheetViewHolder {
         binding = TimesheetPlanRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -40,8 +47,12 @@ class TimeSheetAdapter(private var id: Int, private var timesheetList: List<Time
                 // id 값 받아서 넘겨주기
                 ContextCompat.startActivity(holder.itemView.context, intent, null)
             }
+            //삭제버튼 클릭시
+            deleteTimesheetBtn.setOnClickListener {
+                val dialog = DeleteTimeSheetDialog(owner,id, position)
+                dialog.show()
+            }
         }
     }
-
     override fun getItemCount() = timesheetList.size
 }

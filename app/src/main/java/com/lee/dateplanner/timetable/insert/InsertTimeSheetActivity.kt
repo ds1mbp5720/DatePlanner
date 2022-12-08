@@ -10,6 +10,7 @@ import com.lee.dateplanner.common.*
 import com.lee.dateplanner.databinding.InputScheduleLayoutBinding
 import com.lee.dateplanner.map.adpter.POIWindowAdapter
 import com.lee.dateplanner.timetable.TimetableViewModel
+import com.lee.dateplanner.timetable.insert.dialog.SelectTimeTableDialog
 import com.lee.dateplanner.timetable.timesheet.TimeSheet
 import com.lee.dateplanner.timetable.time.room.Timetable
 import net.daum.mf.map.api.MapPOIItem
@@ -35,7 +36,7 @@ class InsertTimeSheetActivity: AppCompatActivity() {
     private var position: Int = 0 // 수정시 해당 일정의 위치 정보
 
 
-    //@SuppressLint("Deprecated")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = InputScheduleLayoutBinding.inflate(layoutInflater)
@@ -59,9 +60,8 @@ class InsertTimeSheetActivity: AppCompatActivity() {
     // 옵저버 설정 , 내부에 리스너 삽입
     private fun setObserve(){
         viewModel.findTimetable(id)
-        viewModel.getSearchResults().observe(this){ timetable ->
+        viewModel.getSearchResults().observe(this@InsertTimeSheetActivity){ timetable ->
             timetable?.let {
-                Log.e(TAG,"$timetable")
                 setListener(timetable[0])
             }
         }
@@ -183,7 +183,6 @@ class InsertTimeSheetActivity: AppCompatActivity() {
         }
         if(timeTable != null){
             timeTable.timeSheetList = timeSheetList // 새로 추가된 list 로 교체
-            Log.e(TAG,"변화 확인 ${timeTable.timeSheetList}")
             //추가한 timesheet 업데이트
             timeTable.timeSheetList?.let { it1 -> viewModel.updateTimetable(it1,id) }
         }
@@ -230,7 +229,6 @@ class InsertTimeSheetActivity: AppCompatActivity() {
         }
         if(timeTable != null){
             timeTable.timeSheetList = timeSheetList // 새로 추가된 list 로 교체
-            Log.e(TAG,"변화 확인 ${timeTable.timeSheetList}")
             //추가한 timesheet 업데이트
             timeTable.timeSheetList?.let { it1 -> viewModel.updateTimetable(it1,id) }
         }

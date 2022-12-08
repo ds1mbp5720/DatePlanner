@@ -7,15 +7,15 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginBottom="5dp"
         android:backgroundTint="#FAF5FA">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="3dp"
                 >
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -56,9 +56,18 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:paddingLeft="4dp"
+                    android:layout_marginRight="4dp"
                     app:icon="@drawable/ic_baseline_edit_24"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/delete_timesheet_btn" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/delete_timesheet_btn"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingLeft="4dp"
+                    app:icon="@drawable/ic_baseline_delete_24"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintRight_toRightOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 

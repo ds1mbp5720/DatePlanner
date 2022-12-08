@@ -2,22 +2,23 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="30dp"
+    android:paddingBottom="17dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="5dp"
         android:backgroundTint="@color/white">
 
         <LinearLayout
             style="@style/CardViewContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="0dp"
             android:orientation="vertical">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -39,7 +40,7 @@
                     android:layout_height="40dp"
                     android:gravity="center"
                     android:paddingLeft="4dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="8dp"
                     app:icon="@drawable/ic_baseline_map_24"
                     app:layout_constraintRight_toLeftOf="@id/delete_time_btn"
                     app:layout_constraintTop_toTopOf="parent"/>

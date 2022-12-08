@@ -1,13 +1,12 @@
-package com.lee.dateplanner.timetable.insert
+package com.lee.dateplanner.timetable.insert.dialog
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import android.view.Window
 import com.lee.dateplanner.databinding.SelectTimetableDialogBinding
 import com.lee.dateplanner.timetable.TimetableViewModel
+import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
 import com.lee.dateplanner.timetable.insert.adapter.SelectTimeTableAdapter
 
 class SelectTimeTableDialog(private val message: String, private val viewModel: TimetableViewModel,
