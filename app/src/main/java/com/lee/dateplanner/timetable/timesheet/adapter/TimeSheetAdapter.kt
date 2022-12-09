@@ -51,10 +51,10 @@ class TimeSheetAdapter(private var id: Int, private var timesheetList: List<Time
             }
             //삭제버튼 클릭시
             deleteTimesheetBtn.setOnClickListener {
-                    val timeSheetList = timeTable.timeSheetList as ArrayList<TimeSheet>?
-                    timeSheetList?.removeAt(position)
+                    //val timeSheetList = timeTable.timeSheetList as ArrayList<TimeSheet>?
+                timeTable.timeSheetList.removeAt(position)
                     if(timeTable != null){
-                        timeTable.timeSheetList = timeSheetList // 새로 추가된 list 로 교체
+                        //timeTable.timeSheetList = timeSheetList // 새로 추가된 list 로 교체
                         //추가한 timesheet 업데이트
                         timeTable.timeSheetList?.let { it1 ->
                             viewModel.updateTimetable(it1,id)

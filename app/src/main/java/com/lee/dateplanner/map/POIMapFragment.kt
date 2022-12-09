@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.ActionBar.LayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.AroundinfoMapFragmentLayoutBinding
@@ -31,14 +30,13 @@ class POIMapFragment:Fragment(){
     }
     lateinit var binding: AroundinfoMapFragmentLayoutBinding
     private lateinit var viewModel: POIViewModel
-    private val poiBalloonListener = POIBallonClickListner(this.context,this) // info window 터치 객체
+    private val poiBalloonListener = POIEventClickListener(this.context,this) // info window 터치 객체
     private var poiCategory: String = "CE7" // category 저장 변수
     private var festivalLat: String = "37.5143225723" // 행사장 좌표
     private var festivalLgt: String = "127.062831022" // 행사장 좌표
     private var job : Job? = null
     private lateinit var poiwindow : POIWindowAdapter
     var selectMarkerPOIFragment = SelectMarkerPOIFragment()
-    private lateinit var observer: Observer<POIData>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,9 +49,7 @@ class POIMapFragment:Fragment(){
 
     override fun onPause() {
         super.onPause()
-        binding.infoMap.removeAllPOIItems()
         binding.root.removeView(binding.root.findViewById(R.id.info_map))
-        viewModel.poiList.removeObserver(observer)
     }
 
     override fun onResume() {
@@ -72,7 +68,6 @@ class POIMapFragment:Fragment(){
             mapSetting(this)
             observerSetup(viewModel,this)
         }
-
         return poiMap
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,7 +90,7 @@ class POIMapFragment:Fragment(){
 
     // 옵저버 세팅
     private fun observerSetup(viewModel: POIViewModel, map: MapView){
-        observer = Observer<POIData>{
+        viewModel.poiList.observe(viewLifecycleOwner){
             with(binding.poiInfoRecycler){
                 run{
                     val poiAdapter = POIRecyclerAdapter(this@POIMapFragment,it)
@@ -107,7 +102,6 @@ class POIMapFragment:Fragment(){
             displayPOI(it,map)
             binding.poiProgressBar.visibility = View.GONE
         }
-        viewModel.poiList.observe(viewLifecycleOwner,observer)
         viewModel.errorMessage.observe(viewLifecycleOwner){
             Log.e(TAG,it)
         }

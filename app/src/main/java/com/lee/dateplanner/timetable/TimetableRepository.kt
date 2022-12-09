@@ -16,8 +16,8 @@ import kotlinx.coroutines.launch
 class TimetableRepository(application: Application) {
     private var timetableDao: TimetableDAO? // dao 호출
     private var coroutineScope = CoroutineScope(Dispatchers.IO)  // 입출력 코루틴 동작
-    val allTimetables: LiveData<List<Timetable>>? // room db 전체 저장
-    var searchResults = MutableLiveData<List<Timetable>>()  // 특정 timetable 반환
+    val allTimetables: LiveData<MutableList<Timetable>>? // room db 전체 저장
+    var searchResults = MutableLiveData<MutableList<Timetable>>()  // 특정 timetable 반환
 
     init {
         val db: com.lee.dateplanner.timetable.time.room.TimeTableRoomDatabase? = com.lee.dateplanner.timetable.time.room.TimeTableRoomDatabase.getDatabase(application)
@@ -35,12 +35,12 @@ class TimetableRepository(application: Application) {
     }
 
     //일일 timetable 수정
-    fun updateTimetable(timesheetList: List<TimeSheet>, id: Int){
+    fun updateTimetable(timesheetList: MutableList<TimeSheet>, id: Int){
         coroutineScope.launch(Dispatchers.IO){
             asyncUpdate(timesheetList,id)
         }
     }
-    private fun asyncUpdate(timesheetList: List<TimeSheet>,id:Int){
+    private fun asyncUpdate(timesheetList: MutableList<TimeSheet>,id:Int){
         timetableDao?.updateTimetable(timesheetList, id)
     }
     // timetable의 date 수정 함수
@@ -69,7 +69,7 @@ class TimetableRepository(application: Application) {
             searchResults.value = asyncFind(id)
         }
     }
-    private suspend fun asyncFind(id:Int): List<Timetable>? =
+    private suspend fun asyncFind(id:Int): MutableList<Timetable>? =
         coroutineScope.async(Dispatchers.IO) {
             return@async timetableDao?.findTimetable(id)
         }.await()

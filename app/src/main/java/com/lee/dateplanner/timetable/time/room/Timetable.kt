@@ -15,20 +15,20 @@ class Timetable(){
     var id: Int = 0
 
     @ColumnInfo(name = "timeSheetList") // 시간별 계획 리스트
-    var timeSheetList: List<TimeSheet>? = null
+    var timeSheetList = mutableListOf<TimeSheet>()
 
     @ColumnInfo(name = "date") // 계획 날짜
     var date: String = ""
 
     @Ignore
-    constructor(id: Int, timeSheetList: List<TimeSheet>, date: String) : this() {
+    constructor(id: Int, timeSheetList: MutableList<TimeSheet>, date: String) : this() {
         this.id = id
         this.timeSheetList = timeSheetList
         this.date = date
     }
 
     @Ignore
-    constructor(timeSheetList: List<TimeSheet>, date: String) : this() {
+    constructor(timeSheetList: MutableList<TimeSheet>, date: String) : this() {
         this.timeSheetList = timeSheetList
         this.date = date
     }

@@ -9,13 +9,13 @@ import com.lee.dateplanner.timetable.time.room.Timetable
 
 class TimetableViewModel(application: Application): AndroidViewModel(application) {
     private val repository: TimetableRepository = TimetableRepository(application)
-    private val allTimetables: LiveData<List<Timetable>>? = repository.allTimetables
-    private val searchResults: MutableLiveData<List<Timetable>> = repository.searchResults
+    private val allTimetables: LiveData<MutableList<Timetable>>? = repository.allTimetables
+    private val searchResults: MutableLiveData<MutableList<Timetable>> = repository.searchResults
 
     fun insertTimeTable(timetable: Timetable){
         repository.insertTimetable(timetable)
     }
-    fun updateTimetable(timesheetList: List<TimeSheet>, id: Int){
+    fun updateTimetable(timesheetList: MutableList<TimeSheet>, id: Int){
         repository.updateTimetable(timesheetList, id)
     }
     fun updateDate(Date: String, id:Int){
@@ -30,10 +30,10 @@ class TimetableViewModel(application: Application): AndroidViewModel(application
         repository.deleteTimetable(id)
     }
 
-    fun getSearchResults(): MutableLiveData<List<Timetable>> {
+    fun getSearchResults(): MutableLiveData<MutableList<Timetable>> {
         return searchResults
     }
-    fun getAllTimetables(): LiveData<List<Timetable>>? {
+    fun getAllTimetables(): LiveData<MutableList<Timetable>>? {
         return allTimetables
     }
 }

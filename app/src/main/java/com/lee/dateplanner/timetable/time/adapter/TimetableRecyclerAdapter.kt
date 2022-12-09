@@ -75,7 +75,7 @@ class TimetableRecyclerAdapter(private val viewModel: TimetableViewModel, privat
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setTimetableList(timetable: List<Timetable>){
+    fun setTimetableList(timetable: MutableList<Timetable>){
         timetableList = timetable
         notifyDataSetChanged()
     }

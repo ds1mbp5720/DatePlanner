@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.lee.dateplanner.common.*
 import com.lee.dateplanner.databinding.InputScheduleLayoutBinding
+import com.lee.dateplanner.map.POIEventClickListener
 import com.lee.dateplanner.map.adpter.POIWindowAdapter
 import com.lee.dateplanner.timetable.TimetableViewModel
 import com.lee.dateplanner.timetable.insert.dialog.SelectTimeTableDialog
@@ -15,6 +16,7 @@ import com.lee.dateplanner.timetable.timesheet.TimeSheet
 import com.lee.dateplanner.timetable.time.room.Timetable
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
+import net.daum.mf.map.api.MapView
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -24,6 +26,7 @@ import kotlin.collections.ArrayList
 class InsertTimeSheetActivity: AppCompatActivity() {
     private lateinit var binding: InputScheduleLayoutBinding
     private lateinit var viewModel: TimetableViewModel
+    private val poiEventListener = POIEventClickListener(this)
     // 입력받을 정보들 저장 목적 변수
     private var type: String? = null
     private var id: Int = 0
@@ -98,11 +101,14 @@ class InsertTimeSheetActivity: AppCompatActivity() {
             setZoomLevel(3, true)
             zoomIn(true)
             zoomOut(true)
+            setPOIItemEventListener(poiEventListener)
             val selectWindow = POIWindowAdapter(this.context)
             setCalloutBalloonAdapter(selectWindow)
             if(latitude != "" && longitude != ""){
+                var marker = settingScheduleMarker()
                 setMapCenterPoint(MapPoint.mapPointWithGeoCoord(latitude.toDouble(), longitude.toDouble()), false)
-                addPOIItem(settingScheduleMarker()) // 행사위치 핑
+                addPOIItem(marker) // 행사위치 핑
+                Log.e(TAG,"마커 좌표: ${marker.mapPoint.mapPointGeoCoord.latitude} ${marker.mapPoint.mapPointGeoCoord.longitude}")
             }
         }
     }
@@ -114,6 +120,7 @@ class InsertTimeSheetActivity: AppCompatActivity() {
             showAnimationType = MapPOIItem.ShowAnimationType.NoAnimation
             mapPoint = MapPoint.mapPointWithGeoCoord(latitude.toDouble(), longitude.toDouble()) // 일정 장소 좌표
             itemName = "입력할 일정 장소" // 장소명
+            isDraggable = true
         }
         return marker
     }
@@ -126,17 +133,18 @@ class InsertTimeSheetActivity: AppCompatActivity() {
     // 신규입력 추가 버튼 이벤트
     private fun setBtnTypeAdd(timeTable : Timetable){
         // 기존 리스트 가져오기
-        val timeSheetList = timeTable.timeSheetList as ArrayList<TimeSheet>?
+        var timeSheetList = timeTable.timeSheetList
         //입력값들 일정표에 저장
         with(binding){
             title = inputTitle.text.toString()
             time = inputTimeBtn.text.toString()
             place = inputLocation.text.toString()
             memo = inputMemo.text.toString()
+
             // 마커 위치로 값 받아오기
             //latitude
             //longitude
-            timeSheetList!!.add(TimeSheet(title,time,place,memo,"","")) // 저장용 timesheet
+            timeSheetList.add(TimeSheet(title,time,place,memo,"","")) // 저장용 timesheet
         }
         if(timeTable != null){
             timeTable.timeSheetList = timeSheetList // 새로 추가된 list 로 교체
@@ -169,7 +177,7 @@ class InsertTimeSheetActivity: AppCompatActivity() {
     // 수정시 버튼 이벤트
     private fun setBtnTypeEdit(timeTable : Timetable){
         //기존 리스트 가져오기
-        val timeSheetList = timeTable.timeSheetList as ArrayList<TimeSheet>?
+        //val timeSheetList = timeTable.timeSheetList as ArrayList<TimeSheet>?
         //입력값들 일정표에 저장
         with(binding){
             title = inputTitle.text.toString()
@@ -179,16 +187,17 @@ class InsertTimeSheetActivity: AppCompatActivity() {
             // 마커위치로 위치 변경 기능 추가
             //latitude
             //longitude
-            timeSheetList?.set(position, TimeSheet(title,time,place,memo,latitude,longitude))
+            //timeSheetList?.set(position, TimeSheet(title,time,place,memo,latitude,longitude))
+            timeTable.timeSheetList?.set(position, TimeSheet(title,time,place,memo,latitude,longitude))
         }
         if(timeTable != null){
-            timeTable.timeSheetList = timeSheetList // 새로 추가된 list 로 교체
+            //timeTable.timeSheetList = timeSheetList // 새로 추가된 list 로 교체
             //추가한 timesheet 업데이트
             timeTable.timeSheetList?.let { it1 -> viewModel.updateTimetable(it1,id) }
         }
     }
 
-    // 행사 정보
+    // 행사.poi 일정 추가
     private fun typeAPI(){
         title = intent.getStringExtra("title").toString()
         place = intent.getStringExtra("place").toString()
@@ -209,8 +218,10 @@ class InsertTimeSheetActivity: AppCompatActivity() {
                 binding.inputTimeBtn.text = time
             }
             TimePickerDialog(this,timeSetListener,cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), android.text.format.DateFormat.is24HourFormat(this)).show()
+
         }
         binding.insertBtn.setOnClickListener{
+            Log.e(TAG,"등록버튼 클릭")
             val dialog = SelectTimeTableDialog("일정을 선택하세요.",viewModel,this)
             dialog.show()
         }
@@ -218,17 +229,17 @@ class InsertTimeSheetActivity: AppCompatActivity() {
     fun setBtnTypeAPI(timeTable : Timetable, id: Int){
 
         //기존 리스트 가져오기
-        val timeSheetList = timeTable?.timeSheetList as ArrayList<TimeSheet>?
+        val timeSheetList = timeTable?.timeSheetList
         //입력값들 일정표에 저장
         with(binding){
             title = inputTitle.text.toString()
             time = inputTimeBtn.text.toString()
             place = inputLocation.text.toString()
             memo = inputMemo.text.toString()
-            timeSheetList?.add(TimeSheet(title,time,place,memo, latitude,longitude))
+            timeTable.timeSheetList.add(TimeSheet(title,time,place,memo, latitude,longitude))
         }
         if(timeTable != null){
-            timeTable.timeSheetList = timeSheetList // 새로 추가된 list 로 교체
+            //timeTable.timeSheetList = timeSheetList // 새로 추가된 list 로 교체
             //추가한 timesheet 업데이트
             timeTable.timeSheetList?.let { it1 -> viewModel.updateTimetable(it1,id) }
         }
@@ -236,6 +247,7 @@ class InsertTimeSheetActivity: AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+        poiEventListener.job?.cancel()
         binding.root.removeAllViews()
         finish()
     }

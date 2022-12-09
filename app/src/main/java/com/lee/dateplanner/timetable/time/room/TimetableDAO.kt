@@ -13,11 +13,11 @@ interface TimetableDAO {
 
     // 찾기
     @Query("SELECT * FROM timetable_tbl WHERE timetableId = :id")
-    fun findTimetable(id: Int): List<Timetable>
+    fun findTimetable(id: Int): MutableList<Timetable>
 
     // 추가, 일정 추가
     @Query("UPDATE timetable_tbl SET timeSheetList = :timesheet WHERE timetableId = :id")
-    fun updateTimetable(timesheet: List<TimeSheet> ,id: Int)
+    fun updateTimetable(timesheet: MutableList<TimeSheet> ,id: Int)
 
     //날짜 정보 변경
     @Query("UPDATE timetable_tbl SET date = :date WHERE timetableId = :id")
@@ -29,7 +29,7 @@ interface TimetableDAO {
 
     // 전체 반환
     @Query("SELECT * FROM timetable_tbl")
-    fun getAllTimetable(): LiveData<List<Timetable>>
+    fun getAllTimetable(): LiveData<MutableList<Timetable>>
 
 
 }

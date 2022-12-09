@@ -9,12 +9,12 @@ import com.lee.dateplanner.timetable.timesheet.TimeSheet
   */
 class TimeSheetListConverters {
     @TypeConverter
-    fun listToJson(value: List<TimeSheet>):String? {
+    fun listToJson(value: MutableList<TimeSheet>):String? {
         return Gson().toJson(value)
     }
 
     @TypeConverter
-    fun jsonToList(value: String): List<TimeSheet>?{
-        return Gson().fromJson(value,Array<TimeSheet>::class.java)?.toList()
+    fun jsonToList(value: String): MutableList<TimeSheet>?{
+        return Gson().fromJson(value,Array<TimeSheet>::class.java)?.toMutableList()
     }
 }

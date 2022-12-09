@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
-import com.lee.dateplanner.map.data.POIData
 import kotlinx.coroutines.*
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
@@ -14,18 +13,21 @@ import net.daum.mf.map.api.MapView
 /**
  * poi 정보의 marker window 터치에 대한 이벤트 처리 class
  */
-class POIBallonClickListner(context: Context?,private val owner: POIMapFragment):MapView.POIItemEventListener {
+class POIEventClickListener(context: Context?, private val owner: POIMapFragment = POIMapFragment()):MapView.POIItemEventListener {
     var job : Job? = null // cancel 해야함
     // 말풍선 클릭시 이벤트 정의 함수
-    override fun onCalloutBalloonOfPOIItemTouched(mapView: MapView?, poiItem: MapPOIItem?, buttonType: MapPOIItem.CalloutBalloonButtonType?) {
-
-    }
+    override fun onCalloutBalloonOfPOIItemTouched(mapView: MapView?, poiItem: MapPOIItem?, buttonType: MapPOIItem.CalloutBalloonButtonType?) {}
 
     override fun onPOIItemSelected(p0: MapView?, poiItem: MapPOIItem?) {
         sendSelectPoiInfo(poiItem)
     }
     override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {}
-    override fun onDraggablePOIItemMoved(p0: MapView?, p1: MapPOIItem?, p2: MapPoint?) {}
+
+    override fun onDraggablePOIItemMoved(p0: MapView?, p1: MapPOIItem?, p2: MapPoint?) {
+        if (p2 != null) {
+            Log.e(TAG,"이동한 마커 좌표: ${p2.mapPointGeoCoord.latitude} ${p2.mapPointGeoCoord.longitude}")
+        }
+    }
 
     //선택한 마커의 정보 전달 및 selectMarkerPOIFragment 호출 함수
     private fun sendSelectPoiInfo(poiItem: MapPOIItem?){

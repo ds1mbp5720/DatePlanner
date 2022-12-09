@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:textColorHint="@color/black"
-            android:hint="장소 명"
+            android:hint="장소"
             app:hintTextColor="@color/black">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_location"

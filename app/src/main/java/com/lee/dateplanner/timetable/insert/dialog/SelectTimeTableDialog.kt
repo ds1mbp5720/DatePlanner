@@ -2,7 +2,9 @@ package com.lee.dateplanner.timetable.insert.dialog
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import android.view.Window
 import com.lee.dateplanner.databinding.SelectTimetableDialogBinding
 import com.lee.dateplanner.timetable.TimetableViewModel
@@ -22,8 +24,8 @@ class SelectTimeTableDialog(private val message: String, private val viewModel: 
             setContentView(it.root)
         }
         binding.selectDialogMessage.text = message
-        observerSetup(viewModel)
         uiSetup()
+        observerSetup(viewModel)
     }
     //옵저버 셋팅
     @SuppressLint("SetTextI18n")
@@ -37,7 +39,7 @@ class SelectTimeTableDialog(private val message: String, private val viewModel: 
     //ui 셋팅 함수
     private fun uiSetup(){
         with(binding.selectListTimetable){
-            selectTimetableAdapter = SelectTimeTableAdapter(owner)
+            selectTimetableAdapter = SelectTimeTableAdapter(owner,this@SelectTimeTableDialog)
             adapter = selectTimetableAdapter
         }
     }
