@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.ActionBar.LayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.AroundinfoMapFragmentLayoutBinding
@@ -37,6 +38,7 @@ class POIMapFragment:Fragment(){
     private var job : Job? = null
     private lateinit var poiwindow : POIWindowAdapter
     var selectMarkerPOIFragment = SelectMarkerPOIFragment()
+    private lateinit var observer: Observer<POIData>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,24 +51,28 @@ class POIMapFragment:Fragment(){
 
     override fun onPause() {
         super.onPause()
+        binding.infoMap.removeAllPOIItems()
         binding.root.removeView(binding.root.findViewById(R.id.info_map))
-        Log.e(TAG,"${binding.root.indexOfChild(binding.root.findViewById<MapView>(R.id.info_map))}")
+        viewModel.poiList.removeObserver(observer)
     }
 
     override fun onResume() {
         super.onResume()
         if(binding.root.findViewById<MapView>(R.id.info_map) == null){
             binding.root.addView(createNewMap(),0)
-            mapSetting()
-            observerSetup(viewModel)
-            setCategoryBtn() // 상단 카테고리 버튼
         }
     }
+
     private fun createNewMap(): MapView{
         var poiMap = MapView(this.activity)
         val layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        poiMap.layoutParams = layoutParams
-        poiMap.id=R.id.info_map
+        with(poiMap){
+            poiMap.layoutParams = layoutParams
+            id=R.id.info_map
+            mapSetting(this)
+            observerSetup(viewModel,this)
+        }
+
         return poiMap
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,8 +81,8 @@ class POIMapFragment:Fragment(){
             POIRepository(POIRetrofitService.getInstance())
         )).get(POIViewModel::class.java)
         getFestivalPosition()
-        mapSetting() // 기본 kakao map 설정
-        observerSetup(viewModel)
+        mapSetting(binding.infoMap) // 기본 kakao map 설정
+        observerSetup(viewModel,binding.infoMap)
         setCategoryBtn() // 상단 카테고리 버튼
         viewModel.getAllPoiFromViewModel(poiCategory, festivalLat, festivalLgt)
     }
@@ -88,8 +94,8 @@ class POIMapFragment:Fragment(){
     }
 
     // 옵저버 세팅
-    private fun observerSetup(viewModel: POIViewModel){
-        viewModel.poiList.observe(viewLifecycleOwner){
+    private fun observerSetup(viewModel: POIViewModel, map: MapView){
+        observer = Observer<POIData>{
             with(binding.poiInfoRecycler){
                 run{
                     val poiAdapter = POIRecyclerAdapter(this@POIMapFragment,it)
@@ -98,9 +104,10 @@ class POIMapFragment:Fragment(){
                     poiAdapter
                 }
             }
-            displayPOI(it)
+            displayPOI(it,map)
             binding.poiProgressBar.visibility = View.GONE
         }
+        viewModel.poiList.observe(viewLifecycleOwner,observer)
         viewModel.errorMessage.observe(viewLifecycleOwner){
             Log.e(TAG,it)
         }
@@ -115,8 +122,8 @@ class POIMapFragment:Fragment(){
         }
     }
     //카카오 지도 설정
-    private fun mapSetting() {
-        with(binding.infoMap) {
+    private fun mapSetting(map: MapView) {
+        with(map) {
             mapType = MapView.MapType.Standard
             setZoomLevel(3, true)
             zoomIn(true)
@@ -135,7 +142,8 @@ class POIMapFragment:Fragment(){
             markerType = MapPOIItem.MarkerType.RedPin // 마커 색
             showAnimationType = MapPOIItem.ShowAnimationType.NoAnimation
             mapPoint = MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()) // poi 장소 좌표
-            itemName = "전달받을 축제 장소" // 장소명
+            itemName = "행사 장소" // 장소명
+            isDraggable = true
         }
         return marker
     }
@@ -150,6 +158,7 @@ class POIMapFragment:Fragment(){
             markerType = MapPOIItem.MarkerType.BluePin // 마커 색
             showAnimationType = MapPOIItem.ShowAnimationType.SpringFromGround
             mapPoint = MapPoint.mapPointWithGeoCoord(data.y.toDouble(), data.x.toDouble()) // poi장소 좌표
+            marker.isShowCalloutBalloonOnTouch = true
             itemName = data.placeName // 장소명
         }
         markerResolver[data] = marker
@@ -158,8 +167,8 @@ class POIMapFragment:Fragment(){
     }
 
     // 전체 마커 map 표시 함수
-    private fun displayPOI(data: POIData){
-        with(binding.infoMap){
+    private fun displayPOI(data: POIData, map:MapView){
+        with(map){
             removeAllPOIItems() // 기존 마커들 제거
             setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
             addPOIItem(settingFestivalMarker()) // 행사위치 핑

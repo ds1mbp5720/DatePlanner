@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.SelectedMarkerPoiFragmentBinding
 import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
 import com.lee.dateplanner.webview.WebViewActivity
@@ -18,7 +19,7 @@ import com.lee.dateplanner.webview.WebViewActivity
  */
 class SelectMarkerPOIFragment:Fragment() {
     companion object{
-        fun newInstance() = POIMapFragment()
+        fun newInstance() = SelectMarkerPOIFragment()
     }
     private lateinit var binding: SelectedMarkerPoiFragmentBinding
     private lateinit var url: String
