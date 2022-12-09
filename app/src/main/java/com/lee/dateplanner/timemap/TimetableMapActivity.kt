@@ -1,6 +1,8 @@
 package com.lee.dateplanner.timemap
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.lee.dateplanner.databinding.MyScheduleMapActivityLayoutBinding
@@ -77,14 +79,18 @@ class TimetableMapActivity:AppCompatActivity() {
             if(data.timeSheetList != null){
                 for(i in 0 until (data.timeSheetList!!.size)){
                     // 위치 좌표가 없는 일정의 경우 마커 생성 생략
-                    if(data.timeSheetList!![i].lat != "" && data.timeSheetList!![i].lat != "" ){
+                    if(data.timeSheetList!![i].lat != "" && data.timeSheetList!![i].lgt != "" ){
                         addPOIItem(addMapPoiMarker(data.timeSheetList!![i])) // 현 마커 추가
+                        Log.e(TAG,"${data.timeSheetList!![i].title} 의 좌표 ${data.timeSheetList!![i].lat} ${data.timeSheetList!![i].lgt}")
                     }
                 }
-                //일정 map 실행시 최초 지도 중심점을 첫번째 일정의 위치로
-                if(data.timeSheetList!![0].lat != "" && data.timeSheetList!![0].lat != "")
-                {
-                    setMapCenterPoint(net.daum.mf.map.api.MapPoint.mapPointWithGeoCoord(data.timeSheetList!![0].lat.toDouble(),data.timeSheetList!![0].lgt.toDouble()), false)
+                for (i in 0 until data.timeSheetList.size){
+                    // 위치가 있는 가장 빠른 일정을 최초 지도 중심
+                    if(data.timeSheetList!![i].lat != "" && data.timeSheetList!![i].lat != "")
+                    {
+                        setMapCenterPoint(net.daum.mf.map.api.MapPoint.mapPointWithGeoCoord(data.timeSheetList!![i].lat.toDouble(),data.timeSheetList!![i].lgt.toDouble()), false)
+                        break
+                    }
                 }
             }
         }

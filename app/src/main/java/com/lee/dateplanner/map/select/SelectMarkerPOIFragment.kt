@@ -1,4 +1,4 @@
-package com.lee.dateplanner.map
+package com.lee.dateplanner.map.select
 
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.SelectedMarkerPoiFragmentBinding
 import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
 import com.lee.dateplanner.webview.WebViewActivity

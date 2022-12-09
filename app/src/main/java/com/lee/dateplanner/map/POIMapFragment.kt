@@ -16,6 +16,7 @@ import com.lee.dateplanner.map.adpter.POIRecyclerAdapter
 import com.lee.dateplanner.map.adpter.POIWindowAdapter
 import com.lee.dateplanner.map.data.POIData
 import com.lee.dateplanner.map.network.POIRetrofitService
+import com.lee.dateplanner.map.select.SelectMarkerPOIFragment
 import kotlinx.coroutines.Job
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint

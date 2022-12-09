@@ -89,17 +89,31 @@
                 android:inputType="text"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
-        <CheckBox
-            android:id="@+id/show_map_checkbox"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/background_dark"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:text="지도 보기"
-            android:longClickable="false"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="지도"
+                android:layout_weight="2"
+                />
+            <CheckBox
+                android:id="@+id/show_map_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18sp"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                android:text="위치 설정"
+                android:checked="true"
+                android:longClickable="false"
+                android:layout_weight="0.1"
             />
+        </LinearLayout>
         <net.daum.mf.map.api.MapView
             android:id="@+id/insert_map"
             android:layout_width="match_parent"
