@@ -1,11 +1,8 @@
 package com.lee.dateplanner.festival
 
 import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +17,6 @@ import com.lee.dateplanner.databinding.FestivallistFragmentLayoutBinding
 import com.lee.dateplanner.festival.adapter.FestivalRecyclerAdapter
 import com.lee.dateplanner.festival.network.FestivalRetrofitService
 import java.util.*
-import kotlin.collections.List
 
 class FestivalListFragment:Fragment() {
     companion object{
@@ -34,7 +30,7 @@ class FestivalListFragment:Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FestivallistFragmentLayoutBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -43,7 +39,7 @@ class FestivalListFragment:Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, FestivalViewModelFactory(
             FestivalRepository(FestivalRetrofitService.getInstance()))
-        ).get(FestivalViewModel::class.java)
+        )[FestivalViewModel::class.java]
 
         listenerSetup()
         // 행사 정보 처리
@@ -55,7 +51,6 @@ class FestivalListFragment:Fragment() {
                     run{
                         val festivalAdapter = FestivalRecyclerAdapter(this@FestivalListFragment,festivalList,it)
                         adapter = festivalAdapter
-                        festivalAdapter
                     }
                 }
             }
@@ -71,7 +66,7 @@ class FestivalListFragment:Fragment() {
         // 날짜 선택
         binding.inputDate.setOnClickListener {
             val cal = Calendar.getInstance()
-            val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+            val dateSetListener = DatePickerDialog.OnDateSetListener { _, _, month, dayOfMonth ->
                 val date = dateStringFormat(month,dayOfMonth)
                 binding.inputDate.text = date // 날짜 버튼 text 변경
                 /**

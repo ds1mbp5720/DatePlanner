@@ -1,7 +1,6 @@
 package com.lee.dateplanner.map
 
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
@@ -13,7 +12,7 @@ import net.daum.mf.map.api.MapView
 /**
  * poi 정보의 marker window 터치에 대한 이벤트 처리 class
  */
-class POIEventClickListener(context: Context?, private val owner: POIMapFragment = POIMapFragment()):MapView.POIItemEventListener {
+class POIEventClickListener(private val owner: POIMapFragment = POIMapFragment()):MapView.POIItemEventListener {
     var job : Job? = null // cancel 해야함
     // 말풍선 클릭시 이벤트 정의 함수
     override fun onCalloutBalloonOfPOIItemTouched(mapView: MapView?, poiItem: MapPOIItem?, buttonType: MapPOIItem.CalloutBalloonButtonType?) {}
@@ -35,7 +34,7 @@ class POIEventClickListener(context: Context?, private val owner: POIMapFragment
 
         if (info != null) {
             with(info){
-                job = CoroutineScope(kotlinx.coroutines.Dispatchers.Main).launch(exceptionHandler) {
+                job = CoroutineScope(Dispatchers.Main).launch(exceptionHandler) {
                     owner.childFragmentManager.setFragmentResult("poiKey", bundleOf("placeName" to placeName, "addressName" to addressName,
                         "phone" to phone, "distance" to distance, "placeUrl" to placeUrl, "longitude" to x, "latitude" to y)
                     )

@@ -1,5 +1,6 @@
 package com.lee.dateplanner.map.select
 
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
@@ -33,7 +34,7 @@ class SelectMarkerPOIFragment:Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = SelectedMarkerPoiFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -46,6 +47,7 @@ class SelectMarkerPOIFragment:Fragment() {
     }
 
     // 뷰 셋팅 함수
+    @SuppressLint("SetTextI18n")
     private fun viewSetup(){
         with(binding){
             parentFragmentManager.setFragmentResultListener("poiKey",viewLifecycleOwner) { _, bundle ->

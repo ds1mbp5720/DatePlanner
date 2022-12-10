@@ -3,8 +3,6 @@ package com.lee.dateplanner.festival
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.lee.dateplanner.R
-import com.lee.dateplanner.map.POIRepository
-import com.lee.dateplanner.map.POIViewModel
 
 @Suppress("UNCHECKED_CAST")
 class FestivalViewModelFactory(private var repository: FestivalRepository): ViewModelProvider.Factory {

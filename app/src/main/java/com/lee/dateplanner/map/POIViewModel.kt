@@ -1,9 +1,5 @@
 package com.lee.dateplanner.map
 
-import android.content.ContentValues.TAG
-import android.os.Bundle
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.lee.dateplanner.map.data.POIData
@@ -37,7 +33,7 @@ class POIViewModel(private val repository:POIRepository):ViewModel() {
                 }
             }
             // 카테고리 중간 분류들 생략 후 최종 세부 카테고리만 저장
-            for(i in 0 until poiList.value!!.documents!!.size){
+            for(i in 0 until poiList.value!!.documents.size){
                 poiList.value!!.documents[i].categoryName = filterCategory(poiList.value!!.documents[i].categoryName)
             }
         }

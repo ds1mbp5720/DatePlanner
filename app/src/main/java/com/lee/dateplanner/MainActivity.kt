@@ -21,12 +21,25 @@ class MainActivity : AppCompatActivity() {
             setContentView(it.root)
         }
         // 최초 fragment instance 생성
+        createFragment(savedInstanceState)
+
+        supportFragmentManager.beginTransaction().add(R.id.tabContent,timeTableFragment).commit()
+        supportFragmentManager.beginTransaction().add(R.id.tabContent,festivalListFragment).commit()
+        setListener(findViewById<TabLayout>(R.id.tabLayout))
+        //초기 보여질 화면
+        supportFragmentManager.beginTransaction().hide(festivalListFragment)
+            .show(timeTableFragment).commit()
+    }
+
+    private fun createFragment(savedInstanceState: Bundle?){
         if(savedInstanceState == null){
             timeTableFragment = TimeTableFragment()
             festivalListFragment = FestivalListFragment()
             poiMapFragment = POIMapFragment()
         }
-        val tabLayout = findViewById<TabLayout>(R.id.tabLayout) // tab 연결
+    }
+
+    private fun setListener(tabLayout: TabLayout){
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 val param = when(tab.position){
@@ -41,13 +54,19 @@ class MainActivity : AppCompatActivity() {
                     // 선택에 따른 fragment 이동
                     when(param){
                         getString(R.string.main_tab_1) -> {
-                            replace(R.id.tabContent,timeTableFragment).commit()
+                            remove(poiMapFragment)
+                            hide(festivalListFragment)
+                            show(timeTableFragment).commit()
                         }
                         getString(R.string.main_tab_2) -> {
-                            replace(R.id.tabContent,festivalListFragment).commit()
+                            remove(poiMapFragment)
+                            hide(timeTableFragment)
+                            show(festivalListFragment).commit()
                         }
                         getString(R.string.main_tab_3) -> {
-                            replace(R.id.tabContent,poiMapFragment).commit()
+                            hide(timeTableFragment)
+                            hide(festivalListFragment)
+                            add(R.id.tabContent,poiMapFragment).commit()
                         }
                         else -> throw IllegalAccessException("Unexpected value: " + tab.position)
                     }
@@ -56,15 +75,6 @@ class MainActivity : AppCompatActivity() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
-        //초기 보여질 화면
-        supportFragmentManager.beginTransaction().replace(R.id.tabContent,timeTableFragment).commit()
-    }
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
     }
 
     override fun onDestroy() {

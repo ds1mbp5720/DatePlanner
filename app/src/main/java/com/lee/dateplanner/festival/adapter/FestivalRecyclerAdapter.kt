@@ -32,13 +32,13 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
     }
 
     override fun onBindViewHolder(holder: FestivalViewHolder, position: Int) {
-        var festival = festivalList.culturalEventInfo.row[position]
+        val festival = festivalList.culturalEventInfo.row[position]
         with(holder.binding){
             festivalTitle.text = festival.tITLE
             festivalPlace.text = festival.pLACE
             festivalCost.text = festival.uSEFEE
             festivalDate.text = festival.dATE
-            Glide.with(this.festivalPoster.context).load("""${festival.mAINIMG}""").into(this.festivalPoster)// 이미지 처리
+            Glide.with(this.festivalPoster.context).load(festival.mAINIMG).into(this.festivalPoster)// 이미지 처리
 
 
             //포스터 클릭 정의
@@ -71,7 +71,7 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
     private var longitude = 0.0 // 경도 저장 변수
     // 행사 장소 string을 통해 위도, 경도 값 변환 함수
     private fun getFestivalPosition(festival: FestivalInfoData.CulturalEventInfo.Row) {
-        var geoCoder = fragment.context?.let { Geocoder(it) } // 좌표변환 목적 geocoder 변수
+        val geoCoder = fragment.context?.let { Geocoder(it) } // 좌표변환 목적 geocoder 변수
         /**
          * 행사 장소 좌표 전달
          */
@@ -79,18 +79,13 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
             // Deprecated 되지 않은 getFromLocationName 함수 활용 좌표 변환함수
             geoCoder?.getFromLocationName(festival.pLACE,1,object: GeocodeListener{
                 override fun onGeocode(addresses: MutableList<Address>) {
-                    if(addresses != null){
-                        latitude = addresses[0].latitude
-                        longitude = addresses[0].longitude
-                        toastMessage("행사 장소 주변 정보를 얻었습니다.")
-                    }
-                    else{ // geocoder 실패시 api 활용
-                        getFestivalPositionFromFestivalPlaceData(festival)
-                    }
+                    latitude = addresses[0].latitude
+                    longitude = addresses[0].longitude
+                    toastMessage("행사 장소 주변 정보를 얻었습니다.")
                 }
             })
         }else{ // 버전 안맞을시 Deprecated 함수사용
-            var festivalPosition = geoCoder?.getFromLocationName(festival.pLACE,1)
+            val festivalPosition = geoCoder?.getFromLocationName(festival.pLACE,1)
             if (festivalPosition != null) {
                 if (festivalPosition.isNotEmpty()){ // geocoder 변환 성공시
                     latitude = festivalPosition[0].latitude
@@ -105,7 +100,7 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
     }
     // festivalSpaceData 활용하여 장소 좌표 획득 함수
     private fun getFestivalPositionFromFestivalPlaceData(festival: FestivalInfoData.CulturalEventInfo.Row){
-        var searchPlace = festivalPlace.culturalSpaceInfo.row
+        val searchPlace = festivalPlace.culturalSpaceInfo.row
         var placeCount = 0
         while (placeCount != searchPlace.size){
             if(searchPlace[placeCount].fACNAME.contains(festival.pLACE) || searchPlace[placeCount].fACDESC.contains(festival.pLACE)||

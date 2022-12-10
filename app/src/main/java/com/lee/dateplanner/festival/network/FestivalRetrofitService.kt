@@ -1,16 +1,12 @@
 package com.lee.dateplanner.festival.network
 
-import android.os.Build.VERSION.CODENAME
 import com.lee.dateplanner.BuildConfig
 import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.festival.data.FestivalSpaceData
-import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.POST
 import retrofit2.http.Path
 
 const val FESTIVAL_ADDRESS = "http://openapi.seoul.go.kr:8088/${BuildConfig.FESTIVAL_KEY}/json/"
@@ -26,7 +22,7 @@ interface FestivalRetrofitService {
     suspend fun getFestivalPlace(): Response<FestivalSpaceData>
 
     companion object {
-        var retrofitService: FestivalRetrofitService? = null
+        private var retrofitService: FestivalRetrofitService? = null
         fun getInstance() : FestivalRetrofitService {
             if (retrofitService == null) {
                 val retrofit = Retrofit.Builder()

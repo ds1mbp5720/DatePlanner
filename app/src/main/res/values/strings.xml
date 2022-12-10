@@ -24,6 +24,9 @@
     <string name="place">place</string>
     <string name="memo">memo</string>
 
+    <string name="insertMarkerTitle">일정 장소</string>
+    <string name="festivalMarkerTitle">행사 장소</string>
+
     <string-array name="category">
         <item>전체</item>
         <item>전시/미술</item>

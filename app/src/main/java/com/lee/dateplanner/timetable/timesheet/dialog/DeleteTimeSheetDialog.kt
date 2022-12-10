@@ -1,10 +1,7 @@
 package com.lee.dateplanner.timetable.timesheet.dialog
 
-import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import android.view.Window
 import com.lee.dateplanner.databinding.DeleteTimesheetDialogBinding
 import com.lee.dateplanner.timetable.TimeTableFragment

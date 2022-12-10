@@ -1,13 +1,10 @@
 package com.lee.dateplanner.timetable.timesheet.adapter
 
-import android.content.ContentValues.TAG
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.TimesheetPlanRecyclerBinding
 import com.lee.dateplanner.timetable.TimeTableFragment
 import com.lee.dateplanner.timetable.TimetableViewModel
@@ -53,13 +50,9 @@ class TimeSheetAdapter(private var id: Int, private var timesheetList: List<Time
             deleteTimesheetBtn.setOnClickListener {
                     //val timeSheetList = timeTable.timeSheetList as ArrayList<TimeSheet>?
                 timeTable.timeSheetList.removeAt(position)
-                    if(timeTable != null){
-                        //timeTable.timeSheetList = timeSheetList // 새로 추가된 list 로 교체
-                        //추가한 timesheet 업데이트
-                        timeTable.timeSheetList?.let { it1 ->
-                            viewModel.updateTimetable(it1,id)
-                        }
-                    }
+                timeTable.timeSheetList.let { it1 ->
+                    viewModel.updateTimetable(it1,id)
+                }
                 //dialog = DeleteTimeSheetDialog(owner,id, position)
                 //dialog!!.show()
             }

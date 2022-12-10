@@ -33,7 +33,7 @@ class TimeTableFragment:Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = TimetablelistFragmentLayoutBinding.inflate(inflater,container,false)
         return binding.root
     }
@@ -53,11 +53,11 @@ class TimeTableFragment:Fragment() {
     private fun listenerSetup(){
         // 계획 추가 버튼 클릭시
         binding.addBtn.setOnClickListener {
-            var timeSheetList =  mutableListOf<TimeSheet>()
+            val timeSheetList =  mutableListOf<TimeSheet>()
             /**
              * 계획 추가 버튼을 dialog 로 하여 선택한 날짜를 바로 가져와서 변수에 넣기
              */
-            var date = "날짜를 수정하세요."
+            val date = "날짜를 수정하세요."
             // room db 추가
             viewModel.insertTimeTable(Timetable(timeSheetList ,date))
         }

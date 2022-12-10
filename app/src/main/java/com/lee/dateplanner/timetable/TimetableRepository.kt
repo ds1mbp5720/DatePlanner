@@ -20,8 +20,8 @@ class TimetableRepository(application: Application) {
     var searchResults = MutableLiveData<MutableList<Timetable>>()  // 특정 timetable 반환
 
     init {
-        val db: com.lee.dateplanner.timetable.time.room.TimeTableRoomDatabase? = com.lee.dateplanner.timetable.time.room.TimeTableRoomDatabase.getDatabase(application)
-        timetableDao = db?.timetableDao()
+        val db: com.lee.dateplanner.timetable.time.room.TimeTableRoomDatabase = com.lee.dateplanner.timetable.time.room.TimeTableRoomDatabase.getDatabase(application)
+        timetableDao = db.timetableDao()
         allTimetables = timetableDao?.getAllTimetable()
     }
     // 일일 timetable 추가

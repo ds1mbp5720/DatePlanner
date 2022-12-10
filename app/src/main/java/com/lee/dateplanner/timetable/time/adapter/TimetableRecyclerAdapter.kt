@@ -2,14 +2,11 @@ package com.lee.dateplanner.timetable.time.adapter
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.content.ContentValues.TAG
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.lee.dateplanner.R
 import com.lee.dateplanner.common.dateStringFormat
 import com.lee.dateplanner.databinding.TimetableRecyclerLayoutBinding
 import com.lee.dateplanner.timemap.TimetableMapActivity
@@ -34,18 +31,19 @@ class TimetableRecyclerAdapter(private val viewModel: TimetableViewModel, privat
         with(holder.binding){
             timetableList.let {
                 // view 설정
-                timeSheetAdapter = TimeSheetAdapter(it!![position].id, it!![position].timeSheetList!!,fragment,it[position],viewModel)  // 일일 계획
+                timeSheetAdapter = TimeSheetAdapter(it!![position].id,
+                    it[position].timeSheetList,fragment,it[position],viewModel)  // 일일 계획
                 dayTimeTable.adapter = timeSheetAdapter
-                tableDateBtn.text = it!![position].date.toString()  // 일정날짜
+                tableDateBtn.text = it[position].date  // 일정날짜
             }
             //날짜 선택 버튼
             tableDateBtn.setOnClickListener {
                 val cal = Calendar.getInstance()
-                val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                val dateSetListener = DatePickerDialog.OnDateSetListener { _, _, month, dayOfMonth ->
                     val date = dateStringFormat(month,dayOfMonth) // string 양식에 맞춰서 저장
                     tableDateBtn.text = date // 날짜 버튼 text 선택한 날짜로 변경
                     // roomDB 해당 일정 date 최신화
-                    viewModel.updateDate(tableDateBtn.text.toString(), timetableList!![position]?.id as Int)
+                    viewModel.updateDate(tableDateBtn.text.toString(), timetableList!![position].id)
                 }
                 //달력 띄우기
                 fragment.context?.let { it1 -> DatePickerDialog(it1,dateSetListener,cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show()

@@ -60,7 +60,7 @@ class POIRecyclerAdapter(private val owner:POIMapFragment, private val pois: POI
         val marker = owner.markerResolver[poi]
         // 해당 위치로 지도 중심점 이동, 지도 확대
         if(marker != null){
-            val update = CameraUpdateFactory.newMapPoint(marker?.mapPoint, 2F)
+            val update = CameraUpdateFactory.newMapPoint(marker.mapPoint, 2F)
             with(owner.binding){
                 infoMap.animateCamera(update, object: net.daum.mf.map.api.CancelableCallback{
                     override fun onFinish() {
