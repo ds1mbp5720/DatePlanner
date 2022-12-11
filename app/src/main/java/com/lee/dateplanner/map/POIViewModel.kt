@@ -32,10 +32,13 @@ class POIViewModel(private val repository:POIRepository):ViewModel() {
                     onError("에러내용:  $response")
                 }
             }
-            // 카테고리 중간 분류들 생략 후 최종 세부 카테고리만 저장
-            for(i in 0 until poiList.value!!.documents.size){
-                poiList.value!!.documents[i].categoryName = filterCategory(poiList.value!!.documents[i].categoryName)
+            withContext(Dispatchers.Main){
+                // 카테고리 중간 분류들 생략 후 최종 세부 카테고리만 저장
+                for(i in 0 until poiList.value!!.documents.size){
+                    poiList.value!!.documents[i].categoryName = filterCategory(poiList.value!!.documents[i].categoryName)
+                }
             }
+
         }
     }
     // 카테고리 문자열 마지막만 남기는 함수

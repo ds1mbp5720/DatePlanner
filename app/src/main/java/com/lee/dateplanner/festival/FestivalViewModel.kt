@@ -27,7 +27,7 @@ class FestivalViewModel(private var repository: FestivalRepository):ViewModel() 
     fun getAllFestivalFromViewModel(category: String, year: Int=0 , month: Int=0, day: Int=0){
         job = CoroutineScope(Dispatchers.IO).launch(exceptionHandler) {
             isLoading.postValue(true)
-            val infoResponse = repository.getFestivalInfo(category) // 행사 정보
+            var infoResponse = repository.getFestivalInfo(category) // 행사 정보
             val placeResponse = repository.getFestivalPlace() // 행사 장소
             withContext(Dispatchers.Main){
                 if(infoResponse.isSuccessful){
@@ -41,15 +41,15 @@ class FestivalViewModel(private var repository: FestivalRepository):ViewModel() 
                 }else{
                     onError("에러내용 : ${placeResponse.message()}")
                 }
+            }
+            withContext(Dispatchers.Main){
+                if(year != 0 && month != 0 && day != 0){
+                    festivalList.value!!.culturalEventInfo.row = filterByDate(year,month,day)
+                }else{
+                    festivalList.value!!.culturalEventInfo.row = filterByTodayDate()
+                }
+            }
 
-            }
-            if(month != 0 && day != 0){
-                festivalList.value!!.culturalEventInfo.row = filterByDate(year,month,day)
-                Log.e(TAG,"날짜 선택")
-            }else{
-                festivalList.value!!.culturalEventInfo.row = filterByTodayDate()
-                Log.e(TAG,"오늘")
-            }
         }
     }
     // 날짜 지난 행사들 제외
