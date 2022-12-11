@@ -2,6 +2,7 @@ package com.lee.dateplanner.festival
 
 import android.app.DatePickerDialog
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,8 +14,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.lee.dateplanner.R
 import com.lee.dateplanner.common.dateStringFormat
+import com.lee.dateplanner.common.toastMessage
 import com.lee.dateplanner.databinding.FestivallistFragmentLayoutBinding
 import com.lee.dateplanner.festival.adapter.FestivalRecyclerAdapter
+import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.festival.network.FestivalRetrofitService
 import java.util.*
 
@@ -45,33 +48,44 @@ class FestivalListFragment:Fragment() {
         // 행사 정보 처리
         viewModel.festivalList.observe(viewLifecycleOwner){
             val festivalList = it
+            val flist = mutableListOf<FestivalInfoData.CulturalEventInfo.Row>()
+            flist.addAll(it.culturalEventInfo.row)
+            Log.e(TAG,"$flist")
             // 행사 장소 정보 처리
             viewModel.festivalPlaceList.observe(viewLifecycleOwner){
                 with(binding.festivalList){
                     run{
-                        val festivalAdapter = FestivalRecyclerAdapter(this@FestivalListFragment,festivalList,it)
-                        adapter = festivalAdapter
+                        adapter?.notifyDataSetChanged()
+                        if(festivalList.culturalEventInfo.row.isNotEmpty()) {
+                            val festivalAdapter = FestivalRecyclerAdapter(this@FestivalListFragment, festivalList, it)
+                            adapter = festivalAdapter
+                            festivalAdapter.refreshFestival()
+                        }
                     }
                 }
             }
             binding.progressBar.visibility = View.GONE // rest 완료시 progressbar 제거
         }
         viewModel.errorMessage.observe(viewLifecycleOwner){
-            Log.e(ContentValues.TAG,it)
+            Log.e(TAG,it)
         }
-        viewModel.getAllFestivalFromViewModel(category)
+        viewModel.isLoading.observe(viewLifecycleOwner){
+            if(it){
+                binding.progressBar.visibility = View.VISIBLE
+            }else{
+                binding.progressBar.visibility = View.GONE
+            }
+        }
     }
     // 리스너 셋팅 함수
     private fun listenerSetup(){
         // 날짜 선택
         binding.inputDate.setOnClickListener {
             val cal = Calendar.getInstance()
-            val dateSetListener = DatePickerDialog.OnDateSetListener { _, _, month, dayOfMonth ->
+            val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 val date = dateStringFormat(month,dayOfMonth)
                 binding.inputDate.text = date // 날짜 버튼 text 변경
-                /**
-                 * adapter filter 필요시 해당 위치에 코드 작성
-                 */
+                viewModel.getAllFestivalFromViewModel(category,year,month+1,dayOfMonth)
             }
             this.context?.let { it1 -> DatePickerDialog(it1,dateSetListener,cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show() }
         }

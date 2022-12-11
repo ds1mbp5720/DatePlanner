@@ -1,10 +1,12 @@
 package com.lee.dateplanner.festival.adapter
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.location.Geocoder.GeocodeListener
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
@@ -23,7 +25,7 @@ import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
 /**
  * 행사 정보 출력 adapter
  */
-class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var festivalList: FestivalInfoData, private var festivalPlace: FestivalSpaceData):RecyclerView.Adapter<FestivalViewHolder>() {
+class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var festivalData: FestivalInfoData, private var festivalPlace: FestivalSpaceData):RecyclerView.Adapter<FestivalViewHolder>() {
     private lateinit var binding: FestivalInfoRecyclerBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FestivalViewHolder {
@@ -32,14 +34,13 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
     }
 
     override fun onBindViewHolder(holder: FestivalViewHolder, position: Int) {
-        val festival = festivalList.culturalEventInfo.row[position]
+        val festival = festivalData.culturalEventInfo.row[position]
         with(holder.binding){
             festivalTitle.text = festival.tITLE
             festivalPlace.text = festival.pLACE
             festivalCost.text = festival.uSEFEE
             festivalDate.text = festival.dATE
             Glide.with(this.festivalPoster.context).load(festival.mAINIMG).into(this.festivalPoster)// 이미지 처리
-
 
             //포스터 클릭 정의
             festivalPoster.setOnClickListener{
@@ -120,5 +121,8 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
     private fun sendPositionToOtherFragment(){
         fragment.setFragmentResult("positionKey", bundleOf("latitude" to latitude, "longitude" to longitude))
     }
-    override fun getItemCount() = festivalList.culturalEventInfo.row.size
+    fun refreshFestival(){
+        notifyDataSetChanged()
+    }
+    override fun getItemCount() = festivalData.culturalEventInfo.row.size
 }

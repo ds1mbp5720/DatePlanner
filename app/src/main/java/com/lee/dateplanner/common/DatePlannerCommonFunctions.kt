@@ -7,6 +7,7 @@ import com.lee.dateplanner.map.adpter.POIWindowAdapter
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
+import java.text.SimpleDateFormat
 
 
 // toast 사용 목적 함수
@@ -22,6 +23,12 @@ fun timeStringFormat(hour: Int, minute: Int): String{
 // 날짜 string format
 fun dateStringFormat(month: Int, day: Int):String{
     return "${month+1}월 ${day}일"  // month 0월 부터 시작함
+}
+//오늘 날짜 int 반환(연,월,일)
+fun getTodayDate(): Int{
+    val dataFormat = SimpleDateFormat("yyyy-MM-dd")
+    val date = dataFormat.format(System.currentTimeMillis()).toString().split("-")
+    return (date[0] + date[1] + date[2]).toInt()
 }
 // 맵 설정 함수
 fun mapSetting(map: MapView, context: Context, poiEventListener: MapView.POIItemEventListener){

@@ -16,7 +16,7 @@ data class FestivalInfoData(
         @SerializedName("RESULT")
         val rESULT: RESULT,
         @SerializedName("row")
-        val row: List<Row>
+        var row: List<Row>
     ) {
         data class RESULT(
             @SerializedName("CODE")
