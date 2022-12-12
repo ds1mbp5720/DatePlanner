@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.lee.dateplanner.R
 import com.lee.dateplanner.common.dateStringFormat
+import com.lee.dateplanner.common.makeDatePickerDialog
 import com.lee.dateplanner.databinding.FestivallistFragmentLayoutBinding
 import com.lee.dateplanner.festival.adapter.FestivalRecyclerAdapter
 import com.lee.dateplanner.festival.network.FestivalRetrofitService
@@ -74,13 +75,11 @@ class FestivalListFragment:Fragment() {
     private fun listenerSetup(){
         // 날짜 선택
         binding.inputDate.setOnClickListener {
-            val cal = Calendar.getInstance()
             val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                val date = dateStringFormat(month,dayOfMonth)
-                binding.inputDate.text = date // 날짜 버튼 text 변경
+                binding.inputDate.text = dateStringFormat(month,dayOfMonth) // 날짜 버튼 text 변경
                 viewModel.getAllFestivalFromViewModel(category,year,month+1,dayOfMonth)
             }
-            this.context?.let { it1 -> DatePickerDialog(it1,dateSetListener,cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show() }
+            this.context?.let { it1 -> makeDatePickerDialog(it1,dateSetListener) }
         }
         // 카테고리 선택 스피너
         binding.categorySpinner.onItemSelectedListener = object: OnItemSelectedListener{

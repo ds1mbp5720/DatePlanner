@@ -27,6 +27,11 @@
     <string name="insertMarkerTitle">일정 장소</string>
     <string name="festivalMarkerTitle">행사 장소</string>
 
+    <string name="add">add</string>
+    <string name="edit">edit</string>
+    <string name="apiInput">apiInput</string>
+    <string name="insertWrongType">Wrong Type</string>
+
     <string-array name="category">
         <item>전체</item>
         <item>전시/미술</item>

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.lee.dateplanner.common.dateStringFormat
+import com.lee.dateplanner.common.makeDatePickerDialog
 import com.lee.dateplanner.databinding.TimetableRecyclerLayoutBinding
 import com.lee.dateplanner.timemap.TimetableMapActivity
 import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
@@ -38,16 +39,13 @@ class TimetableRecyclerAdapter(private val viewModel: TimetableViewModel, privat
             }
             //날짜 선택 버튼
             tableDateBtn.setOnClickListener {
-                val cal = Calendar.getInstance()
                 val dateSetListener = DatePickerDialog.OnDateSetListener { _, _, month, dayOfMonth ->
-                    val date = dateStringFormat(month,dayOfMonth) // string 양식에 맞춰서 저장
-                    tableDateBtn.text = date // 날짜 버튼 text 선택한 날짜로 변경
+                    tableDateBtn.text = dateStringFormat(month,dayOfMonth) // 날짜 버튼 text 선택한 날짜로 변경
                     // roomDB 해당 일정 date 최신화
                     viewModel.updateDate(tableDateBtn.text.toString(), timetableList!![position].id)
                 }
                 //달력 띄우기
-                fragment.context?.let { it1 -> DatePickerDialog(it1,dateSetListener,cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show()
-                }
+                fragment.context?.let { it1 -> makeDatePickerDialog(it1,dateSetListener) }
             }
 
             // 시간계획 추가 버튼

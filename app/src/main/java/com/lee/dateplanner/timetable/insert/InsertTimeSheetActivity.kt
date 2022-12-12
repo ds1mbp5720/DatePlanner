@@ -36,7 +36,6 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
     private var position: Int = 0 // 수정시 해당 일정의 위치 정보
     private lateinit var scheduleMarker:MapPOIItem
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = InputScheduleLayoutBinding.inflate(layoutInflater)
@@ -52,10 +51,10 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
     // 입력 혹은 수정, 추가 경우에 따른 입력 기능 분류 함수
     private fun setInputType(){
         when(type){
-            "add" -> typeNewAdd()
-            "edit" -> typeEdit()
-            "apiInput" -> typeAPI()
-            else -> Log.e(TAG,"Wrong Type")
+            getString(R.string.add) -> typeNewAdd()
+            getString(R.string.edit) -> typeEdit()
+            getString(R.string.apiInput) -> typeAPI()
+            else -> Log.e(TAG,getString(R.string.insertWrongType))
         }
     }
     // 옵저버 설정 , 내부에 리스너 삽입
@@ -71,19 +70,17 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
     private fun setListener(timeTable : Timetable){
         // 시간 버튼 클릭
         binding.inputTimeBtn.setOnClickListener {
-            val cal = Calendar.getInstance()
             val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                val time = timeStringFormat(hourOfDay,minute)
-                binding.inputTimeBtn.text = time
+                binding.inputTimeBtn.text = timeStringFormat(hourOfDay,minute)
             }
-            TimePickerDialog(this,timeSetListener,cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), android.text.format.DateFormat.is24HourFormat(this)).show()
+            makeTimePickerDialog(this,timeSetListener)
         }
         //등록 선택시
         binding.insertBtn.setOnClickListener {
             when(type){
-                "add" -> setBtnTypeAdd(timeTable)
-                "edit"-> setBtnTypeEdit(timeTable)
-                "apiInput"-> setBtnTypeAPI(timeTable,id)
+                getString(R.string.add) -> setInsertData(timeTable,id,getString(R.string.add))
+                getString(R.string.edit)-> setInsertData(timeTable,id,getString(R.string.edit))
+                getString(R.string.apiInput)-> setBtnTypeAPI(timeTable,id)
                 }
             finish()
         }
@@ -117,22 +114,6 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
         id = intent.getIntExtra("id",0) // 터치한 계획표 id 값 받기
         setObserve()
     }
-    // 신규입력 추가 버튼 이벤트
-    private fun setBtnTypeAdd(timeTable : Timetable){
-        // 기존 리스트 가져오기
-        val timeSheetList = timeTable.timeSheetList
-        //입력값들 일정표에 저장
-        with(binding){
-            title = inputTitle.text.toString()
-            time = inputTimeBtn.text.toString()
-            place = inputLocation.text.toString()
-            memo = inputMemo.text.toString()
-            timeSheetList.add(TimeSheet(title,time,place,memo,latitude,longitude)) // 저장용 timesheet
-        }
-        timeTable.timeSheetList = timeSheetList // 새로 추가된 list 로 교체
-        //추가한 timesheet 업데이트
-        timeTable.timeSheetList.let { it1 -> viewModel.updateTimetable(it1,id) }
-    }
 
     // 기존 정보 수정
     private fun typeEdit(){
@@ -155,18 +136,6 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
         }
         setObserve()
     }
-    // 수정시 버튼 이벤트
-    private fun setBtnTypeEdit(timeTable : Timetable){
-        //입력값들 일정표에 저장
-        with(binding){
-            title = inputTitle.text.toString()
-            time = inputTimeBtn.text.toString()
-            place = inputLocation.text.toString()
-            memo = inputMemo.text.toString()
-            timeTable.timeSheetList.set(position, TimeSheet(title,time,place,memo,latitude,longitude))
-        }
-        timeTable.timeSheetList.let { it1 -> viewModel.updateTimetable(it1,id) }
-    }
 
     // 행사.poi 일정 추가
     private fun typeAPI(){
@@ -181,13 +150,10 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
             inputLocation.setText(place)
         }
         binding.inputTimeBtn.setOnClickListener {
-            val cal = Calendar.getInstance()
             val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                val time = timeStringFormat(hourOfDay,minute)
-                binding.inputTimeBtn.text = time
+                binding.inputTimeBtn.text = timeStringFormat(hourOfDay,minute)
             }
-            TimePickerDialog(this,timeSetListener,cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), android.text.format.DateFormat.is24HourFormat(this)).show()
-
+             makeTimePickerDialog(this,timeSetListener)
         }
         binding.insertBtn.setOnClickListener{
             val dialog = SelectTimeTableDialog("일정을 선택하세요.",viewModel,this)
@@ -195,15 +161,21 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
         }
     }
     fun setBtnTypeAPI(timeTable : Timetable, id: Int){
-        //입력값들 일정표에 저장
+        setInsertData(timeTable,id,getString(R.string.apiInput))
+    }
+    private fun setInsertData(timeTable : Timetable, id: Int, type: String){
         with(binding){
             title = inputTitle.text.toString()
             time = inputTimeBtn.text.toString()
             place = inputLocation.text.toString()
             memo = inputMemo.text.toString()
-            timeTable.timeSheetList.add(TimeSheet(title,time,place,memo, latitude,longitude))
+            when(type){
+                getString(R.string.edit) -> timeTable.timeSheetList[position]=(TimeSheet(title,time,place,memo, latitude,longitude))
+                else -> timeTable.timeSheetList.add(TimeSheet(title,time,place,memo, latitude,longitude))
+            }
+            timeTable.timeSheetList.sortBy { it.time }
+            timeTable.timeSheetList.let { it1 -> viewModel.updateTimetable(it1,id) }
         }
-        timeTable.timeSheetList.let { it1 -> viewModel.updateTimetable(it1,id) }
     }
 
     override fun onPause() {
@@ -215,12 +187,11 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
     override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {}
     override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {}
     override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?, p2: MapPOIItem.CalloutBalloonButtonType?){}
-    // 일정 위치 조정시 drag 한 marker의 좌표 획득 함수
+    // 일정 위치 조정시 drag 한 marker 좌표 획득 함수
     override fun onDraggablePOIItemMoved(p0: MapView?, p1: MapPOIItem?, p2: MapPoint?) {
         if (p2 != null) {
             latitude = p2.mapPointGeoCoord.latitude.toString()
             longitude = p2.mapPointGeoCoord.longitude.toString()
         }
     }
-
 }
