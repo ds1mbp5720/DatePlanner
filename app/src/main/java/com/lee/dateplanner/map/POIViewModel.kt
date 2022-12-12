@@ -32,20 +32,7 @@ class POIViewModel(private val repository:POIRepository):ViewModel() {
                     onError("에러내용:  $response")
                 }
             }
-            withContext(Dispatchers.Main){
-                // 카테고리 중간 분류들 생략 후 최종 세부 카테고리만 저장
-                for(i in 0 until poiList.value!!.documents.size){
-                    poiList.value!!.documents[i].categoryName = filterCategory(poiList.value!!.documents[i].categoryName)
-                }
-            }
-
         }
-    }
-    // 카테고리 문자열 마지막만 남기는 함수
-    fun filterCategory(category: String): String{
-        // > 를 통해 카테고리 단계 세분화로 >를 통한 분리 후 저장
-        val categoryList: MutableList<String> = category.split(">") as MutableList<String>
-        return categoryList[categoryList.size-1]
     }
 
     private fun onError(message: String){

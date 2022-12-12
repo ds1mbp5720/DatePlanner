@@ -57,7 +57,6 @@ class SelectMarkerPOIFragment:Fragment() {
                 selectPoiDistance.text = "거리: " + bundle.getString("distance").toString() + "m"
                 latitude = bundle.getString("latitude").toString()
                 longitude = bundle.getString("longitude").toString()
-                Log.e(TAG,"좌표 $latitude $longitude")
                 url = bundle.getString("placeUrl").toString()
             }
         }

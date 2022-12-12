@@ -1,18 +1,21 @@
 package com.lee.dateplanner.map.adpter
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.lee.dateplanner.common.setCategoryTextFilter
 import com.lee.dateplanner.databinding.PoiListRecyclerBinding
 import com.lee.dateplanner.map.POIMapFragment
 import com.lee.dateplanner.map.data.POIData
 import kotlinx.coroutines.*
 import net.daum.mf.map.api.CameraUpdateFactory
 
-class POIRecyclerAdapter(private val owner:POIMapFragment, private val pois: POIData): RecyclerView.Adapter<POIViewHolder>() {
+class POIRecyclerAdapter(private val owner:POIMapFragment, private val poiData: POIData): RecyclerView.Adapter<POIViewHolder>() {
     private lateinit var binding: PoiListRecyclerBinding
     var job : Job? = null
 
@@ -22,10 +25,10 @@ class POIRecyclerAdapter(private val owner:POIMapFragment, private val pois: POI
     }
 
     override fun onBindViewHolder(holder: POIViewHolder, position: Int) {
-        val poi = pois.documents[position]
+        val poi = poiData.documents[position]
         val behavior = BottomSheetBehavior.from(owner.binding.bottomPoiList)
         with(holder.binding){
-            poiCategory.text = poi.categoryName
+            poiCategory.text = setCategoryTextFilter(poi.categoryName)
             poiName.text = poi.placeName
             poiPhone.text = poi.phone
             poiAddress.text = poi.addressName
@@ -34,12 +37,11 @@ class POIRecyclerAdapter(private val owner:POIMapFragment, private val pois: POI
             root.setOnClickListener {
                 moveToMarker(poi)
                 sendSelectRecyclerInfo(poi)
-                owner.binding.infoMap.refreshMapTiles()
                 behavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
         }
     }
-    override fun getItemCount() = pois.documents.size
+    override fun getItemCount() = poiData.documents.size
 
     // 리스트에서 poi 선택시 정보 전달 및 selectMarkerPOIFragment 호출 함수
     private fun sendSelectRecyclerInfo(poi: POIData.Document){
@@ -66,11 +68,12 @@ class POIRecyclerAdapter(private val owner:POIMapFragment, private val pois: POI
                     override fun onFinish() {
                         owner.binding.infoMap.selectPOIItem(marker,true) // 선택한 상점 마커 선택
                     }
-                    override fun onCancel() {
-                    }
+                    override fun onCancel() {}
                 })
                 infoMap.refreshMapTiles()
             }
+        }else{
+            Log.e(TAG,"마커 null")
         }
     }
 

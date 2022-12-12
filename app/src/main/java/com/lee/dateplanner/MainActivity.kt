@@ -25,10 +25,9 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction().add(R.id.tabContent,timeTableFragment).commit()
         supportFragmentManager.beginTransaction().add(R.id.tabContent,festivalListFragment).commit()
-        setListener(findViewById<TabLayout>(R.id.tabLayout))
+        setListener(findViewById(R.id.tabLayout))
         //초기 보여질 화면
-        supportFragmentManager.beginTransaction().hide(festivalListFragment)
-            .show(timeTableFragment).commit()
+        supportFragmentManager.beginTransaction().hide(festivalListFragment).show(timeTableFragment).commit()
     }
 
     private fun createFragment(savedInstanceState: Bundle?){

@@ -39,6 +39,9 @@ class POIMapFragment:Fragment(){
     private lateinit var festivalMarker: MapPOIItem
     private var job : Job? = null
     var selectMarkerPOIFragment = SelectMarkerPOIFragment()
+    // 정보 리스트와 maker 연동 목적 map
+    var markerResolver: MutableMap<POIData.Document,MapPOIItem> = HashMap()
+    var markerResolver2: MutableMap<MapPOIItem,POIData.Document> = HashMap()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,12 +51,10 @@ class POIMapFragment:Fragment(){
         binding = AroundinfoMapFragmentLayoutBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     override fun onPause() {
         super.onPause()
         binding.root.removeView(binding.root.findViewById(R.id.info_map))
     }
-
     override fun onResume() {
         super.onResume()
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
@@ -69,7 +70,7 @@ class POIMapFragment:Fragment(){
             poiMap.layoutParams = layoutParams
             id=R.id.info_map
             mapSetting(this, this@POIMapFragment.requireContext(),poiBalloonListener)
-            addPOIItem(festivalMarker) // 새로 생성한 map에 행사위치 핑
+            addPOIItem(festivalMarker) // 새로 생성한 map 행사위치 핑
             observerSetup(viewModel,this)
         }
         return poiMap
@@ -81,7 +82,7 @@ class POIMapFragment:Fragment(){
         ))[POIViewModel::class.java]
         getFestivalPosition()
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
-        mapSetting(binding.infoMap, this.requireContext(),poiBalloonListener)
+        mapSetting(binding.infoMap, this@POIMapFragment.requireContext(),poiBalloonListener)
         binding.infoMap.addPOIItem(festivalMarker) // 행사위치 핑
         observerSetup(viewModel,binding.infoMap)
         setCategoryBtn() // 상단 카테고리 버튼
@@ -102,7 +103,6 @@ class POIMapFragment:Fragment(){
                     val poiAdapter = POIRecyclerAdapter(this@POIMapFragment,it)
                     job = poiAdapter.job
                     adapter = poiAdapter
-                    poiAdapter
                 }
             }
             displayPOI(it,map)
@@ -121,10 +121,6 @@ class POIMapFragment:Fragment(){
             viewModel.getAllPoiFromViewModel(poiCategory, festivalLat, festivalLgt)
         }
     }
-    // 정보 리스트와 maker 연동 목적 map
-    var markerResolver: MutableMap<POIData.Document,MapPOIItem> = HashMap()
-    var markerResolver2: MutableMap<MapPOIItem,POIData.Document> = HashMap()
-
     // 전체 마커 map 표시 함수
     private fun displayPOI(data: POIData, map:MapView){
         with(map){

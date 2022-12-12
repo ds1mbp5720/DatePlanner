@@ -48,6 +48,11 @@ fun mapSetting(map: MapView, context: Context, poiEventListener: MapView.POIItem
         setCalloutBalloonAdapter(POIWindowAdapter(context))
     }
 }
+// 카테고리 text 수정 함수
+fun setCategoryTextFilter(category: String):String{
+    val categoryList: MutableList<String> = category.split(">") as MutableList<String>
+    return categoryList[categoryList.size-1]
+}
 // 마커 설정 함수
 fun settingMarker(title: String,latitude: Double, longitude: Double, drag: Boolean, type:MapPOIItem.MarkerType):MapPOIItem{
     val marker = MapPOIItem()
@@ -68,5 +73,4 @@ fun makeDatePickerDialog(context: Context, listener: DatePickerDialog.OnDateSetL
 fun makeTimePickerDialog(context: Context, listener: TimePickerDialog.OnTimeSetListener){
     val cal = Calendar.getInstance()
     TimePickerDialog(context,listener,cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), DateFormat.is24HourFormat(context)).show()
-
 }
