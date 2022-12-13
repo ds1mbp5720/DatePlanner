@@ -22,11 +22,12 @@ import kotlinx.coroutines.Job
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
+import net.daum.mf.map.api.MapView.MapViewEventListener
 
 /**
  * 주변 상권정보 카테고리별 제공 fragment
  */
-class POIMapFragment:Fragment(){
+class POIMapFragment:Fragment(), MapViewEventListener{
     companion object{
         fun newInstance() = POIMapFragment()
     }
@@ -35,7 +36,9 @@ class POIMapFragment:Fragment(){
     private val poiBalloonListener = POIEventClickListener(this) // info window 터치 객체
     private var poiCategory: String = "CE7" // category 저장 변수
     private var festivalLat: String = "37.5143225723" // 행사장 좌표
+    private var centerLat: String = "37.5143225723" // 행사장 좌표
     private var festivalLgt: String = "127.062831022" // 행사장 좌표
+    private var centerLgt: String = "127.062831022" // 행사장 좌표
     private lateinit var festivalMarker: MapPOIItem
     private var job : Job? = null
     var selectMarkerPOIFragment = SelectMarkerPOIFragment()
@@ -83,10 +86,10 @@ class POIMapFragment:Fragment(){
         getFestivalPosition()
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
         mapSetting(binding.infoMap, this@POIMapFragment.requireContext(),poiBalloonListener)
+        binding.infoMap.setMapViewEventListener(this)
         binding.infoMap.addPOIItem(festivalMarker) // 행사위치 핑
         observerSetup(viewModel,binding.infoMap)
         setCategoryBtn() // 상단 카테고리 버튼
-        viewModel.getAllPoiFromViewModel(poiCategory, festivalLat, festivalLgt)
     }
 
     override fun onDestroyView() {
@@ -117,15 +120,13 @@ class POIMapFragment:Fragment(){
         setFragmentResultListener("positionKey"){ _, bundle ->
             festivalLat = bundle.getDouble("latitude").toString()
             festivalLgt = bundle.getDouble("longitude").toString()
-            // 내부에서만 값이 실시간 반영이 되므로 retrofit 함수는 여기서 실행
-            viewModel.getAllPoiFromViewModel(poiCategory, festivalLat, festivalLgt)
         }
+
     }
     // 전체 마커 map 표시 함수
     private fun displayPOI(data: POIData, map:MapView){
         with(map){
             removeAllPOIItems() // 기존 마커들 제거
-            setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
             addPOIItem(festivalMarker) // 카테고리 바꿀시 새로 생성할 행사위치 핑
             for(i in 0 until  data.documents.size){
                 val document = data.documents[i]
@@ -142,16 +143,35 @@ class POIMapFragment:Fragment(){
         with(binding){
             cafeBtn.setOnClickListener {
                 poiCategory = getString(R.string.poi_category_1)
-                viewModel.getAllPoiFromViewModel(poiCategory, festivalLat, festivalLgt)
+                viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt)
             }
             restaurantBtn.setOnClickListener {
                 poiCategory = getString(R.string.poi_category_2)
-                viewModel.getAllPoiFromViewModel(poiCategory, festivalLat, festivalLgt)
+                viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt)
             }
             etcBtn.setOnClickListener {
                 poiCategory = getString(R.string.poi_category_3)
-                viewModel.getAllPoiFromViewModel(poiCategory, festivalLat, festivalLgt)
+                viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt)
             }
         }
     }
+    override fun onMapViewInitialized(p0: MapView?) {
+        binding.infoMap.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
+        centerLat = festivalLat
+        centerLgt = festivalLgt
+        viewModel.getAllPoiFromViewModel(poiCategory, centerLat,centerLgt)
+    }
+    override fun onMapViewDragEnded(p0: MapView, p1: MapPoint?) {
+        //end 이후 map의 중앙심 포인트 얻어서 해보기
+        centerLat = p0.mapCenterPoint.mapPointGeoCoord.latitude.toString()
+        centerLgt = p0.mapCenterPoint.mapPointGeoCoord.longitude.toString()
+        viewModel.getAllPoiFromViewModel(poiCategory, centerLat,centerLgt)
+    }
+    override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {}
+    override fun onMapViewZoomLevelChanged(p0: MapView?, p1: Int) {}
+    override fun onMapViewSingleTapped(p0: MapView?, p1: MapPoint?) {}
+    override fun onMapViewDoubleTapped(p0: MapView?, p1: MapPoint?) {}
+    override fun onMapViewLongPressed(p0: MapView?, p1: MapPoint?) {}
+    override fun onMapViewDragStarted(p0: MapView?, p1: MapPoint?) {}
+    override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {}
 }

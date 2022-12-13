@@ -67,10 +67,10 @@ class POIRecyclerAdapter(private val owner:POIMapFragment, private val poiData: 
                 infoMap.animateCamera(update, object: net.daum.mf.map.api.CancelableCallback{
                     override fun onFinish() {
                         owner.binding.infoMap.selectPOIItem(marker,true) // 선택한 상점 마커 선택
+                        infoMap.refreshMapTiles()
                     }
                     override fun onCancel() {}
                 })
-                infoMap.refreshMapTiles()
             }
         }else{
             Log.e(TAG,"마커 null")

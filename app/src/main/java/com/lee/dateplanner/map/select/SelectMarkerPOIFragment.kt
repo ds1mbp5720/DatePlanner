@@ -54,7 +54,6 @@ class SelectMarkerPOIFragment:Fragment() {
                 selectPoiName.text = bundle.getString("placeName").toString()
                 selectPoiAddress.text = bundle.getString("addressName").toString()
                 selectPoiPhone.text = bundle.getString("phone").toString()
-                selectPoiDistance.text = "거리: " + bundle.getString("distance").toString() + "m"
                 latitude = bundle.getString("latitude").toString()
                 longitude = bundle.getString("longitude").toString()
                 url = bundle.getString("placeUrl").toString()
@@ -65,10 +64,6 @@ class SelectMarkerPOIFragment:Fragment() {
     private fun listenerSetup(){
         with(binding){
             selectPoiInsertBtn.setOnClickListener {
-                /**
-                 * map이 있는 상태에서 다른 map 선언시 오류
-                 * DaumMap does not support that two or more net.daum.mf.map.api.MapView objects exists at the same time
-                 */
                 val intent = Intent(context, InsertTimeSheetActivity::class.java)
                 intent.putExtra("input_signal","apiInput") // 일정 입력 창 종류
                 intent.putExtra("title",selectPoiName.text)
@@ -89,7 +84,6 @@ class SelectMarkerPOIFragment:Fragment() {
             placeName = bundle.getString("placeName").toString()
             addressName = bundle.getString("addressName").toString()
             phone = bundle.getString("phone").toString()
-            distance = "거리: " + bundle.getString("distance").toString() + "m"
             url = bundle.getString("placeUrl").toString()
         }
     }

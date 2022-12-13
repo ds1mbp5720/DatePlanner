@@ -20,6 +20,7 @@ class POIEventClickListener(private val owner: POIMapFragment = POIMapFragment()
     override fun onPOIItemSelected(p0: MapView?, poiItem: MapPOIItem?) {
         sendSelectPoiInfo(poiItem)
     }
+    @Deprecated("Deprecated in Java")
     override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {}
 
     override fun onDraggablePOIItemMoved(p0: MapView?, p1: MapPOIItem?, p2: MapPoint?) {
