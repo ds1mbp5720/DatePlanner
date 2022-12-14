@@ -37,13 +37,6 @@
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/poi_list_recycler" />
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/addSchedule_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#00000000"
-                app:icon="@drawable/ic_baseline_add_24"
-                android:layout_gravity="center" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

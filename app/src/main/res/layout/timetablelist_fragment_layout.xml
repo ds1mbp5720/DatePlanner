@@ -12,15 +12,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:text="계획 추가"
-        />
+        android:layout_gravity="right"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="0dp"
+        style="?attr/materialButtonOutlinedStyle"
+        android:text="계획 추가" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/allTimeTable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/addBtn"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="3dp"
         android:layout_marginBottom="7dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/timetable_recycler_layout"

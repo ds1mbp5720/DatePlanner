@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -19,9 +20,8 @@
         android:id="@+id/festivalFilterLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#D0CEC3C3"
         app:layout_constraintTop_toTopOf="parent"
-        android:padding="7dp"
+        android:padding="0dp"
         >
         <com.google.android.material.button.MaterialButton
             android:id="@+id/input_date"
@@ -29,20 +29,27 @@
             android:layout_height="match_parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="5dp"
             android:inputType="datetime"
-            android:hint="날짜"
+            android:text="날짜"
+            android:textColor="@color/black"
+            style="?attr/materialButtonOutlinedStyle"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/gray"
             android:maxLines="1"/>
 
-        <Spinner
+        <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/categorySpinner"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_height="37dp"
+            android:background="@drawable/spinner_background"
             android:entries="@array/category"
             android:spinnerMode="dialog"
-            />
+            android:layout_marginRight="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -50,10 +57,12 @@
         android:id="@+id/festival_list"
         tools:listitem="@layout/festival_info_recycler"
         android:padding="1dp"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/festivalFilterLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constrainedHeight="true"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

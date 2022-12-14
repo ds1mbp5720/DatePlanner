@@ -12,7 +12,7 @@
             android:layout_margin="7dp"
             android:orientation="vertical" >
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/window_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

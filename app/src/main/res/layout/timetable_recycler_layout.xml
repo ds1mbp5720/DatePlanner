@@ -2,22 +2,26 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="17dp"
+    android:paddingBottom="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
         android:layout_marginBottom="5dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/gray"
         android:backgroundTint="@color/white">
 
         <LinearLayout
             style="@style/CardViewContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingRight="1sp"
+            android:paddingLeft="1sp"
             android:paddingTop="0dp"
             android:orientation="vertical">
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,7 +44,8 @@
                     android:layout_height="40dp"
                     android:gravity="center"
                     android:paddingLeft="4dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginRight="4dp"
+                    style="?attr/materialButtonOutlinedStyle"
                     app:icon="@drawable/ic_baseline_map_24"
                     app:layout_constraintRight_toLeftOf="@id/delete_time_btn"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -50,6 +55,8 @@
                     android:layout_height="40dp"
                     android:gravity="center"
                     android:paddingLeft="4dp"
+                    android:layout_marginRight="5dp"
+                    style="?attr/materialButtonOutlinedStyle"
                     app:icon="@drawable/ic_baseline_delete_24"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -59,6 +66,8 @@
                 android:id="@+id/day_timeTable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingRight="3dp"
+                android:paddingLeft="3dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/timesheet_plan_recycler"/>
 
@@ -67,11 +76,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:background="#00ff0000"
+                app:iconTint="@color/black"
                 android:backgroundTint="#00000000"
                 app:icon="@drawable/ic_baseline_add_24"
                 />
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

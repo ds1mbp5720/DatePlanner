@@ -1,6 +1,7 @@
 package com.lee.dateplanner.timemap.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -40,6 +41,7 @@ class TimetableMapAdapter(private val owner: TimetableMapActivity, private val t
                         scheduleMap.animateCamera(update, object : CancelableCallback {
                             override fun onFinish() {
                                 owner.binding.scheduleMap.selectPOIItem(marker, true) //마커 선택
+                                scheduleMap.refreshMapTiles()
                             }
                             override fun onCancel() {}
                         })
@@ -48,9 +50,9 @@ class TimetableMapAdapter(private val owner: TimetableMapActivity, private val t
                     }
                 }
             }
-            // bottomSheet 일정 리스트에서 추가 버튼 클릭
-            reviseBtn.setOnClickListener {
-            }
+            // 버튼 제거
+            reviseBtn.visibility = View.GONE
+            deleteTimesheetBtn.visibility = View.GONE
         }
     }
 

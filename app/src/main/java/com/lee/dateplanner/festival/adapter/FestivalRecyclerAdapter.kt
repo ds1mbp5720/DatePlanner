@@ -1,5 +1,6 @@
 package com.lee.dateplanner.festival.adapter
 
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.location.Address
@@ -32,7 +33,6 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
         binding = FestivalInfoRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FestivalViewHolder(binding)
     }
-
     override fun onBindViewHolder(holder: FestivalViewHolder, position: Int) {
         val festival = festivalData.culturalEventInfo.row[position]
         with(holder.binding){
@@ -121,6 +121,7 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
     private fun sendPositionToOtherFragment(){
         fragment.setFragmentResult("positionKey", bundleOf("latitude" to latitude, "longitude" to longitude))
     }
+    @SuppressLint("NotifyDataSetChanged")
     fun refreshFestival(){
         notifyDataSetChanged()
     }
