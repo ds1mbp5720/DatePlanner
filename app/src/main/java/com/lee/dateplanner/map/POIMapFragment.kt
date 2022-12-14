@@ -27,7 +27,7 @@ import net.daum.mf.map.api.MapView.MapViewEventListener
 /**
  * 주변 상권정보 카테고리별 제공 fragment
  */
-class POIMapFragment:Fragment(), MapViewEventListener{
+class POIMapFragment:Fragment(){
     companion object{
         fun newInstance() = POIMapFragment()
     }
@@ -45,6 +45,23 @@ class POIMapFragment:Fragment(), MapViewEventListener{
     // 정보 리스트와 maker 연동 목적 map
     var markerResolver: MutableMap<POIData.Document,MapPOIItem> = HashMap()
     var markerResolver2: MutableMap<MapPOIItem,POIData.Document> = HashMap()
+    private val mapViewListener = object :MapViewEventListener{
+        override fun onMapViewInitialized(p0: MapView?) {
+            Log.e(TAG,"지도 생성2")
+        }
+        override fun onMapViewDragEnded(p0: MapView, p1: MapPoint?) {
+            centerLat = p0.mapCenterPoint.mapPointGeoCoord.latitude.toString()
+            centerLgt = p0.mapCenterPoint.mapPointGeoCoord.longitude.toString()
+            viewModel.getAllPoiFromViewModel(poiCategory, centerLat,centerLgt)
+        }
+        override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {}
+        override fun onMapViewZoomLevelChanged(p0: MapView?, p1: Int) {}
+        override fun onMapViewSingleTapped(p0: MapView?, p1: MapPoint?) {}
+        override fun onMapViewDoubleTapped(p0: MapView?, p1: MapPoint?) {}
+        override fun onMapViewLongPressed(p0: MapView?, p1: MapPoint?) {}
+        override fun onMapViewDragStarted(p0: MapView?, p1: MapPoint?) {}
+        override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {}
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,38 +83,22 @@ class POIMapFragment:Fragment(), MapViewEventListener{
         }
     }
 
-    private fun createNewMapView(): MapView{
-        val poiMap = MapView(this.activity)
-        val layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        with(poiMap){
-            poiMap.layoutParams = layoutParams
-            id=R.id.info_map
-            mapSetting(this, this@POIMapFragment.requireContext(),poiBalloonListener)
-            addPOIItem(festivalMarker) // 새로 생성한 map 행사위치 핑
-            observerSetup(viewModel,this)
-        }
-        return poiMap
-    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, POIViewModelFactory(
             POIRepository(POIRetrofitService.getInstance())
         ))[POIViewModel::class.java]
         getFestivalPosition()
-        festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
-        mapSetting(binding.infoMap, this@POIMapFragment.requireContext(),poiBalloonListener)
-        binding.infoMap.setMapViewEventListener(this)
-        binding.infoMap.addPOIItem(festivalMarker) // 행사위치 핑
+        festivalInfoSet()
+        firstSettingPoiMapView()
         observerSetup(viewModel,binding.infoMap)
         setCategoryBtn() // 상단 카테고리 버튼
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         poiBalloonListener.job?.cancel()
         job?.cancel()
     }
-
     // 옵저버 세팅
     private fun observerSetup(viewModel: POIViewModel, map: MapView){
         viewModel.poiList.observe(viewLifecycleOwner){
@@ -114,6 +115,33 @@ class POIMapFragment:Fragment(), MapViewEventListener{
         viewModel.errorMessage.observe(viewLifecycleOwner){
             Log.e(TAG,it)
         }
+    }
+    // 전달받은 행사 좌표 마커, 좌표 셋팅 함수 / null 일시 지정한 초기값 사용
+    private fun festivalInfoSet(){
+        festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
+        centerLat = festivalLat
+        centerLgt = festivalLgt
+    }
+    // 최초 fragment 실행시 MapView 추가 설정 함수
+    private fun firstSettingPoiMapView(){
+        mapSetting(binding.infoMap, this@POIMapFragment.requireContext(),poiBalloonListener)
+        binding.infoMap.setMapViewEventListener(mapViewListener)
+        binding.infoMap.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
+        viewModel.getAllPoiFromViewModel(poiCategory, centerLat,centerLgt)
+        binding.infoMap.addPOIItem(festivalMarker) // 행사위치 핑
+    }
+    private fun createNewMapView(): MapView{
+        val poiMap = MapView(this.activity)
+        val layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        with(poiMap){
+            poiMap.layoutParams = layoutParams
+            id=R.id.info_map
+            mapSetting(this, this@POIMapFragment.requireContext(),poiBalloonListener)
+            addPOIItem(festivalMarker) // 새로 생성한 map 행사위치 핑
+            observerSetup(viewModel,this)
+            setMapViewEventListener(mapViewListener)
+        }
+        return poiMap
     }
     // 전달받은 행사장 좌표값
     private fun getFestivalPosition(){
@@ -155,23 +183,4 @@ class POIMapFragment:Fragment(), MapViewEventListener{
             }
         }
     }
-    override fun onMapViewInitialized(p0: MapView?) {
-        binding.infoMap.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
-        centerLat = festivalLat
-        centerLgt = festivalLgt
-        viewModel.getAllPoiFromViewModel(poiCategory, centerLat,centerLgt)
-    }
-    override fun onMapViewDragEnded(p0: MapView, p1: MapPoint?) {
-        //end 이후 map의 중앙심 포인트 얻어서 해보기
-        centerLat = p0.mapCenterPoint.mapPointGeoCoord.latitude.toString()
-        centerLgt = p0.mapCenterPoint.mapPointGeoCoord.longitude.toString()
-        viewModel.getAllPoiFromViewModel(poiCategory, centerLat,centerLgt)
-    }
-    override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {}
-    override fun onMapViewZoomLevelChanged(p0: MapView?, p1: Int) {}
-    override fun onMapViewSingleTapped(p0: MapView?, p1: MapPoint?) {}
-    override fun onMapViewDoubleTapped(p0: MapView?, p1: MapPoint?) {}
-    override fun onMapViewLongPressed(p0: MapView?, p1: MapPoint?) {}
-    override fun onMapViewDragStarted(p0: MapView?, p1: MapPoint?) {}
-    override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {}
 }
