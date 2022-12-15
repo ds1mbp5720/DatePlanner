@@ -7,13 +7,16 @@ import androidx.lifecycle.ViewModel
 import com.lee.dateplanner.common.getTodayDate
 import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.festival.data.FestivalSpaceData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
+import javax.inject.Inject
 
 /**
  * 행사정보 viewModel
  */
-class FestivalViewModel(private var repository: FestivalRepository):ViewModel() {
+@HiltViewModel
+class FestivalViewModel @Inject constructor(private var repository: FestivalRepository):ViewModel() {
     val festivalList = MutableLiveData<FestivalInfoData>()
     val festivalPlaceList = MutableLiveData<FestivalSpaceData>()
     val errorMessage = MutableLiveData<String>()

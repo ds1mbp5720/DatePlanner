@@ -1,8 +1,9 @@
 package com.lee.dateplanner.festival
 
 import com.lee.dateplanner.festival.network.FestivalRetrofitService
+import javax.inject.Inject
 
-class FestivalRepository(private val festivalRetrofitService: FestivalRetrofitService) {
+class FestivalRepository @Inject constructor(private val festivalRetrofitService: FestivalRetrofitService) {
     //행사 정보
     suspend fun getFestivalInfo(category: String) = festivalRetrofitService.getFestivalInfo(category)
 

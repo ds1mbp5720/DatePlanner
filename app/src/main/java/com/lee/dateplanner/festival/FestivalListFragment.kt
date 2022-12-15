@@ -17,6 +17,7 @@ import com.lee.dateplanner.common.makeDatePickerDialog
 import com.lee.dateplanner.databinding.FestivallistFragmentLayoutBinding
 import com.lee.dateplanner.festival.adapter.FestivalRecyclerAdapter
 import com.lee.dateplanner.festival.network.FestivalRetrofitService
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 class FestivalListFragment:Fragment() {

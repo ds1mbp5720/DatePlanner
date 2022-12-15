@@ -8,7 +8,9 @@ import com.lee.dateplanner.databinding.ActivityMainBinding
 import com.lee.dateplanner.festival.FestivalListFragment
 import com.lee.dateplanner.map.POIMapFragment
 import com.lee.dateplanner.timetable.TimeTableFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var timeTableFragment: TimeTableFragment // 시간계획

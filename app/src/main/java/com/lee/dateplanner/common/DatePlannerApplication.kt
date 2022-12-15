@@ -5,11 +5,13 @@ import android.app.Activity
 import android.app.Application
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import dagger.hilt.android.HiltAndroidApp
 
 /**
  * 최초 실행코드
  * App scope class,file 에서 호출할수있는 코드
  */
+@HiltAndroidApp
 class DatePlannerApplication:Application() {
     override fun onCreate() {
         super.onCreate()
