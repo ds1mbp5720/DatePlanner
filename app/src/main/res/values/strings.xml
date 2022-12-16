@@ -32,6 +32,10 @@
     <string name="apiInput">apiInput</string>
     <string name="insertWrongType">Wrong Type</string>
 
+    <string name="deleteTypeTimeSheet">TimeSheet</string>
+    <string name="deleteTypeTimeTable">TimeTable</string>
+    <string name="dialogMessageToDelete">정말로 지우시겠습니까?</string>
+
     <string-array name="category">
         <item>전체</item>
         <item>전시/미술</item>

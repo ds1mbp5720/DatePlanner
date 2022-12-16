@@ -3,7 +3,9 @@ package com.lee.dateplanner.webview
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
+import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.FestivalWebviewActivityBinding
 
 /**
@@ -29,9 +31,14 @@ class WebViewActivity: Activity() {
             }
         }
     }
-    // 뒤로가기시 activity 완전 종료
-    override fun onPause() {
-        super.onPause()
-        finish()
+
+    override fun onBackPressed() {
+        val webView = findViewById<WebView>(R.id.festival_homepage)
+        if (webView.canGoBack()) {
+            webView.goBack()
+        }
+        else {
+            finish()
+        }
     }
 }

@@ -71,6 +71,16 @@ class POIMapFragment:Fragment(){
         binding = AroundinfoMapFragmentLayoutBinding.inflate(inflater, container, false)
         return binding.root
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this, POIViewModelFactory(
+            POIRepository(POIRetrofitService.getInstance())
+        ))[POIViewModel::class.java]
+        getFestivalPosition()
+        festivalInfoSet()
+        observerSetup(viewModel,binding.infoMap)
+        setCategoryBtn() // 상단 카테고리 버튼
+    }
     override fun onPause() {
         super.onPause()
         binding.root.removeView(binding.root.findViewById(R.id.info_map))
@@ -80,19 +90,9 @@ class POIMapFragment:Fragment(){
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
         if(binding.root.findViewById<MapView>(R.id.info_map) == null){
             binding.root.addView(createNewMapView(),0)
+        }else{
+            firstSettingPoiMapView()
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, POIViewModelFactory(
-            POIRepository(POIRetrofitService.getInstance())
-        ))[POIViewModel::class.java]
-        getFestivalPosition()
-        festivalInfoSet()
-        firstSettingPoiMapView()
-        observerSetup(viewModel,binding.infoMap)
-        setCategoryBtn() // 상단 카테고리 버튼
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -126,9 +126,9 @@ class POIMapFragment:Fragment(){
     private fun firstSettingPoiMapView(){
         mapSetting(binding.infoMap, this@POIMapFragment.requireContext(),poiBalloonListener)
         binding.infoMap.setMapViewEventListener(mapViewListener)
-        binding.infoMap.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
-        viewModel.getAllPoiFromViewModel(poiCategory, centerLat,centerLgt)
+        viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt)
         binding.infoMap.addPOIItem(festivalMarker) // 행사위치 핑
+        binding.infoMap.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
     }
     private fun createNewMapView(): MapView{
         val poiMap = MapView(this.activity)

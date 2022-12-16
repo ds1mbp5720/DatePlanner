@@ -1,7 +1,5 @@
 package com.lee.dateplanner.festival
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.lee.dateplanner.common.getTodayDate
@@ -9,7 +7,6 @@ import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.festival.data.FestivalSpaceData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 /**
@@ -30,7 +27,7 @@ class FestivalViewModel @Inject constructor(private var repository: FestivalRepo
     fun getAllFestivalFromViewModel(category: String, year: Int=0 , month: Int=0, day: Int=0){
         job = CoroutineScope(Dispatchers.IO).launch(exceptionHandler) {
             isLoading.postValue(true)
-            var infoResponse = repository.getFestivalInfo(category) // 행사 정보
+            val infoResponse = repository.getFestivalInfo(category) // 행사 정보
             val placeResponse = repository.getFestivalPlace() // 행사 장소
             withContext(Dispatchers.Main){
                 if(infoResponse.isSuccessful){

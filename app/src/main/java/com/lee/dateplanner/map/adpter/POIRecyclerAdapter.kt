@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.lee.dateplanner.common.setCategoryTextFilter
 import com.lee.dateplanner.databinding.PoiListRecyclerBinding
 import com.lee.dateplanner.map.POIMapFragment
 import com.lee.dateplanner.map.data.POIData
@@ -21,30 +19,18 @@ class POIRecyclerAdapter(private val owner:POIMapFragment, private val poiData: 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): POIViewHolder {
         binding = PoiListRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return POIViewHolder(binding)
+        return POIViewHolder(binding,owner)
     }
 
     override fun onBindViewHolder(holder: POIViewHolder, position: Int) {
         val poi = poiData.documents[position]
-        val behavior = BottomSheetBehavior.from(owner.binding.bottomPoiList)
-        with(holder.binding){
-            poiCategory.text = setCategoryTextFilter(poi.categoryName)
-            poiName.text = poi.placeName
-            poiPhone.text = poi.phone
-            poiAddress.text = poi.addressName
-
-            // poi정보 리스트 터치시
-            root.setOnClickListener {
-                moveToMarker(poi)
-                sendSelectRecyclerInfo(poi)
-                behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            }
-        }
+        holder.setView(poi)
+        holder.setListener(poi,this)
     }
     override fun getItemCount() = poiData.documents.size
 
     // 리스트에서 poi 선택시 정보 전달 및 selectMarkerPOIFragment 호출 함수
-    private fun sendSelectRecyclerInfo(poi: POIData.Document){
+    fun sendSelectRecyclerInfo(poi: POIData.Document){
         with(poi){
             job = CoroutineScope(Dispatchers.Main).launch(exceptionHandler) {
                 owner.childFragmentManager.setFragmentResult("poiKey", bundleOf("placeName" to placeName, "addressName" to addressName,
@@ -58,7 +44,7 @@ class POIRecyclerAdapter(private val owner:POIMapFragment, private val poiData: 
         }
     }
     // 마커로 지도 중심 이동 함수
-    private fun moveToMarker(poi: POIData.Document){
+    fun moveToMarker(poi: POIData.Document){
         val marker = owner.markerResolver[poi]
         // 해당 위치로 지도 중심점 이동, 지도 확대
         if(marker != null){

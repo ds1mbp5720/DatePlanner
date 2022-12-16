@@ -2,7 +2,6 @@ package com.lee.dateplanner
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
 import com.lee.dateplanner.databinding.ActivityMainBinding
 import com.lee.dateplanner.festival.FestivalListFragment
@@ -78,8 +77,8 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onBackPressed() {
+        // 종료 확인하기
         finish()
     }
 }

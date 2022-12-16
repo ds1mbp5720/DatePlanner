@@ -1,27 +1,20 @@
 package com.lee.dateplanner.festival.adapter
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
-import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.location.Geocoder.GeocodeListener
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.lee.dateplanner.common.toastMessage
 import com.lee.dateplanner.databinding.FestivalInfoRecyclerBinding
 import com.lee.dateplanner.festival.FestivalListFragment
-import com.lee.dateplanner.webview.WebViewActivity
 import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.festival.data.FestivalSpaceData
-import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
 
 /**
  * 행사 정보 출력 adapter
@@ -35,43 +28,13 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
     }
     override fun onBindViewHolder(holder: FestivalViewHolder, position: Int) {
         val festival = festivalData.culturalEventInfo.row[position]
-        with(holder.binding){
-            festivalTitle.text = festival.tITLE
-            festivalPlace.text = festival.pLACE
-            festivalCost.text = festival.uSEFEE
-            festivalDate.text = festival.dATE
-            Glide.with(this.festivalPoster.context).load(festival.mAINIMG).into(this.festivalPoster)// 이미지 처리
-
-            //포스터 클릭 정의
-            festivalPoster.setOnClickListener{
-                // 홈페이지 링크 전달 및 webView 수행 activity 이동
-                val intent = Intent(holder.itemView.context, WebViewActivity::class.java)
-                intent.putExtra("homepage",festival.oRGLINK)
-                startActivity(holder.itemView.context, intent,null)
-            }
-            // 일정 추가 버튼
-            festivalInsertBtn.setOnClickListener {
-                getFestivalPosition(festival)
-                val intent = Intent(holder.itemView.context, InsertTimeSheetActivity::class.java)
-                intent.putExtra("input_signal","apiInput") // 일정 입력 창 종류
-                intent.putExtra("title",festival.tITLE)
-                intent.putExtra("place",festival.pLACE)
-                intent.putExtra("latitude",latitude.toString())
-                intent.putExtra("longitude",longitude.toString())
-                startActivity(holder.itemView.context, intent,null)
-            }
-            // 주변정보 보기 버튼
-            festivalMovePoiBtn.setOnClickListener {
-                //aroundMap Fragment 로 좌표값, 행사장 정보 넘기기
-                getFestivalPosition(festival)
-                sendPositionToOtherFragment()
-            }
-        }
+        holder.setView(festival, position)
+        holder.setListener(festival,this)
     }
-    private var latitude = 0.0 // 위도 저장 변수
-    private var longitude = 0.0 // 경도 저장 변수
+    var latitude = 0.0 // 위도 저장 변수
+    var longitude = 0.0 // 경도 저장 변수
     // 행사 장소 string을 통해 위도, 경도 값 변환 함수
-    private fun getFestivalPosition(festival: FestivalInfoData.CulturalEventInfo.Row) {
+    fun getFestivalPosition(festival: FestivalInfoData.CulturalEventInfo.Row) {
         val geoCoder = fragment.context?.let { Geocoder(it) } // 좌표변환 목적 geocoder 변수
         /**
          * 행사 장소 좌표 전달
@@ -118,7 +81,7 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
         }
     }
     // 좌표값 AroundMapFragment 로 보내기
-    private fun sendPositionToOtherFragment(){
+    fun sendPositionToOtherFragment(){
         fragment.setFragmentResult("positionKey", bundleOf("latitude" to latitude, "longitude" to longitude))
     }
     @SuppressLint("NotifyDataSetChanged")
