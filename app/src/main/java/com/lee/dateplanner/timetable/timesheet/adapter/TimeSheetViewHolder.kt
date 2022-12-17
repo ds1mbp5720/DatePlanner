@@ -19,6 +19,7 @@ class TimeSheetViewHolder(val binding: TimesheetPlanRecyclerBinding,private val 
         scheduleTitle.text = timeSheet.title
         scheduleTime.text = timeSheet.time
         schedulePlace.text = timeSheet.place
+        scheduleMemo.text = timeSheet.memo
     }
     fun setListener(timeTable: Timetable, timeSheet: TimeSheet, id: Int, position: Int)= with(binding){
         //수정 버튼 클릭시

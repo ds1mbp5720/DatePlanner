@@ -30,6 +30,7 @@ class TimetableMapAdapter(private val owner: TimetableMapActivity, private val t
             scheduleTitle.text = timeSheet.title
             scheduleTime.text = timeSheet.time
             schedulePlace.text = timeSheet.place
+            scheduleMemo.text = timeSheet.memo
 
             // 리스트 터치시
             root.setOnClickListener {

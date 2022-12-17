@@ -41,22 +41,24 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/my_map_btn"
                     android:layout_width="30dp"
-                    android:layout_height="40dp"
+                    android:layout_height="30dp"
                     android:gravity="center"
-                    android:paddingLeft="4dp"
-                    android:layout_marginRight="4dp"
-                    style="?attr/materialButtonOutlinedStyle"
+                    android:paddingStart="4dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="4dp"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     app:icon="@drawable/ic_baseline_map_24"
                     app:layout_constraintRight_toLeftOf="@id/delete_time_btn"
                     app:layout_constraintTop_toTopOf="parent"/>
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/delete_time_btn"
                     android:layout_width="30dp"
-                    android:layout_height="40dp"
+                    android:layout_height="30dp"
                     android:gravity="center"
-                    android:paddingLeft="4dp"
-                    android:layout_marginRight="5dp"
-                    style="?attr/materialButtonOutlinedStyle"
+                    android:paddingStart="4dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     app:icon="@drawable/ic_baseline_delete_24"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -68,17 +70,20 @@
                 android:layout_height="wrap_content"
                 android:paddingRight="3dp"
                 android:paddingLeft="3dp"
+                android:layout_marginTop="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/timesheet_plan_recycler"/>
+                tools:listitem="@layout/timesheet_plan_recycler"
+                />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/add_timesheet_btn"
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="#00ff0000"
                 app:iconTint="@color/black"
                 android:backgroundTint="#00000000"
+                android:paddingEnd="0dp"
                 app:icon="@drawable/ic_baseline_add_24"
                 />
 

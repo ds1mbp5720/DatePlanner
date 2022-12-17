@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -16,14 +17,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="일정 입력"
+        android:text="@string/input_schedule"
         android:textColor="@color/black"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintLeft_toRightOf="@id/input_back_btn"
         app:layout_constraintTop_toTopOf="parent"
         android:paddingTop="20dp"
-        android:paddingLeft="10dp"
-        />
+        android:paddingStart="10dp"
+        tools:ignore="RtlSymmetry" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:textColorHint="@color/black"
-            android:hint="일정 제목"
+            android:hint="@string/schedule_title"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:hintTextColor="@color/black">
             <com.google.android.material.textfield.TextInputEditText
@@ -56,16 +57,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:text="시간"
+            android:text="@string/schedule_time"
             android:textColor="@color/black"
-            android:textSize="16dp"
-            android:paddingLeft="15dp"
+            android:textSize="16sp"
+            android:paddingStart="15dp"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
             android:gravity="start"
             android:layout_margin="4dp"
             app:strokeWidth="1dp"
-            app:strokeColor="#A3A3A3" />
+            app:strokeColor="#A3A3A3"
+            tools:ignore="RtlSymmetry" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_location"
@@ -73,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:textColorHint="@color/black"
-            android:hint="장소"
+            android:hint="@string/schedule_place"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:hintTextColor="@color/black">
             <com.google.android.material.textfield.TextInputEditText
@@ -90,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:textColorHint="@color/black"
-            android:hint="메모"
+            android:hint="@string/schedule_memo"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:hintTextColor="@color/black">
             <com.google.android.material.textfield.TextInputEditText
@@ -109,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:text="지도"
+                android:text="@string/map"
                 android:layout_weight="2"
                 />
             <CheckBox
@@ -119,7 +121,7 @@
                 android:textColor="@android:color/background_dark"
                 android:textSize="18sp"
                 android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-                android:text="위치 설정"
+                android:text="@string/show_map_checkbox"
                 android:checked="true"
                 android:longClickable="false"
                 android:layout_weight="0.1"
@@ -135,10 +137,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_alignParentEnd="true"
             android:layout_gravity="right"
             style="?attr/materialButtonOutlinedStyle"
-            android:text="등록"
-            android:textSize="20dp"/>
+            android:text="@string/insert_btn"
+            android:textSize="20sp"
+            tools:ignore="RtlHardcoded" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
