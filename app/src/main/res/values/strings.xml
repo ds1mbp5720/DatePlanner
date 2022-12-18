@@ -46,6 +46,14 @@
     <string name="deleteTypeTimeTable">TimeTable</string>
     <string name="dialogMessageToDelete">정말로 지우시겠습니까?</string>
 
+    <string name="checkPermissonMent">현재 위치를 확인하시려면 위치 권한을 허용해주세요.</string>
+    <string name="checkSettingLocationMent">현재 위치를 확인하시려면 설정에서 위치 권한을 허용해주세요.</string>
+    <string name="acceptLocation">"위치 권한이 승인되었습니다"</string>
+    <string name="refuseLocation">"위치 권한이 거절되었습니다"</string>
+    <string name="askGPS">GPS를 켜주세요</string>
+    <string name="cancel">취소</string>
+    <string name="check">확인</string>
+
     <string-array name="category">
         <item>전체</item>
         <item>전시/미술</item>

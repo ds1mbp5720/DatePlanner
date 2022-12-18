@@ -9,6 +9,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/search_location"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="120dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="bottom|end"
+        android:gravity="center"
+        android:paddingStart="4dp"
+        app:icon="@drawable/ic_baseline_my_location_24"
+        tools:ignore="RtlSymmetry" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/stop_location"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="120dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="bottom|end"
+        android:gravity="center"
+        android:paddingStart="4dp"
+        android:visibility="invisible"
+        app:icon="@drawable/ic_baseline_location_searching_24"
+        tools:ignore="RtlSymmetry" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/bottom_scheduleList"
         android:layout_width="match_parent"
