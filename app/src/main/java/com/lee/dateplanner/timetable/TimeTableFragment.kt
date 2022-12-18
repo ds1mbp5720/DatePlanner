@@ -54,10 +54,7 @@ class TimeTableFragment:Fragment() {
         // 계획 추가 버튼 클릭시
         binding.addBtn.setOnClickListener {
             val timeSheetList =  mutableListOf<TimeSheet>()
-            /**
-             * 계획 추가 버튼을 dialog 로 하여 선택한 날짜를 바로 가져와서 변수에 넣기
-             */
-            val date = "날짜를 수정하세요."
+            val date = getString(R.string.fixDateMessage)
             // room db 추가
             viewModel.insertTimeTable(Timetable(timeSheetList ,date))
         }

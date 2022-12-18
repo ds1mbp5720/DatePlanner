@@ -3,6 +3,7 @@ package com.lee.dateplanner.festival
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.lee.dateplanner.common.getTodayDate
+import com.lee.dateplanner.common.toastMessage
 import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.festival.data.FestivalSpaceData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +29,6 @@ class FestivalViewModel @Inject constructor(private var repository: FestivalRepo
         job = CoroutineScope(Dispatchers.IO).launch(exceptionHandler) {
             isLoading.postValue(true)
             val infoResponse = repository.getFestivalInfo(category) // 행사 정보
-            val placeResponse = repository.getFestivalPlace() // 행사 장소
             withContext(Dispatchers.Main){
                 if(infoResponse.isSuccessful){
                     festivalList.postValue(infoResponse.body())
@@ -36,10 +36,29 @@ class FestivalViewModel @Inject constructor(private var repository: FestivalRepo
                 }else{
                     onError("에러내용 : ${infoResponse.message()}")
                 }
-                if(placeResponse.isSuccessful){
-                    festivalPlaceList.postValue(placeResponse.body())
+            }
+            withContext(Dispatchers.Main){
+                if(year != 0 && month != 0 && day != 0){
+                    festivalList.value!!.culturalEventInfo.row = filterByDate(year,month,day)
                 }else{
-                    onError("에러내용 : ${placeResponse.message()}")
+                    festivalList.value!!.culturalEventInfo.row = filterByTodayDate()
+                }
+                if(festivalList.value!!.culturalEventInfo.row.size == 0){
+                    toastMessage("예정된 행사가 없습니다.")
+                }
+            }
+        }
+    }
+    fun getFestivalFromViewModelPaging(category: String, year: Int=0 , month: Int=0, day: Int=0, start: Int, end: Int){
+        job = CoroutineScope(Dispatchers.IO).launch(exceptionHandler) {
+            isLoading.postValue(true)
+            val infoResponse = repository.getPagingFestivalInfo(category,start, end) // 행사 정보
+            withContext(Dispatchers.Main){
+                if(infoResponse.isSuccessful){
+                    festivalList.postValue(infoResponse.body())
+                    isLoading.postValue(false)
+                }else{
+                    onError("에러내용 : ${infoResponse.message()}")
                 }
             }
             withContext(Dispatchers.Main){
@@ -49,7 +68,19 @@ class FestivalViewModel @Inject constructor(private var repository: FestivalRepo
                     festivalList.value!!.culturalEventInfo.row = filterByTodayDate()
                 }
             }
-
+        }
+    }
+    fun getFestivalLocationFromViewModel(){
+        job = CoroutineScope(Dispatchers.IO).launch(exceptionHandler) {
+            isLoading.postValue(true)
+            val placeResponse = repository.getFestivalPlace() // 행사 장소
+            withContext(Dispatchers.Main) {
+                if(placeResponse.isSuccessful){
+                    festivalPlaceList.postValue(placeResponse.body())
+                }else{
+                    onError("에러내용 : ${placeResponse.message()}")
+                }
+            }
         }
     }
     // 날짜 지난 행사들 제외

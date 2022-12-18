@@ -5,19 +5,19 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lee.dateplanner.databinding.FestivalInfoRecyclerBinding
-import com.lee.dateplanner.festival.data.FestivalInfoData
+import com.lee.dateplanner.festival.data.FestivalListData
 import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
 import com.lee.dateplanner.webview.WebViewActivity
 
 class FestivalViewHolder(val binding: FestivalInfoRecyclerBinding): RecyclerView.ViewHolder(binding.root){
-    fun setView(festival: FestivalInfoData.CulturalEventInfo.Row ,position: Int) = with(binding){
+    fun setView(festival: FestivalListData) = with(binding){
         festivalTitle.text = festival.tITLE
         festivalPlace.text = festival.pLACE
         festivalCost.text = festival.uSEFEE
         festivalDate.text = festival.dATE
         Glide.with(this.festivalPoster.context).load(festival.mAINIMG).into(this.festivalPoster)// 이미지 처리
     }
-    fun setListener(festival: FestivalInfoData.CulturalEventInfo.Row, adapter: FestivalRecyclerAdapter)= with(binding) {
+    fun setListener(festival: FestivalListData, adapter: FestivalRecyclerAdapter)= with(binding) {
         //포스터 클릭 정의
         festivalPoster.setOnClickListener{
             // 홈페이지 링크 전달 및 webView 수행 activity 이동
@@ -40,7 +40,6 @@ class FestivalViewHolder(val binding: FestivalInfoRecyclerBinding): RecyclerView
         festivalMovePoiBtn.setOnClickListener {
             //aroundMap Fragment 로 좌표값, 행사장 정보 넘기기
             adapter.getFestivalPosition(festival)
-            adapter.sendPositionToOtherFragment()
         }
     }
 }

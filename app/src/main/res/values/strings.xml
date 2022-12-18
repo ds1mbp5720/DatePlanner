@@ -54,6 +54,12 @@
     <string name="cancel">취소</string>
     <string name="check">확인</string>
 
+    <string name="fixDateMessage">날짜를 수정하세요.</string>
+    <string name="notFestival">예정된 행사가 없습니다.</string>
+
+    <string name="findFestivalLocation">행사 장소 주변 정보를 얻었습니다.</string>
+    <string name="notFindFestivalLocation">장소가 등록되지 않은 행사입니다.</string>
+
     <string-array name="category">
         <item>전체</item>
         <item>전시/미술</item>
