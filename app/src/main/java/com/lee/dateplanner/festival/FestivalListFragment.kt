@@ -32,7 +32,6 @@ class FestivalListFragment:Fragment() {
     private var day = 0
     private var category = ""
     private var recyclerCount = 0
-    private var allFestivalList = mutableListOf<FestivalListData>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,18 +53,12 @@ class FestivalListFragment:Fragment() {
         // 행사 정보 처리
         viewModel.festivalList.observe(viewLifecycleOwner){
             val festivalList = it.culturalEventInfo
-            for(i in 0 until festivalList.row.size){
-                var festival = FestivalListData(festivalList.row[i].cODENAME,festivalList.row[i].dATE,festivalList.row[i].eNDDATE,festivalList.row[i].mAINIMG,
-                    festivalList.row[i].oRGLINK,festivalList.row[i].pLACE,festivalList.row[i].rGSTDATE,festivalList.row[i].sTRTDATE,festivalList.row[i].tICKET,
-                    festivalList.row[i].tITLE,festivalList.row[i].uSEFEE)
-                allFestivalList.add(festival)
-            }
             // 행사 장소 정보 처리
             viewModel.festivalPlaceList.observe(viewLifecycleOwner){
                 with(binding.festivalList){
                     run{
                         if(festivalList.row.isNotEmpty()) {
-                            val festivalAdapter = FestivalRecyclerAdapter(this@FestivalListFragment, allFestivalList,it)
+                            val festivalAdapter = FestivalRecyclerAdapter(this@FestivalListFragment, festivalList,it)
                             adapter = festivalAdapter
                             festivalAdapter.refreshFestival()
                         }
@@ -94,7 +87,7 @@ class FestivalListFragment:Fragment() {
                 this.year = year
                 this.month = month + 1
                 this.day = dayOfMonth
-                viewModel.getAllFestivalFromViewModel(category,this.year, this.month, this.day)
+                viewModel.getAllFestivalFromViewModel(category, this.year, this.month, this.day)
             }
             this.context?.let { it1 -> makeDatePickerDialog(it1,dateSetListener) }
         }
@@ -106,7 +99,7 @@ class FestivalListFragment:Fragment() {
                 category =categoryList[position]
                 if(category == "전체") // pai 주소에서 전체는 category = null 이므로 "" 로변환
                     category = ""
-                viewModel.getAllFestivalFromViewModel(category,year, month, day) // rest 재호출
+                viewModel.getAllFestivalFromViewModel(category, year, month, day) // rest 재호출
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }

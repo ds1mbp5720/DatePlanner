@@ -1,5 +1,7 @@
 package com.lee.dateplanner.festival
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.lee.dateplanner.common.getTodayDate
@@ -43,7 +45,7 @@ class FestivalViewModel @Inject constructor(private var repository: FestivalRepo
                 }else{
                     festivalList.value!!.culturalEventInfo.row = filterByTodayDate()
                 }
-                if(festivalList.value!!.culturalEventInfo.row.size == 0){
+                if(festivalList.value!!.culturalEventInfo.row.isEmpty()){
                     toastMessage("예정된 행사가 없습니다.")
                 }
             }

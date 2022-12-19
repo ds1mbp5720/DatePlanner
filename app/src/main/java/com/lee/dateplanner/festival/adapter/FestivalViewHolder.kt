@@ -5,19 +5,20 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lee.dateplanner.databinding.FestivalInfoRecyclerBinding
+import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.festival.data.FestivalListData
 import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
 import com.lee.dateplanner.webview.WebViewActivity
 
 class FestivalViewHolder(val binding: FestivalInfoRecyclerBinding): RecyclerView.ViewHolder(binding.root){
-    fun setView(festival: FestivalListData) = with(binding){
+    fun setView(festival: FestivalInfoData.CulturalEventInfo.Row) = with(binding){
         festivalTitle.text = festival.tITLE
         festivalPlace.text = festival.pLACE
         festivalCost.text = festival.uSEFEE
         festivalDate.text = festival.dATE
         Glide.with(this.festivalPoster.context).load(festival.mAINIMG).into(this.festivalPoster)// 이미지 처리
     }
-    fun setListener(festival: FestivalListData, adapter: FestivalRecyclerAdapter)= with(binding) {
+    fun setListener(festival: FestivalInfoData.CulturalEventInfo.Row, adapter: FestivalRecyclerAdapter)= with(binding) {
         //포스터 클릭 정의
         festivalPoster.setOnClickListener{
             // 홈페이지 링크 전달 및 webView 수행 activity 이동

@@ -12,7 +12,7 @@ import retrofit2.http.Path
 const val FESTIVAL_ADDRESS = "http://openapi.seoul.go.kr:8088/${BuildConfig.FESTIVAL_KEY}/json/"
 
 interface FestivalRetrofitService {
-    @GET("culturalEventInfo/1/1000/{CODENAME}") // 행사 정보 api
+    @GET("culturalEventInfo/1/200/{CODENAME}") // 행사 정보 api
     suspend fun getFestivalInfo(
         @Path("CODENAME") CODENAME:String
     ): Response<FestivalInfoData>
