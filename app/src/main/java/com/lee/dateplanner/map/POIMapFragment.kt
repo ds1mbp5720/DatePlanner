@@ -47,7 +47,8 @@ class POIMapFragment:Fragment(){
     var markerResolver2: MutableMap<MapPOIItem,POIData.Document> = HashMap()
     private val mapViewListener = object :MapViewEventListener{
         override fun onMapViewInitialized(p0: MapView?) {
-            Log.e(TAG,"지도 생성2")
+            centerLat = festivalLat
+            centerLgt = festivalLgt
         }
         override fun onMapViewDragEnded(p0: MapView, p1: MapPoint?) {
             centerLat = p0.mapCenterPoint.mapPointGeoCoord.latitude.toString()
@@ -77,7 +78,6 @@ class POIMapFragment:Fragment(){
             POIRepository(POIRetrofitService.getInstance())
         ))[POIViewModel::class.java]
         getFestivalPosition()
-        festivalInfoSet()
         observerSetup(viewModel,binding.infoMap)
         setCategoryBtn() // 상단 카테고리 버튼
     }
@@ -116,12 +116,6 @@ class POIMapFragment:Fragment(){
             Log.e(TAG,it)
         }
     }
-    // 전달받은 행사 좌표 마커, 좌표 셋팅 함수 / null 일시 지정한 초기값 사용
-    private fun festivalInfoSet(){
-        festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
-        centerLat = festivalLat
-        centerLgt = festivalLgt
-    }
     // 최초 fragment 실행시 MapView 추가 설정 함수
     private fun firstSettingPoiMapView(){
         mapSetting(binding.infoMap, this@POIMapFragment.requireContext(),poiBalloonListener)
@@ -149,7 +143,7 @@ class POIMapFragment:Fragment(){
             festivalLat = bundle.getDouble("latitude").toString()
             festivalLgt = bundle.getDouble("longitude").toString()
         }
-
+        festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
     }
     // 전체 마커 map 표시 함수
     private fun displayPOI(data: POIData, map:MapView){
