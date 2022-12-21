@@ -19,6 +19,17 @@
         android:layout_marginBottom="0dp"
         style="?attr/materialButtonOutlinedStyle"
         android:text="계획 추가" />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/empty_timetable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/black"
+        android:text="@string/emptyTimeTableMessage"
+        android:textSize="25sp"
+        android:visibility="invisible"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/allTimeTable"

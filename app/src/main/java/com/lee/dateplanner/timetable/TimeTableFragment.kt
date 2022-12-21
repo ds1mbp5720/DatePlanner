@@ -9,11 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import com.lee.dateplanner.MainActivity
+import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.TimetablelistFragmentLayoutBinding
-import com.lee.dateplanner.map.POIMapFragment
 import com.lee.dateplanner.timetable.timesheet.TimeSheet
 import com.lee.dateplanner.timetable.time.adapter.TimetableRecyclerAdapter
 import com.lee.dateplanner.timetable.time.room.Timetable
@@ -66,6 +64,11 @@ class TimeTableFragment:Fragment() {
     @SuppressLint("SetTextI18n")
     private fun observerSetup(){
         viewModel.getAllTimetables()?.observe(viewLifecycleOwner){ timetable ->
+            if(timetable.isEmpty()){
+                binding.emptyTimetable.visibility = View.VISIBLE
+            }else{
+                binding.emptyTimetable.visibility = View.INVISIBLE
+            }
             timetable?.let {
                 timetableAdapter?.setTimetableList(it)
             }

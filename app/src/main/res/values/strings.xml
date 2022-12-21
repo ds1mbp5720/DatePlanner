@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DatePlanner</string>
+    <string name="app_name">나만의 데이트 플래너</string>
 
     <string name="main_tab_1">시간계획</string>
     <string name="main_tab_2">축제 목록</string>
@@ -36,6 +36,7 @@
     <string name="schedule_time">시간</string>
     <string name="schedule_place">장소</string>
     <string name="schedule_memo">메모</string>
+    <string name="string_info">일정 정보</string>
 
     <string name="add">add</string>
     <string name="edit">edit</string>
@@ -56,6 +57,8 @@
 
     <string name="fixDateMessage">날짜를 수정하세요.</string>
     <string name="notFestival">예정된 행사가 없습니다.</string>
+
+    <string name="emptyTimeTableMessage">예정된 일정이 없습니다.</string>
 
     <string name="findFestivalLocation">행사 장소 주변 정보를 얻었습니다.</string>
     <string name="notFindFestivalLocation">장소가 등록되지 않은 행사입니다.</string>

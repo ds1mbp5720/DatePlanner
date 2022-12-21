@@ -16,7 +16,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginBottom="120dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_gravity="bottom|end"
         android:gravity="center"
         android:paddingStart="4dp"
@@ -28,7 +28,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginBottom="120dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_gravity="bottom|end"
         android:gravity="center"
         android:paddingStart="4dp"
@@ -55,9 +55,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="일정 정보"
-                android:textSize="20dp"
-                android:layout_marginLeft="20dp"
+                android:text="@string/string_info"
+                android:textSize="20sp"
+                android:layout_margin="10dp"
+                android:layout_marginStart="20dp"
                 android:textColor="@color/black" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/schedule_info_recycler"

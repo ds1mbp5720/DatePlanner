@@ -49,6 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
+                android:fontFamily="@font/bmjua_ttf"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,6 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
+                android:fontFamily="@font/bmjua_ttf"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -100,6 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
+                android:fontFamily="@font/bmjua_ttf"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
         <LinearLayout
@@ -122,6 +125,7 @@
                 android:textSize="18sp"
                 android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:text="@string/show_map_checkbox"
+                android:fontFamily="@font/bmjua_ttf"
                 android:checked="true"
                 android:longClickable="false"
                 android:layout_weight="0.1"
