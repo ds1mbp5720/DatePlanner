@@ -8,19 +8,19 @@
 ### 개발환경
 + Android Studio Dolphin  
 + minSdkVersion : 22  
-+ targetSdkVersion : 32 
++ targetSdkVersion : 33 
 + Language : Kotlin 
 ------------
 ### Skill & Library
-+ Materail2 UI/UX 
++ Materail3 UI/UX 
 + Rx에 기반한 UI Event 처리 
-+ Retrofit 활용 REST 처리 
-+ Kakao Maps api  
-+ Dagger, Hilt  
++ Room DB 
++ OkHttp4/Retrofit 활용 Coroutine을 이용한 REST 처리 
++ Dagger-Hilt 를 이용한 DI 
 ------------
 ### 사용 API
 + kakao Map
-+ kakao POI rest API
++ kakao POI REST API
 + 서울 문화행사 정보
 + 서울 문화행사 시설 정보
 ------------  
