@@ -76,9 +76,4 @@ class MainActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
     }
-
-    override fun onBackPressed() {
-        // 종료 확인하기
-        finish()
-    }
 }

@@ -9,10 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.lee.dateplanner.R
 import com.lee.dateplanner.common.dateStringFormat
 import com.lee.dateplanner.common.makeDatePickerDialog
@@ -50,6 +52,7 @@ class FestivalListFragment:Fragment() {
 
         viewModel.getFestivalLocationFromViewModel()
         listenerSetup()
+        pressBackKey()
         // 행사 정보 처리
         viewModel.festivalList.observe(viewLifecycleOwner){
             val festivalList = it.culturalEventInfo
@@ -115,6 +118,13 @@ class FestivalListFragment:Fragment() {
                     recyclerCount ++
                     viewModel.getFestivalFromViewModelPaging(category,year,month,day, 1 + (20 * recyclerCount),20 * (recyclerCount + 1))
                 }
+            }
+        })
+    }
+    private fun pressBackKey(){
+        activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                activity!!.finish()
             }
         })
     }

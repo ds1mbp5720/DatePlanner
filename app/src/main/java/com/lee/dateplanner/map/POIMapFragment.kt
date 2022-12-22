@@ -1,15 +1,20 @@
 package com.lee.dateplanner.map
 
+import android.app.Activity
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
 import androidx.appcompat.app.ActionBar.LayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.lee.dateplanner.R
 import com.lee.dateplanner.common.mapSetting
 import com.lee.dateplanner.common.settingMarker
@@ -80,6 +85,7 @@ class POIMapFragment:Fragment(){
         getFestivalPosition()
         observerSetup(viewModel,binding.infoMap)
         setCategoryBtn() // 상단 카테고리 버튼
+        bottomSheetDownToBackKey()
     }
     override fun onPause() {
         super.onPause()
@@ -176,5 +182,17 @@ class POIMapFragment:Fragment(){
                 viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt)
             }
         }
+    }
+    private fun bottomSheetDownToBackKey(){
+        val behavior = BottomSheetBehavior.from(binding.bottomPoiList)
+        activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(behavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                    behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                }else{
+                    activity!!.finish()
+                }
+            }
+        })
     }
 }

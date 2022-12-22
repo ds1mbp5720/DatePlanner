@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.jakewharton.rxbinding4.view.clicks
@@ -42,6 +43,7 @@ class TimeTableFragment:Fragment() {
         listenerSetup()
         observerSetup()
         uiSetup()
+        pressBackKey()
     }
 
     /**
@@ -83,5 +85,12 @@ class TimeTableFragment:Fragment() {
             timetableAdapter = TimetableRecyclerAdapter(viewModel,this@TimeTableFragment)
             adapter = timetableAdapter
         }
+    }
+    private fun pressBackKey(){
+        activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                activity!!.finish()
+            }
+        })
     }
 }

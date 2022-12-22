@@ -12,11 +12,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.lee.dateplanner.R
 import com.lee.dateplanner.common.mapSetting
 import com.lee.dateplanner.common.settingMarker
@@ -50,7 +52,7 @@ class TimetableMapActivity:AppCompatActivity() {
         val id = intent.getIntExtra("id",0)
         mapSetting(binding.scheduleMap,this,POIEventClickListener())
         settingListener()
-
+        bottomSheetDownToBackKey()
         viewModel.findTimetable(id)
         viewModel.getSearchResults().observe(this){ timetable ->
             timetable?.let {
@@ -177,7 +179,19 @@ class TimetableMapActivity:AppCompatActivity() {
     private fun stopTracking() {
         binding.scheduleMap.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOff
     }
-
+    private fun bottomSheetDownToBackKey(){
+        val behavior = BottomSheetBehavior.from(binding.bottomScheduleList)
+        onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(behavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                    behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                }else{
+                    stopTracking()
+                    finish()
+                }
+            }
+        })
+    }
     // 종료시
     override fun onDestroy() {
         super.onDestroy()
