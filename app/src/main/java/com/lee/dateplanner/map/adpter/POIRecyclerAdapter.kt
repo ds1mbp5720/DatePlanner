@@ -34,7 +34,7 @@ class POIRecyclerAdapter(private val owner:POIMapFragment, private val poiData: 
         with(poi){
             job = CoroutineScope(Dispatchers.Main).launch(exceptionHandler) {
                 owner.childFragmentManager.setFragmentResult("poiKey", bundleOf("placeName" to placeName, "addressName" to addressName,
-                    "phone" to phone, "distance" to distance, "placeUrl" to placeUrl, "latitude" to y, "longitude" to x)
+                    "phone" to phone, "category" to categoryName, "placeUrl" to placeUrl, "latitude" to y, "longitude" to x)
                 )
                 owner.childFragmentManager.beginTransaction()
                     .replace(com.lee.dateplanner.R.id.selected_marker_info,

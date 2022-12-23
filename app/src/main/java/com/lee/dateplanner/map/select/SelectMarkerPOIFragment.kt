@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.lee.dateplanner.common.setCategoryTextFilter
 import com.lee.dateplanner.databinding.SelectedMarkerPoiFragmentBinding
 import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
 import com.lee.dateplanner.webview.WebViewActivity
@@ -28,7 +29,6 @@ class SelectMarkerPOIFragment:Fragment() {
     private lateinit var phone: String
     private lateinit var latitude: String
     private lateinit var longitude: String
-    private lateinit var distance: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +54,7 @@ class SelectMarkerPOIFragment:Fragment() {
                 selectPoiName.text = bundle.getString("placeName").toString()
                 selectPoiAddress.text = bundle.getString("addressName").toString()
                 selectPoiPhone.text = bundle.getString("phone").toString()
+                selectPoiCategory.text = setCategoryTextFilter(bundle.getString("category").toString())
                 latitude = bundle.getString("latitude").toString()
                 longitude = bundle.getString("longitude").toString()
                 url = bundle.getString("placeUrl").toString()
