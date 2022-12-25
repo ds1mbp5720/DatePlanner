@@ -14,6 +14,8 @@ import androidx.appcompat.app.ActionBar.LayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.lee.dateplanner.R
 import com.lee.dateplanner.common.mapSetting
@@ -58,7 +60,8 @@ class POIMapFragment:Fragment(){
         override fun onMapViewDragEnded(p0: MapView, p1: MapPoint?) {
             centerLat = p0.mapCenterPoint.mapPointGeoCoord.latitude.toString()
             centerLgt = p0.mapCenterPoint.mapPointGeoCoord.longitude.toString()
-            viewModel.getAllPoiFromViewModel(poiCategory, centerLat,centerLgt)
+            //recyclerPaging()
+            viewModel.getAllPoiFromViewModel(poiCategory, centerLat,centerLgt,1)
         }
         override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {}
         override fun onMapViewZoomLevelChanged(p0: MapView?, p1: Int) {}
@@ -126,7 +129,8 @@ class POIMapFragment:Fragment(){
     private fun firstSettingPoiMapView(){
         mapSetting(binding.infoMap, this@POIMapFragment.requireContext(),poiBalloonListener)
         binding.infoMap.setMapViewEventListener(mapViewListener)
-        viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt)
+        viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt,1)
+        //recyclerPaging()
         binding.infoMap.addPOIItem(festivalMarker) // 행사위치 핑
         binding.infoMap.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
     }
@@ -171,15 +175,18 @@ class POIMapFragment:Fragment(){
         with(binding){
             cafeBtn.setOnClickListener {
                 poiCategory = getString(R.string.poi_category_1)
-                viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt)
+                //recyclerPaging()
+                viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
             }
             restaurantBtn.setOnClickListener {
                 poiCategory = getString(R.string.poi_category_2)
-                viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt)
+                //recyclerPaging()
+                viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
             }
             etcBtn.setOnClickListener {
                 poiCategory = getString(R.string.poi_category_3)
-                viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt)
+                //recyclerPaging()
+                viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
             }
         }
     }
@@ -191,6 +198,27 @@ class POIMapFragment:Fragment(){
                     behavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 }else{
                     activity!!.finish()
+                }
+            }
+        })
+    }
+    // 페이징 처리 함수
+    private fun recyclerPaging(){
+        var paging = 1
+        viewModel.getAllPoiFromViewModel(poiCategory,centerLat, centerLgt,paging)
+        binding.poiInfoRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                val firstVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+                val itemTotalCount = recyclerView.adapter?.itemCount
+                if(lastVisibleItemPosition +1  == itemTotalCount && paging < 3){
+                    paging ++
+                    viewModel.getAllPoiFromViewModel(poiCategory,centerLat, centerLgt,paging)
+                }
+                if(firstVisibleItemPosition -1 == itemTotalCount && paging > 1){
+                    paging --
+                    viewModel.getAllPoiFromViewModel(poiCategory,centerLat, centerLgt,paging)
                 }
             }
         })

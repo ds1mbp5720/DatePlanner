@@ -23,6 +23,9 @@ interface POIRetrofitService {
         @Query("y") y: String, // 기준점 위도
         @Query("x") x: String,  // 기준점 경도
         @Query("radius") radius: String,  // 범위
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: String
     ): Response<POIData>
 
     companion object {
