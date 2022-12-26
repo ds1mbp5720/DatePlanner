@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
 import com.lee.dateplanner.common.*
 import com.lee.dateplanner.databinding.InputScheduleLayoutBinding
@@ -69,14 +70,14 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
     // 버튼 설정
     private fun setListener(timeTable : Timetable){
         // 시간 버튼 클릭
-        binding.inputTimeBtn.setOnClickListener {
+        binding.inputTimeBtn.clicks().subscribe{
             val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
                 binding.inputTimeBtn.text = timeStringFormat(hourOfDay,minute)
             }
             makeTimePickerDialog(this,timeSetListener)
         }
         //등록 선택시
-        binding.insertBtn.setOnClickListener {
+        binding.insertBtn.clicks().subscribe{
             when(type){
                 getString(R.string.add) -> setInsertData(timeTable,id,getString(R.string.add))
                 getString(R.string.edit)-> setInsertData(timeTable,id,getString(R.string.edit))
@@ -85,7 +86,7 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
             finish()
         }
         //뒤로가기 선택시
-        binding.inputBackBtn.setOnClickListener {
+        binding.inputBackBtn.clicks().subscribe{
             finish()
         }
     }

@@ -1,15 +1,12 @@
 package com.lee.dateplanner.map
 
-import android.app.Activity
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.OnBackPressedDispatcher
 import androidx.appcompat.app.ActionBar.LayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -17,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
 import com.lee.dateplanner.common.mapSetting
 import com.lee.dateplanner.common.settingMarker
@@ -173,17 +171,17 @@ class POIMapFragment:Fragment(){
     // 상단 주변상권정보 카테고리 선택 버튼
     private fun setCategoryBtn(){
         with(binding){
-            cafeBtn.setOnClickListener {
+            cafeBtn.clicks().subscribe{
                 poiCategory = getString(R.string.poi_category_1)
                 //recyclerPaging()
                 viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
             }
-            restaurantBtn.setOnClickListener {
+            restaurantBtn.clicks().subscribe{
                 poiCategory = getString(R.string.poi_category_2)
                 //recyclerPaging()
                 viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
             }
-            etcBtn.setOnClickListener {
+            etcBtn.clicks().subscribe{
                 poiCategory = getString(R.string.poi_category_3)
                 //recyclerPaging()
                 viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)

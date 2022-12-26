@@ -5,6 +5,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.TimesheetPlanRecyclerBinding
 import com.lee.dateplanner.timetable.TimeTableFragment
@@ -21,27 +22,30 @@ class TimeSheetViewHolder(val binding: TimesheetPlanRecyclerBinding,private val 
         schedulePlace.text = timeSheet.place
         scheduleMemo.text = timeSheet.memo
     }
-    fun setListener(timeTable: Timetable, timeSheet: TimeSheet, id: Int, position: Int)= with(binding){
-        //수정 버튼 클릭시
-        reviseBtn.setOnClickListener {
-            val intent = Intent(itemView.context, InsertTimeSheetActivity::class.java)
-            intent.putExtra("input_signal","edit") // 입력신호 수정
-            intent.putExtra("title",timeSheet.title)
-            intent.putExtra("time",timeSheet.time)
-            intent.putExtra("place",timeSheet.place)
-            intent.putExtra("memo",timeSheet.memo)
-            intent.putExtra("latitude",timeSheet.lat)
-            intent.putExtra("longitude",timeSheet.lgt)
-            intent.putExtra("position",position) // 선택한 위치
-            intent.putExtra("id",id) // 전달할 timesheet
-            // id 값 받아서 넘겨주기
-            ContextCompat.startActivity(itemView.context, intent, null)
+    fun setListener(timeTable: Timetable, timeSheet: TimeSheet, id: Int, position: Int){
+        with(binding){
+            //수정 버튼 클릭시
+            reviseBtn.clicks().subscribe {
+                val intent = Intent(itemView.context, InsertTimeSheetActivity::class.java)
+                intent.putExtra("input_signal","edit") // 입력신호 수정
+                intent.putExtra("title",timeSheet.title)
+                intent.putExtra("time",timeSheet.time)
+                intent.putExtra("place",timeSheet.place)
+                intent.putExtra("memo",timeSheet.memo)
+                intent.putExtra("latitude",timeSheet.lat)
+                intent.putExtra("longitude",timeSheet.lgt)
+                intent.putExtra("position",position) // 선택한 위치
+                intent.putExtra("id",id) // 전달할 timesheet
+                // id 값 받아서 넘겨주기
+                ContextCompat.startActivity(itemView.context, intent, null)
+            }
+            //삭제버튼 클릭시
+            deleteTimesheetBtn.clicks().subscribe {
+                Log.e(TAG,"널 체크 ${owner.timetableAdapter!!.timeSheetAdapter}")
+                val dialog = DeleteCheckDialog(owner,timeTable, position, owner.getString(R.string.deleteTypeTimeSheet))
+                dialog.show()
+            }
         }
-        //삭제버튼 클릭시
-        deleteTimesheetBtn.setOnClickListener {
-            Log.e(TAG,"널 체크 ${owner.timetableAdapter!!.timeSheetAdapter}")
-            val dialog = DeleteCheckDialog(owner,timeTable, position, owner.getString(R.string.deleteTypeTimeSheet))
-            dialog.show()
-        }
+
     }
 }

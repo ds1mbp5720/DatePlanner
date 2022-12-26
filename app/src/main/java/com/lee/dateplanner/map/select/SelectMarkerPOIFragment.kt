@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.common.setCategoryTextFilter
 import com.lee.dateplanner.databinding.SelectedMarkerPoiFragmentBinding
 import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
@@ -64,7 +65,7 @@ class SelectMarkerPOIFragment:Fragment() {
     // 버튼 세팅 함수
     private fun listenerSetup(){
         with(binding){
-            selectPoiInsertBtn.setOnClickListener {
+            selectPoiInsertBtn.clicks().subscribe {
                 val intent = Intent(context, InsertTimeSheetActivity::class.java)
                 intent.putExtra("input_signal","apiInput") // 일정 입력 창 종류
                 intent.putExtra("title",selectPoiName.text)
@@ -73,7 +74,7 @@ class SelectMarkerPOIFragment:Fragment() {
                 intent.putExtra("longitude",longitude)
                 context?.let { context -> ContextCompat.startActivity(context, intent, null) }
             }
-            selectPoiWebViewBtn.setOnClickListener {
+            selectPoiWebViewBtn.clicks().subscribe {
                 val intent = Intent(context, WebViewActivity::class.java)
                 intent.putExtra("homepage",url)
                 context?.let { it1 -> ContextCompat.startActivity(it1, intent, null) }

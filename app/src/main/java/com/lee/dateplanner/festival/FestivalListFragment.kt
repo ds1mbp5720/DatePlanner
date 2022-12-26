@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
 import com.lee.dateplanner.common.dateStringFormat
 import com.lee.dateplanner.common.makeDatePickerDialog
@@ -84,7 +85,7 @@ class FestivalListFragment:Fragment() {
     // 리스너 셋팅 함수
     private fun listenerSetup(){
         // 날짜 선택
-        binding.inputDate.setOnClickListener {
+        binding.inputDate.clicks().subscribe{
             val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 binding.inputDate.text = dateStringFormat(month,dayOfMonth) // 날짜 버튼 text 변경
                 this.year = year

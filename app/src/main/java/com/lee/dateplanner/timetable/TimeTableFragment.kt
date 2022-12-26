@@ -52,7 +52,7 @@ class TimeTableFragment:Fragment() {
     //@SuppressLint("SetTextI18n")
     private fun listenerSetup(){
         // 계획 추가 버튼 클릭시
-        binding.addBtn.setOnClickListener {
+        binding.addBtn.clicks().subscribe {
             val timeSheetList =  mutableListOf<TimeSheet>()
             val date = getString(R.string.fixDateMessage)
             // room db 추가

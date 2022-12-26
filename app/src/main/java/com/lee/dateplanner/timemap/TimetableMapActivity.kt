@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
 import com.lee.dateplanner.common.mapSetting
 import com.lee.dateplanner.common.settingMarker
@@ -69,7 +70,7 @@ class TimetableMapActivity:AppCompatActivity() {
         }
     }
     private fun settingListener(){
-        binding.searchLocation.setOnClickListener {
+        binding.searchLocation.clicks().subscribe {
             if (checkLocationService()) {
                 // GPS가 켜져있을 경우
                 permissionCheck()
@@ -80,7 +81,7 @@ class TimetableMapActivity:AppCompatActivity() {
             binding.searchLocation.visibility = View.INVISIBLE
             binding.stopLocation.visibility = View.VISIBLE
         }
-        binding.stopLocation.setOnClickListener {
+        binding.stopLocation.clicks().subscribe {
             stopTracking()
             binding.searchLocation.visibility = View.VISIBLE
             binding.stopLocation.visibility = View.INVISIBLE

@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.common.toastMessage
 import com.lee.dateplanner.databinding.SelectDialogRecyclerBinding
 import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
@@ -22,7 +23,7 @@ class SelectTimeTableAdapter(private val owner: InsertTimeSheetActivity,private 
     override fun onBindViewHolder(holder: SelectTimeTableViewHolder, position: Int) {
         with(holder.binding) {
             timetableName.text = timetableList!![position].date
-            timetableSelectBtn.setOnClickListener {
+            timetableSelectBtn.clicks().subscribe{
                 owner.setBtnTypeAPI(timetableList!![position], timetableList!![position].id)
                 toastMessage("${timetableList!![position].date}에 일정이 추가되었습니다.")
                 dialog.dismiss()
