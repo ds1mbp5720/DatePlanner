@@ -1,92 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
 
-    <net.daum.mf.map.api.MapView
-        android:id="@+id/info_map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:nestedScrollingEnabled="true"
-        />
-    <androidx.constraintlayout.widget.ConstraintLayout
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <LinearLayout
-    android:id="@+id/category"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center"
-    android:padding="30dp">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/restaurant_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cornerRadius="100dp"
-            android:text="식당"
-            android:backgroundTint="@color/white"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_marginRight="20dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/cafe_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="카페"
-            app:cornerRadius="100dp"
-            android:backgroundTint="@color/white"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_marginRight="20dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/etc_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:text="놀거리"
-            app:cornerRadius="100dp"
-            style="?attr/materialButtonOutlinedStyle"
-            />
-
-    </LinearLayout>
-    <androidx.cardview.widget.CardView
-        android:id="@+id/bottom_poiList"
-        android:layout_width="match_parent"
-        android:layout_height="700dp"
-        android:descendantFocusability="beforeDescendants"
-        android:focusableInTouchMode="true"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        app:behavior_hideable = "false"
-        app:behavior_peekHeight = "100dp"
-        app:cardCornerRadius="30dp">
-        <ProgressBar
-            android:id="@+id/poi_progressBar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:indeterminateTint="@color/black" />
-        <LinearLayout
+        <net.daum.mf.map.api.MapView
+            android:id="@+id/info_map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-            <FrameLayout
-                android:id="@+id/selected_marker_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/poi_info_recycler"
-                android:layout_width="match_parent"
+            android:nestedScrollingEnabled="true" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="30dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/restaurant_btn"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                tools:listitem="@layout/poi_list_recycler"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                />
+                android:layout_marginRight="20dp"
+                android:backgroundTint="@color/white"
+                android:text="식당"
+                app:cornerRadius="100dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cafe_btn"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:backgroundTint="@color/white"
+                android:text="카페"
+                app:cornerRadius="100dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/etc_btn"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:text="놀거리"
+                app:cornerRadius="100dp" />
+
         </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/bottom_poiList"
+            android:layout_width="match_parent"
+            android:layout_height="700dp"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="100dp"
+            app:cardCornerRadius="30dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+            <ProgressBar
+                android:id="@+id/poi_progressBar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:id="@+id/selected_marker_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/poi_info_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/poi_list_recycler" />
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

@@ -90,13 +90,13 @@ class POIMapFragment:Fragment(){
     }
     override fun onPause() {
         super.onPause()
-        binding.root.removeView(binding.root.findViewById(R.id.info_map))
+        //binding.root.removeView(binding.root.findViewById(R.id.info_map))
     }
     override fun onResume() {
         super.onResume()
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
         if(binding.root.findViewById<MapView>(R.id.info_map) == null){
-            binding.root.addView(createNewMapView(),0)
+            //binding.root.addView(createNewMapView(),0)
         }else{
             firstSettingPoiMapView()
         }
