@@ -181,7 +181,7 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
 
     override fun onPause() {
         super.onPause()
-        binding.root.removeAllViews()
+        //binding.root.removeAllViews()
         finish()
     }
 
