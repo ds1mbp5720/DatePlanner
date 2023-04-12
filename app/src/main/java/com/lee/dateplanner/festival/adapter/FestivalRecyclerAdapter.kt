@@ -21,7 +21,8 @@ import com.lee.dateplanner.festival.data.FestivalSpaceData
 /**
  * 행사 정보 출력 adapter
  */
-class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var festivalData: FestivalInfoData.CulturalEventInfo, private val festivalSpaceData: FestivalSpaceData):RecyclerView.Adapter<FestivalViewHolder>() {
+class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var festivalData: FestivalInfoData.CulturalEventInfo, private val festivalSpaceData: FestivalSpaceData):
+    RecyclerView.Adapter<FestivalViewHolder>() {
     private lateinit var binding: FestivalInfoRecyclerBinding
     var latitude = 0.0
     var longitude = 0.0
