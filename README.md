@@ -17,6 +17,7 @@
 + Room DB 
 + OkHttp4/Retrofit 활용 Coroutine을 이용한 REST 처리 
 + Dagger-Hilt 를 이용한 DI 
++ Databinding, ViewBinding
 ------------
 ### 사용 API
 + kakao Map
