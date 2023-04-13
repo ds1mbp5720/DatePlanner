@@ -5,9 +5,6 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.lee.dateplanner.common.toastMessage
-import com.lee.dateplanner.festival.data.FestivalInfoData
-import com.lee.dateplanner.map.data.POIData
 import kotlinx.coroutines.*
 import retrofit2.Response
 
@@ -57,28 +54,4 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
         super.onCleared()
         job?.cancel()
     }
-   /* fun getAllFestivalFromViewModel(category: String, year: Int=0 , month: Int=0, day: Int=0){
-        job = CoroutineScope(Dispatchers.IO).launch(exceptionHandler) {
-            isLoading.postValue(true)
-            val infoResponse = repository.getFestivalInfo(category) // 행사 정보
-            withContext(Dispatchers.Main){
-                if(infoResponse.isSuccessful){
-                    festivalList.postValue(infoResponse.body())
-                    isLoading.postValue(false)
-                }else{
-                    onError("에러내용 : ${infoResponse.message()}")
-                }
-            }
-            withContext(Dispatchers.Main){
-                if(year != 0 && month != 0 && day != 0){
-                    festivalList.value!!.culturalEventInfo.row = filterByDate(year,month,day)
-                }else{
-                    festivalList.value!!.culturalEventInfo.row = filterByTodayDate()
-                }
-                if(festivalList.value!!.culturalEventInfo.row.isEmpty()){
-                    toastMessage("예정된 행사가 없습니다.")
-                }
-            }
-        }
-    }*/
 }

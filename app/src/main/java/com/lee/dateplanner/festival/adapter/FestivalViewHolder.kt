@@ -7,7 +7,6 @@ import com.bumptech.glide.Glide
 import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.databinding.FestivalInfoRecyclerBinding
 import com.lee.dateplanner.festival.data.FestivalInfoData
-import com.lee.dateplanner.festival.data.FestivalListData
 import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
 import com.lee.dateplanner.webview.WebViewActivity
 

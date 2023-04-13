@@ -1,10 +1,8 @@
 package com.lee.dateplanner.festival.adapter
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.location.Geocoder
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
@@ -15,7 +13,6 @@ import com.lee.dateplanner.common.toastMessage
 import com.lee.dateplanner.databinding.FestivalInfoRecyclerBinding
 import com.lee.dateplanner.festival.FestivalListFragment
 import com.lee.dateplanner.festival.data.FestivalInfoData
-import com.lee.dateplanner.festival.data.FestivalListData
 import com.lee.dateplanner.festival.data.FestivalSpaceData
 
 /**

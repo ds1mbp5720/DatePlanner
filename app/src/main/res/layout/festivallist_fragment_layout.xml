@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.lee.dateplanner.festival.FestivalViewModel.Event"/>
         <variable
             name="viewModel"
             type="com.lee.dateplanner.festival.FestivalViewModel" />
@@ -38,6 +39,7 @@
                 android:layout_marginStart="5dp"
                 android:inputType="datetime"
                 android:maxLines="1"
+                android:onClick="@{()->viewModel.onEventClick(Event.Date.INSTANCE)}"
                 android:text="@string/dateBTN"
                 android:textColor="@color/black"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -62,7 +64,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/festival_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="10dp"
             android:padding="1dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

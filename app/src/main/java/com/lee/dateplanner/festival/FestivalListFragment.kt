@@ -9,16 +9,17 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
 import com.lee.dateplanner.base.BaseFragment
-import com.lee.dateplanner.common.*
+import com.lee.dateplanner.common.dateStringFormat
+import com.lee.dateplanner.common.filterByDate
+import com.lee.dateplanner.common.filterByTodayDate
+import com.lee.dateplanner.common.makeDatePickerDialog
 import com.lee.dateplanner.databinding.FestivallistFragmentLayoutBinding
 import com.lee.dateplanner.festival.adapter.FestivalRecyclerAdapter
 import com.lee.dateplanner.festival.data.FestivalInfoData
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FestivalListFragment : BaseFragment<FestivallistFragmentLayoutBinding, FestivalViewModel>() {
@@ -68,21 +69,27 @@ class FestivalListFragment : BaseFragment<FestivallistFragmentLayoutBinding, Fes
                 dataBinding.progressBar.visibility = View.GONE
             }
         }
+        viewModel.eventClick.observe(this){
+            when(it){
+                FestivalViewModel.Event.Date -> {
+                    val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                        dataBinding.inputDate.text = dateStringFormat(month, dayOfMonth) // 날짜 버튼 text 변경
+                        this.year = year
+                        this.month = month + 1
+                        this.day = dayOfMonth
+                        festivalList = festivalList.filterByDate(this.year,this.month,this.day)
+                        adapter.setFestivalData(festivalList)
+                    }
+                    this.context?.let { it1 -> makeDatePickerDialog(it1, dateSetListener) }
+                }
+                FestivalViewModel.Event.Catergory -> {
+
+                }
+            }
+        }
     }
     // 리스너 셋팅 함수
     private fun listenerSetup() {
-        // 날짜 선택
-        dataBinding.inputDate.clicks().subscribe {
-            val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                dataBinding.inputDate.text = dateStringFormat(month, dayOfMonth) // 날짜 버튼 text 변경
-                this.year = year
-                this.month = month + 1
-                this.day = dayOfMonth
-                festivalList = festivalList.filterByDate(this.year,this.month,this.day)
-                adapter.setFestivalData(festivalList)
-            }
-            this.context?.let { it1 -> makeDatePickerDialog(it1, dateSetListener) }
-        }
         // 카테고리 선택 스피너
         dataBinding.categorySpinner.onItemSelectedListener = object : OnItemSelectedListener {
             val categoryList = resources.getStringArray(R.array.category)
@@ -101,20 +108,6 @@ class FestivalListFragment : BaseFragment<FestivallistFragmentLayoutBinding, Fes
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
-    /*private fun recyclerPaging(){
-        viewModel.getFestivalFromViewModelPaging(category,year,month,day, 1 + (20 * recyclerCount),20 * (recyclerCount + 1))
-        binding.festivalList.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
-                val itemTotalCount = recyclerView.adapter?.itemCount
-                if(lastVisibleItemPosition +1  == itemTotalCount){
-                    recyclerCount ++
-                    viewModel.getFestivalFromViewModelPaging(category,year,month,day, 1 + (20 * recyclerCount),20 * (recyclerCount + 1))
-                }
-            }
-        })
-    }*/
     private fun pressBackKey() {
         activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
