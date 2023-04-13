@@ -2,15 +2,21 @@ package com.lee.dateplanner
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.google.android.material.tabs.TabLayout
+import com.lee.dateplanner.base.BaseActivity
 import com.lee.dateplanner.databinding.ActivityMainBinding
 import com.lee.dateplanner.festival.FestivalListFragment
+import com.lee.dateplanner.main.MainViewModel
 import com.lee.dateplanner.map.POIMapFragment
 import com.lee.dateplanner.timetable.TimeTableFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
+    override val layoutId: Int = R.layout.activity_main
+    override val viewModel: MainViewModel by viewModels()
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var timeTableFragment: TimeTableFragment // 시간계획
     private lateinit var festivalListFragment: FestivalListFragment // 축제정보

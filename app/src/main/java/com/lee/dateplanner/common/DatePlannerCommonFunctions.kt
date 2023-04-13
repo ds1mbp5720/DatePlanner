@@ -20,9 +20,9 @@ fun toastMessage(message: String){
 }
 // 시간 string format
 fun timeStringFormat(hour: Int, minute: Int): String{
-    var hourString: String = if(hour < 10){ "0$hour"
+    val hourString: String = if(hour < 10){ "0$hour"
     }else "$hour"
-    var minuteString: String = if(minute < 10){ ":0${minute}"
+    val minuteString: String = if(minute < 10){ ":0${minute}"
     } else ":${minute}"
     return hourString + minuteString
 }
@@ -73,4 +73,9 @@ fun makeDatePickerDialog(context: Context, listener: DatePickerDialog.OnDateSetL
 fun makeTimePickerDialog(context: Context, listener: TimePickerDialog.OnTimeSetListener){
     val cal = Calendar.getInstance()
     TimePickerDialog(context,listener,cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), DateFormat.is24HourFormat(context)).show()
+}
+fun filterInsertDateInt(year: Int, month: Int, day: Int): Int{
+    val setMonth = if(month<10){ "0$month" }else month.toString()
+    val setDay = if(day<10){ "0$day" }else day.toString()
+    return (year.toString() + setMonth + setDay).toInt()
 }
