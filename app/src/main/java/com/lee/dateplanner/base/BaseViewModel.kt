@@ -1,6 +1,7 @@
 package com.lee.dateplanner.base
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -34,6 +35,12 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
                                 onError("에러내용: ${req.message()}")
                             }
                         }
+                    }else{
+                        // req 타입에 따라 재 확인 필요
+                        launch(Dispatchers.Main) {
+                            res?.invoke(value)
+                            isLoading.postValue(false)
+                        }
                     }
                 }
             }catch (e: java.lang.Exception){
@@ -43,6 +50,7 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
     }
     private fun onError(message: String){
         errorMessage.postValue(message)
+        Log.e("","에러내용 $message")
         isLoading.postValue(false)
     }
     override fun onCleared() {

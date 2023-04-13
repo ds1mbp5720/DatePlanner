@@ -3,9 +3,11 @@ package com.lee.dateplanner.festival
 import android.app.Application
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.lee.dateplanner.base.BaseViewModel
+import com.lee.dateplanner.base.SingleLiveEvent
 import com.lee.dateplanner.common.getTodayDate
 import com.lee.dateplanner.common.toastMessage
 import com.lee.dateplanner.festival.data.FestivalInfoData
@@ -19,12 +21,16 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class FestivalViewModel @Inject constructor(private var repository: FestivalRepository, application: Application):BaseViewModel(application) {
-    val festivalList = MutableLiveData<FestivalInfoData>()
-    val festivalPlaceList = MutableLiveData<FestivalSpaceData>()
+    //val festivalList = MutableLiveData<FestivalInfoData>()
+    //val festivalPlaceList = MutableLiveData<FestivalSpaceData>()
+
+    private val _festivalList = SingleLiveEvent<FestivalInfoData>()
+    val festivalList: LiveData<FestivalInfoData> get() = _festivalList
+    private val _festivalPlaceList = SingleLiveEvent<FestivalSpaceData>()
+    val festivalPlaceList: LiveData<FestivalSpaceData> get() = _festivalPlaceList
+
+
     private var job: Job? = null
-    private val exceptionHandler = CoroutineExceptionHandler { _, thrownException ->
-        onError("코루틴내 예외: ${thrownException.localizedMessage}")
-    }
 
     fun getAllFestivalFromViewModel(category: String, year: Int=0 , month: Int=0, day: Int=0){
        runScope({
@@ -32,14 +38,14 @@ class FestivalViewModel @Inject constructor(private var repository: FestivalRepo
                category
            )
        }){
-           festivalList.value = it.body()
+           _festivalList.value = it.body()
        }
     }
     fun getFestivalLocationFromViewModel(){
         runScope({
             repository.getFestivalPlace()
         }){
-            festivalPlaceList.value = it.body()
+            _festivalPlaceList.value = it.body()
         }
         /*job = CoroutineScope(Dispatchers.IO).launch(exceptionHandler) {
             isLoading.postValue(true)
@@ -52,45 +58,6 @@ class FestivalViewModel @Inject constructor(private var repository: FestivalRepo
                 }
             }
         }*/
-    }
-    // 날짜 지난 행사들 제외
-    private fun filterByTodayDate(): MutableList<FestivalInfoData.CulturalEventInfo.Row>{
-        val festivalRowList = mutableListOf<FestivalInfoData.CulturalEventInfo.Row>()
-        for(i in 0 until  festivalList.value?.culturalEventInfo?.row!!.size){
-            val endDate = filterFestivalDateInt(festivalList.value?.culturalEventInfo?.row!![i].eNDDATE)
-            if(endDate >= getTodayDate()){
-                festivalRowList.add(festivalList.value!!.culturalEventInfo.row[i])
-            }
-        }
-        return festivalRowList
-    }
-    private fun filterByDate(year: Int, month: Int, day: Int): MutableList<FestivalInfoData.CulturalEventInfo.Row>{
-        val insertDate = filterInsertDateInt(year,month, day)
-        val festivalRowList = mutableListOf<FestivalInfoData.CulturalEventInfo.Row>()
-        for(i in 0 until  festivalList.value?.culturalEventInfo?.row!!.size){
-            val startDate = filterFestivalDateInt(festivalList.value?.culturalEventInfo?.row!![i].sTRTDATE)
-            val endDate = filterFestivalDateInt(festivalList.value?.culturalEventInfo?.row!![i].eNDDATE)
-            if(insertDate in startDate..endDate)
-                festivalRowList.add(festivalList.value!!.culturalEventInfo.row[i])
-        }
-        return festivalRowList
-    }
-    private fun filterFestivalDateInt(date: String): Int {
-        val filterToList = date.split("-", " ") as MutableList<String>
-        return (filterToList[0] + filterToList[1] + filterToList[2]).toInt()
-    }
-    private fun filterInsertDateInt(year: Int, month: Int, day: Int): Int{
-        val setMonth = if(month<10){ "0$month" }else month.toString()
-        val setDay = if(day<10){ "0$day" }else day.toString()
-        return (year.toString() + setMonth + setDay).toInt()
-    }
-    private fun onError(message: String){
-        errorMessage.postValue(message)
-        isLoading.postValue(false)
-    }
-    override fun onCleared() {
-        super.onCleared()
-        job?.cancel()
     }
     /*fun getFestivalFromViewModelPaging(category: String, year: Int=0 , month: Int=0, day: Int=0, start: Int, end: Int){
         job = CoroutineScope(Dispatchers.IO).launch(exceptionHandler) {
@@ -113,4 +80,12 @@ class FestivalViewModel @Inject constructor(private var repository: FestivalRepo
             }
         }
     }*/
+    private fun onError(message: String){
+        errorMessage.postValue(message)
+        isLoading.postValue(false)
+    }
+    override fun onCleared() {
+        super.onCleared()
+        job?.cancel()
+    }
 }

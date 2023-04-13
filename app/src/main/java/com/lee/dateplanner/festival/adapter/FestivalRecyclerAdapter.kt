@@ -21,9 +21,12 @@ import com.lee.dateplanner.festival.data.FestivalSpaceData
 /**
  * 행사 정보 출력 adapter
  */
-class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var festivalData: FestivalInfoData.CulturalEventInfo, private val festivalSpaceData: FestivalSpaceData):
+class FestivalRecyclerAdapter(var fragment: FestivalListFragment):
     RecyclerView.Adapter<FestivalViewHolder>() {
     private lateinit var binding: FestivalInfoRecyclerBinding
+    private val festivalData = mutableListOf<FestivalInfoData.CulturalEventInfo.Row>()
+    private val festivalSpaceData = mutableListOf<FestivalSpaceData.CulturalSpaceInfo.Row>()
+
     var latitude = 0.0
     var longitude = 0.0
 
@@ -32,9 +35,18 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
         return FestivalViewHolder(binding)
     }
     override fun onBindViewHolder(holder: FestivalViewHolder, position: Int) {
-        val festival = festivalData.row[position]
+        val festival = festivalData[position]
         holder.setView(festival)
         holder.setListener(festival,this)
+    }
+    fun setFestivalData(item: MutableList<FestivalInfoData.CulturalEventInfo.Row>){
+        festivalData.clear()
+        festivalData.addAll(item)
+        notifyDataSetChanged()
+    }
+    fun setFestivalSpaceData(item: MutableList<FestivalSpaceData.CulturalSpaceInfo.Row>){
+        festivalSpaceData.clear()
+        festivalSpaceData.addAll(item)
     }
     // 행사 장소 string 통해 위도, 경도 값 변환 함수
     fun getFestivalPosition(festival: FestivalInfoData.CulturalEventInfo.Row) {
@@ -67,7 +79,7 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
     }
     // festivalSpaceData 활용하여 장소 좌표 획득 함수
     private fun getFestivalPositionFromFestivalPlaceData(festival: FestivalInfoData.CulturalEventInfo.Row){
-        val searchPlace = festivalSpaceData.culturalSpaceInfo.row
+        val searchPlace = festivalSpaceData
         var placeCount = 0
         while (placeCount != searchPlace.size){
             if(searchPlace[placeCount].fACNAME.contains(festival.pLACE) || searchPlace[placeCount].fACDESC.contains(festival.pLACE)||
@@ -94,5 +106,5 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment, private var fe
     fun refreshFestival(){
         notifyDataSetChanged()
     }
-    override fun getItemCount() = festivalData.row.size
+    override fun getItemCount() = festivalData.size
 }
