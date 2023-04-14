@@ -1,6 +1,7 @@
 package com.lee.dateplanner.common
 
 import com.lee.dateplanner.festival.data.FestivalInfoData
+import com.lee.dateplanner.timetable.time.room.Timetable
 
 
 fun MutableList<FestivalInfoData.CulturalEventInfo.Row>.filterByTodayDate(): MutableList<FestivalInfoData.CulturalEventInfo.Row>{
@@ -28,4 +29,12 @@ fun MutableList<FestivalInfoData.CulturalEventInfo.Row>.filterByDate(year: Int, 
 fun String.filterFestivalDateInt(): Int {
     val filterToList = this.split("-", " ") as MutableList<String>
     return (filterToList[0] + filterToList[1] + filterToList[2]).toInt()
+}
+
+fun Timetable.copyClipBoard():String {
+    var schedule = ""
+    this.timeSheetList.forEach{
+        schedule = it.time + " : " + it.title + "\n"
+    }
+    return schedule
 }
