@@ -9,7 +9,6 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
-import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
 import com.lee.dateplanner.base.BaseFragment
 import com.lee.dateplanner.common.dateStringFormat
@@ -51,10 +50,7 @@ class FestivalListFragment : BaseFragment<FestivallistFragmentLayoutBinding, Fes
         viewModel.festivalList.observe(this) {
             festivalList.clear()
             festivalList.addAll(it.culturalEventInfo.row)
-            Log.e("","행사 수1 ${festivalList.size}")
-            festivalList = festivalList.filterByTodayDate()
-            Log.e("","행사 수2 ${festivalList.size}")
-            adapter.setFestivalData(festivalList)
+            adapter.setFestivalData(festivalList.filterByTodayDate())
         }
         viewModel.festivalPlaceList.observe(this) {
             adapter.setFestivalSpaceData(it.culturalSpaceInfo.row.toMutableList())
@@ -77,8 +73,7 @@ class FestivalListFragment : BaseFragment<FestivallistFragmentLayoutBinding, Fes
                         this.year = year
                         this.month = month + 1
                         this.day = dayOfMonth
-                        festivalList = festivalList.filterByDate(this.year,this.month,this.day)
-                        adapter.setFestivalData(festivalList)
+                        adapter.setFestivalData(festivalList.filterByDate(this.year,this.month,this.day))
                     }
                     this.context?.let { it1 -> makeDatePickerDialog(it1, dateSetListener) }
                 }
