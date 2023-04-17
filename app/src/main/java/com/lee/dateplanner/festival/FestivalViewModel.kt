@@ -47,6 +47,6 @@ class FestivalViewModel @Inject constructor(
 
     sealed class Event {
         object Date : Event()
-        object Catergory : Event()
+        object Category : Event()
     }
 }

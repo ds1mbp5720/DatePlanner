@@ -77,7 +77,7 @@ class FestivalListFragment : BaseFragment<FestivallistFragmentLayoutBinding, Fes
                     }
                     this.context?.let { it1 -> makeDatePickerDialog(it1, dateSetListener) }
                 }
-                FestivalViewModel.Event.Catergory -> {
+                FestivalViewModel.Event.Category -> {
 
                 }
             }
