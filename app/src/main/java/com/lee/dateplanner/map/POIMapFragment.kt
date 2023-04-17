@@ -3,26 +3,22 @@ package com.lee.dateplanner.map
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBar.LayoutParams
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
+import com.lee.dateplanner.base.BaseFragment
 import com.lee.dateplanner.common.mapSetting
 import com.lee.dateplanner.common.settingMarker
 import com.lee.dateplanner.databinding.AroundinfoMapFragmentLayoutBinding
 import com.lee.dateplanner.map.adpter.POIRecyclerAdapter
 import com.lee.dateplanner.map.data.POIData
-import com.lee.dateplanner.map.network.POIRetrofitService
 import com.lee.dateplanner.map.select.SelectMarkerPOIFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
@@ -32,12 +28,14 @@ import net.daum.mf.map.api.MapView.MapViewEventListener
 /**
  * 주변 상권정보 카테고리별 제공 fragment
  */
-class POIMapFragment:Fragment(){
+@AndroidEntryPoint
+class POIMapFragment: BaseFragment<AroundinfoMapFragmentLayoutBinding, POIViewModel>(){
     companion object{
         fun newInstance() = POIMapFragment()
     }
     lateinit var binding: AroundinfoMapFragmentLayoutBinding
-    private lateinit var viewModel: POIViewModel
+    override val layoutId: Int = R.layout.aroundinfo_map_fragment_layout
+    override val viewModel: POIViewModel by viewModels()
     private val poiBalloonListener = POIEventClickListener(this) // info window 터치 객체
     private var poiCategory: String = "CE7" // category 저장 변수
     private var festivalLat: String = "37.5143225723" // 행사장 좌표
@@ -70,22 +68,19 @@ class POIMapFragment:Fragment(){
         override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {}
     }
 
-    override fun onCreateView(
+    /*override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = AroundinfoMapFragmentLayoutBinding.inflate(inflater, container, false)
         return binding.root
-    }
+    }*/
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, POIViewModelFactory(
-            POIRepository(POIRetrofitService.getInstance())
-        ))[POIViewModel::class.java]
         getFestivalPosition()
-        observerSetup(viewModel,binding.infoMap)
-        setCategoryBtn() // 상단 카테고리 버튼
+        observerSetup(viewModel,dataBinding.infoMap)
+       // setCategoryBtn() // 상단 카테고리 버튼
         bottomSheetDownToBackKey()
     }
     override fun onPause() {
@@ -95,7 +90,7 @@ class POIMapFragment:Fragment(){
     override fun onResume() {
         super.onResume()
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
-        if(binding.root.findViewById<MapView>(R.id.info_map) == null){
+        if(dataBinding.root.findViewById<MapView>(R.id.info_map) == null){
             //binding.root.addView(createNewMapView(),0)
         }else{
             firstSettingPoiMapView()
@@ -109,7 +104,7 @@ class POIMapFragment:Fragment(){
     // 옵저버 세팅
     private fun observerSetup(viewModel: POIViewModel, map: MapView){
         viewModel.poiList.observe(viewLifecycleOwner){
-            with(binding.poiInfoRecycler){
+            with(dataBinding.poiInfoRecycler){
                 run{
                     val poiAdapter = POIRecyclerAdapter(this@POIMapFragment,it)
                     job = poiAdapter.job
@@ -117,7 +112,7 @@ class POIMapFragment:Fragment(){
                 }
             }
             displayPOI(it,map)
-            binding.poiProgressBar.visibility = View.GONE
+            dataBinding.poiProgressBar.visibility = View.GONE
         }
         viewModel.errorMessage.observe(viewLifecycleOwner){
             Log.e(TAG,it)
@@ -125,12 +120,12 @@ class POIMapFragment:Fragment(){
     }
     // 최초 fragment 실행시 MapView 추가 설정 함수
     private fun firstSettingPoiMapView(){
-        mapSetting(binding.infoMap, this@POIMapFragment.requireContext(),poiBalloonListener)
-        binding.infoMap.setMapViewEventListener(mapViewListener)
+        mapSetting(dataBinding.infoMap, requireContext(),poiBalloonListener)
+        dataBinding.infoMap.setMapViewEventListener(mapViewListener)
         viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt,1)
         //recyclerPaging()
-        binding.infoMap.addPOIItem(festivalMarker) // 행사위치 핑
-        binding.infoMap.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
+        dataBinding.infoMap.addPOIItem(festivalMarker) // 행사위치 핑
+        dataBinding.infoMap.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
     }
     private fun createNewMapView(): MapView{
         val poiMap = MapView(this.activity)
@@ -167,9 +162,40 @@ class POIMapFragment:Fragment(){
             }
         }
     }
+    private fun bottomSheetDownToBackKey(){
+        val behavior = BottomSheetBehavior.from(dataBinding.bottomPoiList)
+        activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(behavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                    behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                }else{
+                    activity!!.finish()
+                }
+            }
+        })
+    }
 
+    override fun initObserve() {
+        super.initObserve()
+        viewModel.poiList.observe(this){
+
+        }
+        viewModel.eventClick.observe(this){
+            when(it){
+                POIViewModel.Event.Restaurant -> {
+                    viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
+                }
+                POIViewModel.Event.Cafe -> {
+                    viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
+                }
+                POIViewModel.Event.Enjoy -> {
+                    viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
+                }
+            }
+        }
+    }
     // 상단 주변상권정보 카테고리 선택 버튼
-    private fun setCategoryBtn(){
+    /*private fun setCategoryBtn(){
         with(binding){
             cafeBtn.clicks().subscribe{
                 poiCategory = getString(R.string.poi_category_1)
@@ -187,21 +213,9 @@ class POIMapFragment:Fragment(){
                 viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
             }
         }
-    }
-    private fun bottomSheetDownToBackKey(){
-        val behavior = BottomSheetBehavior.from(binding.bottomPoiList)
-        activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if(behavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-                    behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                }else{
-                    activity!!.finish()
-                }
-            }
-        })
-    }
+    }*/
     // 페이징 처리 함수
-    private fun recyclerPaging(){
+    /*private fun recyclerPaging(){
         var paging = 1
         viewModel.getAllPoiFromViewModel(poiCategory,centerLat, centerLgt,paging)
         binding.poiInfoRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener(){
@@ -220,5 +234,5 @@ class POIMapFragment:Fragment(){
                 }
             }
         })
-    }
+    }*/
 }

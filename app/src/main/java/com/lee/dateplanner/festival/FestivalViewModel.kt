@@ -17,11 +17,13 @@ class FestivalViewModel @Inject constructor(
     private var repository: FestivalRepository,
     application: Application
 ) : BaseViewModel(application) {
+
     private val _festivalList = SingleLiveEvent<FestivalInfoData>()
     val festivalList: LiveData<FestivalInfoData> get() = _festivalList
     private val _festivalPlaceList = SingleLiveEvent<FestivalSpaceData>()
     val festivalPlaceList: LiveData<FestivalSpaceData> get() = _festivalPlaceList
     private val _eventClick = SingleLiveEvent<Event>()
+
     val eventClick: LiveData<Event> get() = _eventClick
     fun onEventClick(event: Event){
         _eventClick.value = event
