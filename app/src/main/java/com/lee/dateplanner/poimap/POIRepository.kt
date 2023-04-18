@@ -1,6 +1,6 @@
-package com.lee.dateplanner.map
+package com.lee.dateplanner.poimap
 
-import com.lee.dateplanner.map.network.POIRetrofitService
+import com.lee.dateplanner.poimap.network.POIRetrofitService
 
 class POIRepository(private val poiRetrofitService: POIRetrofitService) {
     // poi 카테고리, lat, lgt, 반경 2km 설정, 페이징, 크기, 정렬 양식

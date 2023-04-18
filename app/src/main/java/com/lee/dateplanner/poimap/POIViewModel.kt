@@ -1,8 +1,8 @@
-package com.lee.dateplanner.map
+package com.lee.dateplanner.poimap
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lee.dateplanner.map.data.POIData
+import com.lee.dateplanner.poimap.data.POIData
 import kotlinx.coroutines.*
 
 /**

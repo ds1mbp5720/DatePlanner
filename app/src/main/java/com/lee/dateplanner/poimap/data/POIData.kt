@@ -1,4 +1,4 @@
-package com.lee.dateplanner.map.data
+package com.lee.dateplanner.poimap.data
 
 
 import com.google.gson.annotations.SerializedName

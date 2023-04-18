@@ -1,4 +1,4 @@
-package com.lee.dateplanner.map.adpter
+package com.lee.dateplanner.poimap.adpter
 
 import android.content.ContentValues.TAG
 import android.util.Log
@@ -8,8 +8,8 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.lee.dateplanner.databinding.PoiListRecyclerBinding
-import com.lee.dateplanner.map.POIMapFragment
-import com.lee.dateplanner.map.data.POIData
+import com.lee.dateplanner.poimap.POIMapFragment
+import com.lee.dateplanner.poimap.data.POIData
 import kotlinx.coroutines.*
 import net.daum.mf.map.api.CameraUpdateFactory
 

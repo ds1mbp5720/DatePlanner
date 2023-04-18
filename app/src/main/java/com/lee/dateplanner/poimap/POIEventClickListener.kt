@@ -1,4 +1,4 @@
-package com.lee.dateplanner.map
+package com.lee.dateplanner.poimap
 
 import android.content.ContentValues.TAG
 import android.util.Log

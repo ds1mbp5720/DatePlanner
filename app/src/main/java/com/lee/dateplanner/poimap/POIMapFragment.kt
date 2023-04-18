@@ -1,4 +1,4 @@
-package com.lee.dateplanner.map
+package com.lee.dateplanner.poimap
 
 import android.content.ContentValues.TAG
 import android.os.Bundle
@@ -19,10 +19,10 @@ import com.lee.dateplanner.R
 import com.lee.dateplanner.common.mapSetting
 import com.lee.dateplanner.common.settingMarker
 import com.lee.dateplanner.databinding.AroundinfoMapFragmentLayoutBinding
-import com.lee.dateplanner.map.adpter.POIRecyclerAdapter
-import com.lee.dateplanner.map.data.POIData
-import com.lee.dateplanner.map.network.POIRetrofitService
-import com.lee.dateplanner.map.select.SelectMarkerPOIFragment
+import com.lee.dateplanner.poimap.adpter.POIRecyclerAdapter
+import com.lee.dateplanner.poimap.data.POIData
+import com.lee.dateplanner.poimap.network.POIRetrofitService
+import com.lee.dateplanner.poimap.select.SelectMarkerPOIFragment
 import kotlinx.coroutines.Job
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint

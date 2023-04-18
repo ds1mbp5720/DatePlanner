@@ -7,7 +7,7 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.text.format.DateFormat
 import android.widget.Toast
-import com.lee.dateplanner.map.adpter.POIWindowAdapter
+import com.lee.dateplanner.poimap.adpter.POIWindowAdapter
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView

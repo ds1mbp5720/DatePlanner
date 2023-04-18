@@ -1,14 +1,13 @@
-package com.lee.dateplanner
+package com.lee.dateplanner.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.google.android.material.tabs.TabLayout
+import com.lee.dateplanner.R
 import com.lee.dateplanner.base.BaseActivity
 import com.lee.dateplanner.databinding.ActivityMainBinding
 import com.lee.dateplanner.festival.FestivalListFragment
-import com.lee.dateplanner.main.MainViewModel
-import com.lee.dateplanner.map.POIMapFragment
+import com.lee.dateplanner.poimap.POIMapFragment
 import com.lee.dateplanner.timetable.TimeTableFragment
 import dagger.hilt.android.AndroidEntryPoint
 

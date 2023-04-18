@@ -1,12 +1,9 @@
 package com.lee.dateplanner.timemap
 
-import android.Manifest
 import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
@@ -25,7 +22,7 @@ import com.lee.dateplanner.common.mapSetting
 import com.lee.dateplanner.common.settingMarker
 import com.lee.dateplanner.common.toastMessage
 import com.lee.dateplanner.databinding.MyScheduleMapActivityLayoutBinding
-import com.lee.dateplanner.map.POIEventClickListener
+import com.lee.dateplanner.poimap.POIEventClickListener
 import com.lee.dateplanner.timemap.adapter.TimetableMapAdapter
 import com.lee.dateplanner.timetable.TimetableViewModel
 import com.lee.dateplanner.timetable.timesheet.TimeSheet

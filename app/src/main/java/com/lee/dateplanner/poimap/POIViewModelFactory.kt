@@ -1,4 +1,4 @@
-package com.lee.dateplanner.map
+package com.lee.dateplanner.poimap
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
