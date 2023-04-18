@@ -18,7 +18,7 @@ import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
 import com.lee.dateplanner.common.mapSetting
 import com.lee.dateplanner.common.settingMarker
-import com.lee.dateplanner.databinding.AroundinfoMapFragmentLayoutBinding
+import com.lee.dateplanner.databinding.PoiMapFragmentLayoutBinding
 import com.lee.dateplanner.poimap.adpter.POIRecyclerAdapter
 import com.lee.dateplanner.poimap.data.POIData
 import com.lee.dateplanner.poimap.network.POIRetrofitService
@@ -36,7 +36,7 @@ class POIMapFragment:Fragment(){
     companion object{
         fun newInstance() = POIMapFragment()
     }
-    lateinit var binding: AroundinfoMapFragmentLayoutBinding
+    lateinit var binding: PoiMapFragmentLayoutBinding
     private lateinit var viewModel: POIViewModel
     private val poiBalloonListener = POIEventClickListener(this) // info window 터치 객체
     private var poiCategory: String = "CE7" // category 저장 변수
@@ -75,7 +75,7 @@ class POIMapFragment:Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = AroundinfoMapFragmentLayoutBinding.inflate(inflater, container, false)
+        binding = PoiMapFragmentLayoutBinding.inflate(inflater, container, false)
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
