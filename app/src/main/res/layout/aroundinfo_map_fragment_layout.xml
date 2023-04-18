@@ -4,10 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
 
-        <import type="com.lee.dateplanner.map.POIViewModel.Event" />
-        <variable
-            name="viewModel"
-            type="com.lee.dateplanner.map.POIViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -19,6 +15,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:nestedScrollingEnabled="true" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/category"
@@ -33,10 +35,9 @@
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
                 android:backgroundTint="@color/white"
-                android:text="@string/str_restaurant"
-                android:onClick="@{()->viewModel.onEventClick(Event.Restaurant.INSTANCE)}"
+                android:text="식당"
                 app:cornerRadius="100dp" />
 
             <com.google.android.material.button.MaterialButton
@@ -44,10 +45,9 @@
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
                 android:backgroundTint="@color/white"
-                android:text="@string/str_cafe"
-                android:onClick="@{()->viewModel.onEventClick(Event.Cafe.INSTANCE)}"
+                android:text="카페"
                 app:cornerRadius="100dp" />
 
             <com.google.android.material.button.MaterialButton
@@ -56,8 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
-                android:text="@string/str_enjoy"
-                android:onClick="@{()->viewModel.onEventClick(Event.Enjoy.INSTANCE)}"
+                android:text="놀거리"
                 app:cornerRadius="100dp" />
 
         </LinearLayout>

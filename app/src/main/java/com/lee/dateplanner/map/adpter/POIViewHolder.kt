@@ -9,7 +9,7 @@ import com.lee.dateplanner.map.POIMapFragment
 import com.lee.dateplanner.map.data.POIData
 
 class POIViewHolder(val binding: PoiListRecyclerBinding, owner: POIMapFragment): RecyclerView.ViewHolder(binding.root){
-    private val behavior = BottomSheetBehavior.from(owner.dataBinding.bottomPoiList)
+    private val behavior = BottomSheetBehavior.from(owner.binding.bottomPoiList)
     fun setView(poi : POIData.Document) = with(binding){
         poiCategory.text = setCategoryTextFilter(poi.categoryName)
         poiName.text = poi.placeName
