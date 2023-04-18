@@ -26,6 +26,7 @@ android {
         buildConfigField "String","KAKAO_MAP_KEY",properties['kakao_map_key']
         buildConfigField "String","KAKAO_REST_KEY",properties['kakao_rest_key']
         buildConfigField "String","FESTIVAL_KEY",properties['festival_key']
+        buildConfigField "String","NAVER_CLIENT_ID",properties['naver_client_id']
         manifestPlaceholders = [KAKAO_MAP_KEY: 'kakao_map_key']
     }
 
@@ -96,4 +97,7 @@ dependencies {
     // Hilt testing dependencies
     androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    // naverMap
+    implementation "com.naver.maps:map-sdk:3.16.0"
 }

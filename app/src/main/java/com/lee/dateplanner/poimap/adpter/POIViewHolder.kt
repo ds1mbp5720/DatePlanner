@@ -1,12 +1,12 @@
-package com.lee.dateplanner.map.adpter
+package com.lee.dateplanner.poimap.adpter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.common.setCategoryTextFilter
 import com.lee.dateplanner.databinding.PoiListRecyclerBinding
-import com.lee.dateplanner.map.POIMapFragment
-import com.lee.dateplanner.map.data.POIData
+import com.lee.dateplanner.poimap.POIMapFragment
+import com.lee.dateplanner.poimap.data.POIData
 
 class POIViewHolder(val binding: PoiListRecyclerBinding, owner: POIMapFragment): RecyclerView.ViewHolder(binding.root){
     private val behavior = BottomSheetBehavior.from(owner.binding.bottomPoiList)

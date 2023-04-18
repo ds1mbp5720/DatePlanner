@@ -5,7 +5,11 @@ import android.app.Activity
 import android.app.Application
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import com.lee.dateplanner.BuildConfig
+import com.naver.maps.map.NaverMapSdk
+import com.naver.maps.map.NaverMapSdk.NaverCloudPlatformClient
 import dagger.hilt.android.HiltAndroidApp
+
 
 /**
  * 최초 실행코드
@@ -17,6 +21,7 @@ class DatePlannerApplication:Application() {
         super.onCreate()
         appInstance = this
         settingScreenPortrait()
+        //NaverMapSdk.getInstance(this).client = NaverCloudPlatformClient(BuildConfig.NAVER_CLIENT_ID)
     }
     companion object{
         private lateinit var appInstance: DatePlannerApplication
