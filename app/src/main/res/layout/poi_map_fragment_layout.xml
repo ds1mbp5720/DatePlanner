@@ -3,24 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-
+        <import type="com.lee.dateplanner.poimap.POIViewModel.Event" />
+        <variable
+            name="viewModel"
+            type="com.lee.dateplanner.poimap.POIViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <net.daum.mf.map.api.MapView
             android:id="@+id/info_map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:nestedScrollingEnabled="true" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/category"
@@ -31,32 +27,35 @@
             android:padding="30dp">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/restaurant_btn"
+                android:id="@+id/bt_restaurant_btn"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 android:backgroundTint="@color/white"
-                android:text="식당"
+                android:text="@string/str_restaurant"
+                android:onClick="@{()->viewModel.onEventClick(Event.Restaurant.INSTANCE)}"
                 app:cornerRadius="100dp" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/cafe_btn"
+                android:id="@+id/bt_cafe_btn"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 android:backgroundTint="@color/white"
-                android:text="카페"
+                android:text="@string/str_cafe"
+                android:onClick="@{()->viewModel.onEventClick(Event.Cafe.INSTANCE)}"
                 app:cornerRadius="100dp" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/etc_btn"
+                android:id="@+id/bt_enjoy_btn"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
-                android:text="놀거리"
+                android:text="@string/str_enjoy"
+                android:onClick="@{()->viewModel.onEventClick(Event.Enjoy.INSTANCE)}"
                 app:cornerRadius="100dp" />
 
         </LinearLayout>
