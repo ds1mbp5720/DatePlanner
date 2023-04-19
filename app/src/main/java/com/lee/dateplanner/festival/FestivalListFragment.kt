@@ -50,7 +50,10 @@ class FestivalListFragment : BaseFragment<FestivallistFragmentLayoutBinding, Fes
         viewModel.festivalList.observe(this) {
             festivalList.clear()
             festivalList.addAll(it.culturalEventInfo.row)
-            adapter.setFestivalData(festivalList.filterByTodayDate())
+            if(year == 0 && month == 0 && day == 0)
+                adapter.setFestivalData(festivalList.filterByTodayDate())
+            else
+                adapter.setFestivalData(festivalList.filterByDate(this.year,this.month,this.day))
         }
         viewModel.festivalPlaceList.observe(this) {
             adapter.setFestivalSpaceData(it.culturalSpaceInfo.row.toMutableList())

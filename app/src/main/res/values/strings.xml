@@ -27,6 +27,9 @@
     <string name="insertMarkerTitle">일정 장소</string>
     <string name="festivalMarkerTitle">행사 장소</string>
 
+    <string name="str_restaurant">식당</string>
+    <string name="str_cafe">카페</string>
+    <string name="str_enjoy">놀거리</string>
     <string name="dateBTN">날짜</string>
     <string name="insert_btn">등록</string>
     <string name="show_map_checkbox">위치설정</string>

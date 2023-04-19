@@ -1,46 +1,43 @@
 package com.lee.dateplanner.poimap
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.LiveData
+import com.lee.dateplanner.base.BaseViewModel
+import com.lee.dateplanner.base.SingleLiveEvent
 import com.lee.dateplanner.poimap.data.POIData
-import kotlinx.coroutines.*
+import javax.inject.Inject
 
 /**
  * 주변 상권정보 제공 viewModel
  */
-class POIViewModel(private val repository:POIRepository):ViewModel() {
-
-    val poiList = MutableLiveData<POIData>() // rest api 저장
-    val errorMessage = MutableLiveData<String>()
-    val isLoading = MutableLiveData<Boolean>()
-    private var job : Job? = null
-
-    private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        onError("코루틴내 예외: ${throwable.localizedMessage}")
+class POIViewModel @Inject constructor(
+    private val repository:POIRepository,
+    application:Application
+) : BaseViewModel(application) {
+    private val _poiList = SingleLiveEvent<POIData>()
+    val poiList: LiveData<POIData> get() = _poiList
+    private val _eventClick = SingleLiveEvent<Event>()
+    val eventClick: LiveData<Event> get() = _eventClick
+    fun onEventClick(event: Event){
+        _eventClick.value = event
     }
+
+
     //rest 포이정보 호출하여 get 함수
     // 이때 category -> 식당, 카페, 놀거리와 기준점 되는 행사장 정보 인자
-    fun getAllPoiFromViewModel(category: String, lat:String, lgt:String,page: Int){
-        job = CoroutineScope(Dispatchers.IO).launch(exceptionHandler) {
-            isLoading.postValue(true)
-            val response = repository.getPOIInfo(category, lat, lgt,page,15) // 기준점, 카테고리 전달
-            withContext(Dispatchers.Main){
-                if(response.isSuccessful){
-                    poiList.postValue(response.body())
-                    isLoading.postValue(false)
-                }else{
-                    onError("에러내용:  $response")
-                }
-            }
+    fun getAllPoiFromViewModel(category: String, lat:String, lgt:String, page: Int){
+        runScope({
+            repository.getPOIInfo(
+                category, lat, lgt, page, 15
+            )
+        }) {
+            _poiList.value = it.body()
         }
     }
 
-    private fun onError(message: String){
-        errorMessage.postValue(message)
-        isLoading.postValue(false)
-    }
-    override fun onCleared() {
-        super.onCleared()
-        job?.cancel()
+    sealed class Event {
+        object Restaurant : Event()
+        object Cafe : Event()
+        object Enjoy : Event()
     }
 }
