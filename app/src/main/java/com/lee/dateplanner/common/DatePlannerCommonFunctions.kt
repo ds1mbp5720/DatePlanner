@@ -6,6 +6,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.text.format.DateFormat
+import android.util.TypedValue
 import android.widget.Toast
 import com.lee.dateplanner.poimap.adpter.POIWindowAdapter
 import net.daum.mf.map.api.MapPOIItem
@@ -78,4 +79,12 @@ fun filterInsertDateInt(year: Int, month: Int, day: Int): Int{
     val setMonth = if(month<10){ "0$month" }else month.toString()
     val setDay = if(day<10){ "0$day" }else day.toString()
     return (year.toString() + setMonth + setDay).toInt()
+}
+
+fun dpToPx(context: Context, dp: Float): Int {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        dp,
+        context.resources.displayMetrics
+    ).toInt()
 }

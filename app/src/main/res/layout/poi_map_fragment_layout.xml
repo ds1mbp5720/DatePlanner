@@ -7,17 +7,18 @@
         <variable
             name="viewModel"
             type="com.lee.dateplanner.poimap.POIViewModel" />
+
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        
         <net.daum.mf.map.api.MapView
             android:id="@+id/info_map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:nestedScrollingEnabled="true" />
-
         <LinearLayout
             android:id="@+id/category"
             android:layout_width="match_parent"
@@ -27,6 +28,7 @@
             android:padding="30dp">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/etc_btn"
                 android:id="@+id/bt_restaurant_btn"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
