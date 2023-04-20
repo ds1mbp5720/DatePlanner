@@ -5,14 +5,16 @@ import androidx.lifecycle.LiveData
 import com.lee.dateplanner.base.BaseViewModel
 import com.lee.dateplanner.base.SingleLiveEvent
 import com.lee.dateplanner.poimap.data.POIData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 /**
  * 주변 상권정보 제공 viewModel
  */
+@HiltViewModel
 class POIViewModel @Inject constructor(
-    private val repository:POIRepository,
-    application:Application
+    private var repository: POIRepository,
+    application: Application
 ) : BaseViewModel(application) {
     private val _poiList = SingleLiveEvent<POIData>()
     val poiList: LiveData<POIData> get() = _poiList

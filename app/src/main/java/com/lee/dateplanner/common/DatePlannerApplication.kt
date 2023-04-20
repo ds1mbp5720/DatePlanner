@@ -21,7 +21,7 @@ class DatePlannerApplication:Application() {
         super.onCreate()
         appInstance = this
         settingScreenPortrait()
-        //NaverMapSdk.getInstance(this).client = NaverCloudPlatformClient(BuildConfig.NAVER_CLIENT_ID)
+        NaverMapSdk.getInstance(this).client = NaverCloudPlatformClient(BuildConfig.NAVER_CLIENT_ID)
     }
     companion object{
         private lateinit var appInstance: DatePlannerApplication

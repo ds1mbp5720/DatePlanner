@@ -39,14 +39,14 @@ fun getTodayDate(): Int{
     return (date[0] + date[1] + date[2]).toInt()
 }
 // 맵 설정 함수
-fun mapSetting(map: MapView, context: Context, poiEventListener: MapView.POIItemEventListener){
+fun mapSetting(map: MapView, context: Context?, poiEventListener: MapView.POIItemEventListener){
     with(map){
         mapType = MapView.MapType.Standard
         setZoomLevel(3, true)
         zoomIn(true)
         zoomOut(true)
         setPOIItemEventListener(poiEventListener)
-        setCalloutBalloonAdapter(POIWindowAdapter(context))
+        setCalloutBalloonAdapter(context?.let { POIWindowAdapter(it) })
     }
 }
 // 카테고리 text 수정 함수

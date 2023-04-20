@@ -1,6 +1,5 @@
 package com.lee.dateplanner.poimap.network
 
-
 import com.lee.dateplanner.BuildConfig
 import com.lee.dateplanner.poimap.data.POIData
 import retrofit2.Response
@@ -27,7 +26,7 @@ interface POIRetrofitService {
     ): Response<POIData>
 
     companion object {
-        var retrofitService: POIRetrofitService? = null
+        private var retrofitService: POIRetrofitService? = null
         fun getInstance() : POIRetrofitService {
             if (retrofitService == null) {
                 val retrofit = Retrofit.Builder()

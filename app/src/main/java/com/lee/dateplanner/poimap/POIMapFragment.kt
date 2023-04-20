@@ -3,19 +3,13 @@ package com.lee.dateplanner.poimap
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBar.LayoutParams
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
 import com.lee.dateplanner.base.BaseFragment
 import com.lee.dateplanner.common.mapSetting
@@ -23,7 +17,6 @@ import com.lee.dateplanner.common.settingMarker
 import com.lee.dateplanner.databinding.PoiMapFragmentLayoutBinding
 import com.lee.dateplanner.poimap.adpter.POIRecyclerAdapter
 import com.lee.dateplanner.poimap.data.POIData
-import com.lee.dateplanner.poimap.network.POIRetrofitService
 import com.lee.dateplanner.poimap.select.SelectMarkerPOIFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -36,13 +29,13 @@ import net.daum.mf.map.api.MapView.MapViewEventListener
  * 주변 상권정보 카테고리별 제공 fragment
  */
 @AndroidEntryPoint
-class POIMapFragment: BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>(){
+class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>(){
     companion object{
         fun newInstance() = POIMapFragment()
     }
     override val layoutId: Int = R.layout.poi_map_fragment_layout
     override val viewModel: POIViewModel by viewModels()
-    lateinit var binding: PoiMapFragmentLayoutBinding
+    //lateinit var binding: PoiMapFragmentLayoutBinding
     private val poiBalloonListener = POIEventClickListener(this) // info window 터치 객체
     private var poiCategory: String = "CE7" // category 저장 변수
     private var festivalLat: String = "37.5143225723" // 행사장 좌표
@@ -51,6 +44,7 @@ class POIMapFragment: BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>(){
     private var centerLgt: String = "127.062831022" // 행사장 좌표
     private lateinit var festivalMarker: MapPOIItem
     private var job : Job? = null
+    lateinit var mapView :MapView
     var selectMarkerPOIFragment = SelectMarkerPOIFragment()
     // 정보 리스트와 maker 연동 목적 map
     var markerResolver: MutableMap<POIData.Document,MapPOIItem> = HashMap()
@@ -85,8 +79,9 @@ class POIMapFragment: BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>(){
     }*/
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mapView = MapView(this.activity)
         getFestivalPosition()
-        observerSetup(viewModel,dataBinding.infoMap)
+        dataBinding.infoMap.addView(mapView)
         bottomSheetDownToBackKey()
     }
     override fun onPause() {
@@ -99,7 +94,7 @@ class POIMapFragment: BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>(){
         if(dataBinding.root.findViewById<MapView>(R.id.info_map) == null){
             //binding.root.addView(createNewMapView(),0)
         }else{
-            firstSettingPoiMapView()
+            firstSettingPoiMapView(mapView)
         }
     }
     override fun onDestroyView() {
@@ -107,31 +102,14 @@ class POIMapFragment: BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>(){
         poiBalloonListener.job?.cancel()
         job?.cancel()
     }
-    // 옵저버 세팅
-    private fun observerSetup(viewModel: POIViewModel, map: MapView){
-        viewModel.poiList.observe(viewLifecycleOwner){
-            with(dataBinding.poiInfoRecycler){
-                run{
-                    val poiAdapter = POIRecyclerAdapter(this@POIMapFragment,it)
-                    job = poiAdapter.job
-                    adapter = poiAdapter
-                }
-            }
-            displayPOI(it,map)
-            dataBinding.poiProgressBar.visibility = View.GONE
-        }
-        viewModel.errorMessage.observe(viewLifecycleOwner){
-            Log.e(TAG,it)
-        }
-    }
     // 최초 fragment 실행시 MapView 추가 설정 함수
-    private fun firstSettingPoiMapView(){
-        mapSetting(dataBinding.infoMap, this@POIMapFragment.requireContext(),poiBalloonListener)
-        dataBinding.infoMap.setMapViewEventListener(mapViewListener)
+    private fun firstSettingPoiMapView(mapView: MapView){
+        mapSetting(mapView, this@POIMapFragment.requireContext(),poiBalloonListener)
+        mapView.setMapViewEventListener(mapViewListener)
         viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt,1)
         //recyclerPaging()
-        dataBinding.infoMap.addPOIItem(festivalMarker) // 행사위치 핑
-        dataBinding.infoMap.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
+        mapView.addPOIItem(festivalMarker) // 행사위치 핑
+        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
     }
     private fun createNewMapView(): MapView{
         val poiMap = MapView(this.activity)
@@ -141,7 +119,6 @@ class POIMapFragment: BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>(){
             id=R.id.info_map
             mapSetting(this, this@POIMapFragment.requireContext(),poiBalloonListener)
             addPOIItem(festivalMarker) // 새로 생성한 map 행사위치 핑
-            observerSetup(viewModel,this)
             setMapViewEventListener(mapViewListener)
         }
         return poiMap
@@ -170,7 +147,7 @@ class POIMapFragment: BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>(){
     }
 
     private fun bottomSheetDownToBackKey(){
-        val behavior = BottomSheetBehavior.from(binding.bottomPoiList)
+        val behavior = BottomSheetBehavior.from(dataBinding.bottomPoiList)
         activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if(behavior.state == BottomSheetBehavior.STATE_EXPANDED) {
@@ -199,6 +176,20 @@ class POIMapFragment: BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>(){
                     viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
                 }
             }
+        }
+        viewModel.poiList.observe(viewLifecycleOwner){
+            with(dataBinding.poiInfoRecycler){
+                run{
+                    val poiAdapter = POIRecyclerAdapter(this@POIMapFragment,it)
+                    job = poiAdapter.job
+                    adapter = poiAdapter
+                }
+            }
+            displayPOI(it,mapView)
+            dataBinding.poiProgressBar.visibility = View.GONE
+        }
+        viewModel.errorMessage.observe(viewLifecycleOwner){
+            Log.e(TAG,it)
         }
     }
     // 페이징 처리 함수
