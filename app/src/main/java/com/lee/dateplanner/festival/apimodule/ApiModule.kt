@@ -53,9 +53,13 @@ object ApiModule {
     @Provides
     @Singleton
     @TypeFestival
-    fun provideApiService(retrofit: Retrofit): FestivalRetrofitService {
-        return retrofit.create(FestivalRetrofitService::class.java)
-    }
+    fun provideApiService(): FestivalRetrofitService =
+        Retrofit.Builder()
+            .baseUrl(FESTIVAL_ADDRESS)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(FestivalRetrofitService::class.java)
+
 
     @Singleton
     @Provides

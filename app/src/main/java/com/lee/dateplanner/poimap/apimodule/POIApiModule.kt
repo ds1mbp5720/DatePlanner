@@ -1,6 +1,8 @@
 package com.lee.dateplanner.poimap.apimodule
 
 import com.lee.dateplanner.BuildConfig
+import com.lee.dateplanner.festival.network.FESTIVAL_ADDRESS
+import com.lee.dateplanner.festival.network.FestivalRetrofitService
 import com.lee.dateplanner.poimap.POIRepository
 import com.lee.dateplanner.poimap.network.POIRetrofitService
 import com.lee.dateplanner.poimap.network.POI_ADDRESS
@@ -53,9 +55,12 @@ object POIApiModule {
     @Provides
     @Singleton
     @TypePOI
-    fun providePOIApiService(retrofit: Retrofit): POIRetrofitService {
-        return retrofit.create(POIRetrofitService::class.java)
-    }
+    fun providePOIApiService(): POIRetrofitService =
+        Retrofit.Builder()
+            .baseUrl(POI_ADDRESS)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(POIRetrofitService::class.java)
 
     @Singleton
     @Provides
