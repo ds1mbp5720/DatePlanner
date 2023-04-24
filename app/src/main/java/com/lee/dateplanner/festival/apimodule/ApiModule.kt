@@ -12,17 +12,23 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {
 
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class TypeFestival
+
     @Provides
     fun provideBaseUrl() = FESTIVAL_ADDRESS
 
     @Singleton
     @Provides
+    @TypeFestival
     fun provideOkHttpClient() = if (BuildConfig.DEBUG) {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -35,6 +41,7 @@ object ApiModule {
 
     @Singleton
     @Provides
+    @TypeFestival
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
@@ -45,11 +52,17 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit): FestivalRetrofitService {
-        return retrofit.create(FestivalRetrofitService::class.java)
-    }
+    @TypeFestival
+    fun provideApiService(): FestivalRetrofitService =
+        Retrofit.Builder()
+            .baseUrl(FESTIVAL_ADDRESS)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(FestivalRetrofitService::class.java)
+
 
     @Singleton
     @Provides
+    @TypeFestival
     fun provideMainRepository(apiService:FestivalRetrofitService)= FestivalRepository(apiService)
 }

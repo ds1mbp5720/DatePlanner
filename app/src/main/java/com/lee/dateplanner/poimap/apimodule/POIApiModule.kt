@@ -2,6 +2,7 @@ package com.lee.dateplanner.poimap.apimodule
 
 import com.lee.dateplanner.BuildConfig
 import com.lee.dateplanner.festival.network.FESTIVAL_ADDRESS
+import com.lee.dateplanner.festival.network.FestivalRetrofitService
 import com.lee.dateplanner.poimap.POIRepository
 import com.lee.dateplanner.poimap.network.POIRetrofitService
 import com.lee.dateplanner.poimap.network.POI_ADDRESS
@@ -13,18 +14,24 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object POIApiModule {
 
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class TypePOI
+
     @Provides
     fun provideBaseUrl() = POI_ADDRESS
 
     @Singleton
     @Provides
-    fun provideOkHttpClient() = if (BuildConfig.DEBUG) {
+    @TypePOI
+    fun providePOIOkHttpClient() = if (BuildConfig.DEBUG) {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         OkHttpClient.Builder()
@@ -36,7 +43,8 @@ object POIApiModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    @TypePOI
+    fun providePOIRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(provideBaseUrl())
@@ -46,11 +54,16 @@ object POIApiModule {
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit): POIRetrofitService {
-        return retrofit.create(POIRetrofitService::class.java)
-    }
+    @TypePOI
+    fun providePOIApiService(): POIRetrofitService =
+        Retrofit.Builder()
+            .baseUrl(POI_ADDRESS)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(POIRetrofitService::class.java)
 
     @Singleton
     @Provides
-    fun provideMainRepository(apiService:POIRetrofitService)= POIRepository(apiService)
+    @TypePOI
+    fun providePOIMainRepository(apiService:POIRetrofitService)= POIRepository(apiService)
 }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBar.LayoutParams
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -35,7 +36,7 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     }
     override val layoutId: Int = R.layout.poi_map_fragment_layout
     override val viewModel: POIViewModel by viewModels()
-    //lateinit var binding: PoiMapFragmentLayoutBinding
+    private lateinit var poiAdapter : POIRecyclerAdapter
     private val poiBalloonListener = POIEventClickListener(this) // info window 터치 객체
     private var poiCategory: String = "CE7" // category 저장 변수
     private var festivalLat: String = "37.5143225723" // 행사장 좌표
@@ -50,55 +51,54 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     var markerResolver: MutableMap<POIData.Document,MapPOIItem> = HashMap()
     var markerResolver2: MutableMap<MapPOIItem,POIData.Document> = HashMap()
     private val mapViewListener = object :MapViewEventListener{
-        override fun onMapViewInitialized(p0: MapView?) {
+        override fun onMapViewInitialized(mapView: MapView?) {
             centerLat = festivalLat
             centerLgt = festivalLgt
         }
-        override fun onMapViewDragEnded(p0: MapView, p1: MapPoint?) {
-            centerLat = p0.mapCenterPoint.mapPointGeoCoord.latitude.toString()
-            centerLgt = p0.mapCenterPoint.mapPointGeoCoord.longitude.toString()
-            //recyclerPaging()
+        override fun onMapViewDragEnded(mapView: MapView, mapPoint: MapPoint?) {
+            centerLat = mapView.mapCenterPoint.mapPointGeoCoord.latitude.toString()
+            centerLgt = mapView.mapCenterPoint.mapPointGeoCoord.longitude.toString()
             viewModel.getAllPoiFromViewModel(poiCategory, centerLat,centerLgt,1)
         }
-        override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {}
-        override fun onMapViewZoomLevelChanged(p0: MapView?, p1: Int) {}
-        override fun onMapViewSingleTapped(p0: MapView?, p1: MapPoint?) {}
-        override fun onMapViewDoubleTapped(p0: MapView?, p1: MapPoint?) {}
-        override fun onMapViewLongPressed(p0: MapView?, p1: MapPoint?) {}
-        override fun onMapViewDragStarted(p0: MapView?, p1: MapPoint?) {}
-        override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {}
+        override fun onMapViewCenterPointMoved(mapView: MapView?, mapPoint: MapPoint?) {}
+        override fun onMapViewZoomLevelChanged(mapView: MapView?, p1: Int) {}
+        override fun onMapViewSingleTapped(mapView: MapView?, mapPoint: MapPoint?) {}
+        override fun onMapViewDoubleTapped(mapView: MapView?, mapPoint: MapPoint?) {}
+        override fun onMapViewLongPressed(mapView: MapView?, mapPoint: MapPoint?) {}
+        override fun onMapViewDragStarted(mapView: MapView?, mapPoint: MapPoint?) {}
+        override fun onMapViewMoveFinished(mapView: MapView?, mapPoint: MapPoint?) {}
     }
 
-    /*override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = PoiMapFragmentLayoutBinding.inflate(inflater, container, false)
-        return binding.root
-    }*/
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("","포이 onViewCreated")
+        poiAdapter = POIRecyclerAdapter(this)
         mapView = MapView(this.activity)
         getFestivalPosition()
         dataBinding.infoMap.addView(mapView)
         bottomSheetDownToBackKey()
+        viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt,1)
     }
     override fun onPause() {
         super.onPause()
-        //binding.root.removeView(binding.root.findViewById(R.id.info_map))
+        Log.e("","포이 onPause")
+        //Todo 지도 지우기
+        dataBinding.infoMap.visibility = View.GONE
     }
     override fun onResume() {
         super.onResume()
+        Log.e("","포이 onResume ${viewModel}")
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
         if(dataBinding.root.findViewById<MapView>(R.id.info_map) == null){
-            //binding.root.addView(createNewMapView(),0)
+            //Todo 지운 지도 재생성
+            //dataBinding.infoMap.visibility = View.VISIBLE
         }else{
             firstSettingPoiMapView(mapView)
         }
     }
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.e("","포이 onDestroyView")
         poiBalloonListener.job?.cancel()
         job?.cancel()
     }
@@ -107,7 +107,6 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
         mapSetting(mapView, this@POIMapFragment.requireContext(),poiBalloonListener)
         mapView.setMapViewEventListener(mapViewListener)
         viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt,1)
-        //recyclerPaging()
         mapView.addPOIItem(festivalMarker) // 행사위치 핑
         mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
     }
@@ -162,25 +161,10 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     override fun initObserve() {
         super.initObserve()
         viewModel.poiList.observe(this){
-
-        }
-        viewModel.eventClick.observe(this){
-            when(it){
-                POIViewModel.Event.Restaurant -> {
-                    viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
-                }
-                POIViewModel.Event.Cafe -> {
-                    viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
-                }
-                POIViewModel.Event.Enjoy -> {
-                    viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
-                }
-            }
-        }
-        viewModel.poiList.observe(viewLifecycleOwner){
+            Log.e("","포이정보 진입")
             with(dataBinding.poiInfoRecycler){
                 run{
-                    val poiAdapter = POIRecyclerAdapter(this@POIMapFragment,it)
+                    poiAdapter = POIRecyclerAdapter(this@POIMapFragment,it)
                     job = poiAdapter.job
                     adapter = poiAdapter
                 }
@@ -188,29 +172,32 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
             displayPOI(it,mapView)
             dataBinding.poiProgressBar.visibility = View.GONE
         }
+        viewModel.eventClick.observe(this){
+            when(it){
+                POIViewModel.Event.Restaurant -> {
+                    poiCategory = PoiCategoryType.RESTAURANT
+                    viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
+                }
+                POIViewModel.Event.Cafe -> {
+                    poiCategory = PoiCategoryType.CAFE
+                    viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
+                }
+                POIViewModel.Event.Enjoy -> {
+                    poiCategory = PoiCategoryType.ENJOY
+                    viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
+                }
+            }
+        }
         viewModel.errorMessage.observe(viewLifecycleOwner){
             Log.e(TAG,it)
         }
     }
-    // 페이징 처리 함수
-   /* private fun recyclerPaging(){
-        var paging = 1
-        viewModel.getAllPoiFromViewModel(poiCategory,centerLat, centerLgt,paging)
-        binding.poiInfoRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
-                val firstVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
-                val itemTotalCount = recyclerView.adapter?.itemCount
-                if(lastVisibleItemPosition +1  == itemTotalCount && paging < 3){
-                    paging ++
-                    viewModel.getAllPoiFromViewModel(poiCategory,centerLat, centerLgt,paging)
-                }
-                if(firstVisibleItemPosition -1 == itemTotalCount && paging > 1){
-                    paging --
-                    viewModel.getAllPoiFromViewModel(poiCategory,centerLat, centerLgt,paging)
-                }
-            }
-        })
-    }*/
+    object PoiCategoryType {
+        const val CAFE = "CE7"
+        const val RESTAURANT = "FD6"
+        const val ENJOY = "CT1"
+        const val ATTRACTIONS = "AT4"
+        const val PARKING = "PK6"
+        const val STAY = "AD5"
+    }
 }
