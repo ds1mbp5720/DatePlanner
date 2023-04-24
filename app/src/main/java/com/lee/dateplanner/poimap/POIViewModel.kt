@@ -20,13 +20,11 @@ class POIViewModel @Inject constructor(
     val poiList: LiveData<POIData> get() = _poiList
     private val _eventClick = SingleLiveEvent<Event>()
     val eventClick: LiveData<Event> get() = _eventClick
+
     fun onEventClick(event: Event){
         _eventClick.value = event
     }
 
-
-    //rest 포이정보 호출하여 get 함수
-    // 이때 category -> 식당, 카페, 놀거리와 기준점 되는 행사장 정보 인자
     fun getAllPoiFromViewModel(category: String, lat:String, lgt:String, page: Int){
         runScope({
             repository.getPOIInfo(
