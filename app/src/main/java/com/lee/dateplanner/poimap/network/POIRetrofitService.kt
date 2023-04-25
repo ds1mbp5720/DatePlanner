@@ -1,15 +1,12 @@
-package com.lee.dateplanner.map.network
-
+package com.lee.dateplanner.poimap.network
 
 import com.lee.dateplanner.BuildConfig
-import com.lee.dateplanner.map.data.POIData
+import com.lee.dateplanner.poimap.data.POIData
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Headers
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 const val POI_ADDRESS = "https://dapi.kakao.com/"
@@ -29,7 +26,7 @@ interface POIRetrofitService {
     ): Response<POIData>
 
     companion object {
-        var retrofitService: POIRetrofitService? = null
+        private var retrofitService: POIRetrofitService? = null
         fun getInstance() : POIRetrofitService {
             if (retrofitService == null) {
                 val retrofit = Retrofit.Builder()

@@ -1,4 +1,4 @@
-package com.lee.dateplanner.map.adpter
+package com.lee.dateplanner.poimap.adpter
 
 import android.content.ContentValues.TAG
 import android.util.Log
@@ -8,8 +8,8 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.lee.dateplanner.databinding.PoiListRecyclerBinding
-import com.lee.dateplanner.map.POIMapFragment
-import com.lee.dateplanner.map.data.POIData
+import com.lee.dateplanner.poimap.POIMapFragment
+import com.lee.dateplanner.poimap.data.POIData
 import kotlinx.coroutines.*
 import net.daum.mf.map.api.CameraUpdateFactory
 
@@ -49,11 +49,11 @@ class POIRecyclerAdapter(private val owner:POIMapFragment, private val poiData: 
         // 해당 위치로 지도 중심점 이동, 지도 확대
         if(marker != null){
             val update = CameraUpdateFactory.newMapPoint(marker.mapPoint, 2F)
-            with(owner.binding){
-                infoMap.animateCamera(update, object: net.daum.mf.map.api.CancelableCallback{
+            with(owner.mapView){
+                animateCamera(update, object: net.daum.mf.map.api.CancelableCallback{
                     override fun onFinish() {
-                        owner.binding.infoMap.selectPOIItem(marker,true) // 선택한 상점 마커 선택
-                        infoMap.refreshMapTiles()
+                        selectPOIItem(marker,true) // 선택한 상점 마커 선택
+                        refreshMapTiles()
                     }
                     override fun onCancel() {}
                 })

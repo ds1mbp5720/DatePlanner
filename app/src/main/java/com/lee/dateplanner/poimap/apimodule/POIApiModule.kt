@@ -1,9 +1,11 @@
-package com.lee.dateplanner.festival.apimodule
+package com.lee.dateplanner.poimap.apimodule
 
 import com.lee.dateplanner.BuildConfig
-import com.lee.dateplanner.festival.FestivalRepository
 import com.lee.dateplanner.festival.network.FESTIVAL_ADDRESS
 import com.lee.dateplanner.festival.network.FestivalRetrofitService
+import com.lee.dateplanner.poimap.POIRepository
+import com.lee.dateplanner.poimap.network.POIRetrofitService
+import com.lee.dateplanner.poimap.network.POI_ADDRESS
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,19 +19,19 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ApiModule {
+object POIApiModule {
 
     @Qualifier
     @Retention(AnnotationRetention.BINARY)
-    annotation class TypeFestival
+    annotation class TypePOI
 
     @Provides
-    fun provideBaseUrl() = FESTIVAL_ADDRESS
+    fun provideBaseUrl() = POI_ADDRESS
 
     @Singleton
     @Provides
-    @TypeFestival
-    fun provideOkHttpClient() = if (BuildConfig.DEBUG) {
+    @TypePOI
+    fun providePOIOkHttpClient() = if (BuildConfig.DEBUG) {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         OkHttpClient.Builder()
@@ -41,8 +43,8 @@ object ApiModule {
 
     @Singleton
     @Provides
-    @TypeFestival
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    @TypePOI
+    fun providePOIRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(provideBaseUrl())
@@ -52,17 +54,16 @@ object ApiModule {
 
     @Provides
     @Singleton
-    @TypeFestival
-    fun provideApiService(): FestivalRetrofitService =
+    @TypePOI
+    fun providePOIApiService(): POIRetrofitService =
         Retrofit.Builder()
-            .baseUrl(FESTIVAL_ADDRESS)
+            .baseUrl(POI_ADDRESS)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(FestivalRetrofitService::class.java)
-
+            .create(POIRetrofitService::class.java)
 
     @Singleton
     @Provides
-    @TypeFestival
-    fun provideMainRepository(apiService:FestivalRetrofitService)= FestivalRepository(apiService)
+    @TypePOI
+    fun providePOIMainRepository(apiService:POIRetrofitService)= POIRepository(apiService)
 }

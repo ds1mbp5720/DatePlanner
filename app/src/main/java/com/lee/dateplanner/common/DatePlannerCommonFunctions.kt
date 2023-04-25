@@ -6,8 +6,9 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.text.format.DateFormat
+import android.util.TypedValue
 import android.widget.Toast
-import com.lee.dateplanner.map.adpter.POIWindowAdapter
+import com.lee.dateplanner.poimap.adpter.POIWindowAdapter
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
@@ -38,14 +39,14 @@ fun getTodayDate(): Int{
     return (date[0] + date[1] + date[2]).toInt()
 }
 // 맵 설정 함수
-fun mapSetting(map: MapView, context: Context, poiEventListener: MapView.POIItemEventListener){
+fun mapSetting(map: MapView, context: Context?, poiEventListener: MapView.POIItemEventListener){
     with(map){
         mapType = MapView.MapType.Standard
         setZoomLevel(3, true)
         zoomIn(true)
         zoomOut(true)
         setPOIItemEventListener(poiEventListener)
-        setCalloutBalloonAdapter(POIWindowAdapter(context))
+        setCalloutBalloonAdapter(context?.let { POIWindowAdapter(it) })
     }
 }
 // 카테고리 text 수정 함수
@@ -78,4 +79,12 @@ fun filterInsertDateInt(year: Int, month: Int, day: Int): Int{
     val setMonth = if(month<10){ "0$month" }else month.toString()
     val setDay = if(day<10){ "0$day" }else day.toString()
     return (year.toString() + setMonth + setDay).toInt()
+}
+
+fun dpToPx(context: Context, dp: Float): Int {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        dp,
+        context.resources.displayMetrics
+    ).toInt()
 }

@@ -1,11 +1,15 @@
 package com.lee.dateplanner.common
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
+import android.content.res.ColorStateList
+import android.util.TypedValue
+import android.view.LayoutInflater
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import androidx.databinding.ViewDataBinding
 import com.lee.dateplanner.festival.data.FestivalInfoData
-import com.lee.dateplanner.timetable.time.room.Timetable
+import com.naver.maps.map.overlay.Marker
 
 
 fun MutableList<FestivalInfoData.CulturalEventInfo.Row>.filterByTodayDate(): MutableList<FestivalInfoData.CulturalEventInfo.Row>{
@@ -35,6 +39,7 @@ fun String.filterFestivalDateInt(): Int {
     return (filterToList[0] + filterToList[1] + filterToList[2]).toInt()
 }
 
+
 fun Timetable.copyClipBoard():String {
     var schedule = ""
     this.timeSheetList.forEach{
@@ -54,4 +59,18 @@ fun Context.copyToClipboard(text: String) {
             ClipData.newPlainText(text, text)
         it.setPrimaryClip(clip)
     }
+
+fun String.idxToKakaoHash(): Int {
+    if (this.isNotEmpty()) {
+        var code = when {
+            this[0] == 'O' -> return ("1" + this.drop(7)).toInt()
+            this[0] == 'R' -> "2"
+            this[0] == 'S' -> "3"
+            else -> return -1
+        }
+        code += this.drop(1).dropLast(5)
+        code += this.substring(this.length - 5, this.length).replace("0", "")
+        return code.toInt()
+    }
+    return -1
 }
