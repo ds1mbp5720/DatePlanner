@@ -164,7 +164,8 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
             Log.e("","포이정보 진입")
             with(dataBinding.poiInfoRecycler){
                 run{
-                    poiAdapter = POIRecyclerAdapter(this@POIMapFragment,it)
+                    //poiAdapter = POIRecyclerAdapter(this@POIMapFragment)
+                    poiAdapter.setPoiItem(it.documents)
                     job = poiAdapter.job
                     adapter = poiAdapter
                 }
