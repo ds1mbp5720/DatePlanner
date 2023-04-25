@@ -39,6 +39,27 @@ fun String.filterFestivalDateInt(): Int {
     return (filterToList[0] + filterToList[1] + filterToList[2]).toInt()
 }
 
+
+fun Timetable.copyClipBoard():String {
+    var schedule = ""
+    this.timeSheetList.forEach{
+        schedule = it.time + " : " + it.title + "\n"
+    }
+    return schedule
+}
+
+fun Context.copyToClipboard(text: String) {
+    val clipboard =
+        ContextCompat.getSystemService<ClipboardManager>(
+            this,
+            ClipboardManager::class.java
+        )
+    clipboard?.let {
+        val clip =
+            ClipData.newPlainText(text, text)
+        it.setPrimaryClip(clip)
+    }
+
 fun String.idxToKakaoHash(): Int {
     if (this.isNotEmpty()) {
         var code = when {
