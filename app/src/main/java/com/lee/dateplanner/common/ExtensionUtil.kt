@@ -1,5 +1,9 @@
 package com.lee.dateplanner.common
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import androidx.core.content.ContextCompat
 import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.timetable.time.room.Timetable
 
@@ -37,4 +41,17 @@ fun Timetable.copyClipBoard():String {
         schedule = it.time + " : " + it.title + "\n"
     }
     return schedule
+}
+
+fun Context.copyToClipboard(text: String) {
+    val clipboard =
+        ContextCompat.getSystemService<ClipboardManager>(
+            this,
+            ClipboardManager::class.java
+        )
+    clipboard?.let {
+        val clip =
+            ClipData.newPlainText(text, text)
+        it.setPrimaryClip(clip)
+    }
 }
