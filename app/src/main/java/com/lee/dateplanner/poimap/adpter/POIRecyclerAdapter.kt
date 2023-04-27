@@ -8,26 +8,30 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.lee.dateplanner.databinding.PoiListRecyclerBinding
+import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.poimap.POIMapFragment
 import com.lee.dateplanner.poimap.data.POIData
 import kotlinx.coroutines.*
 import net.daum.mf.map.api.CameraUpdateFactory
 
-class POIRecyclerAdapter(private val owner:POIMapFragment, private val poiData: POIData): RecyclerView.Adapter<POIViewHolder>() {
+class POIRecyclerAdapter(private val owner:POIMapFragment): RecyclerView.Adapter<POIViewHolder>() {
     private lateinit var binding: PoiListRecyclerBinding
+    private val poiData = mutableListOf<POIData.Document>()
     var job : Job? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): POIViewHolder {
         binding = PoiListRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return POIViewHolder(binding,owner)
     }
-
+    fun setPoiItem(item : List<POIData.Document>){
+        poiData.addAll(item)
+    }
     override fun onBindViewHolder(holder: POIViewHolder, position: Int) {
-        val poi = poiData.documents[position]
+        val poi = poiData[position]
         holder.setView(poi)
         holder.setListener(poi,this)
     }
-    override fun getItemCount() = poiData.documents.size
+    override fun getItemCount() = poiData.size
 
     // 리스트에서 poi 선택시 정보 전달 및 selectMarkerPOIFragment 호출 함수
     fun sendSelectRecyclerInfo(poi: POIData.Document){
