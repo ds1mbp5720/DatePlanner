@@ -135,7 +135,7 @@
                     android:layout_weight="0.1"
                     />
             </LinearLayout>
-            <net.daum.mf.map.api.MapView
+            <FrameLayout
                 android:id="@+id/insert_map"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
