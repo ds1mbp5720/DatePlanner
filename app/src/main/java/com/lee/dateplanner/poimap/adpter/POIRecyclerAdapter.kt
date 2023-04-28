@@ -24,6 +24,7 @@ class POIRecyclerAdapter(private val owner:POIMapFragment): RecyclerView.Adapter
         return POIViewHolder(binding,owner)
     }
     fun setPoiItem(item : List<POIData.Document>){
+        poiData.clear()
         poiData.addAll(item)
     }
     override fun onBindViewHolder(holder: POIViewHolder, position: Int) {
