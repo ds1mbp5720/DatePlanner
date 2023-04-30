@@ -189,6 +189,7 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
             Log.e(TAG,it)
         }
     }
+    //Todo Eventbus 활용 data 받기
     object PoiCategoryType {
         const val CAFE = "CE7"
         const val RESTAURANT = "FD6"
