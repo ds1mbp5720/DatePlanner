@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBar.LayoutParams
+import androidx.core.view.isEmpty
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -71,7 +72,6 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("","포이 onViewCreated")
         poiAdapter = POIRecyclerAdapter(this)
         mapView = MapView(this.activity)
         getFestivalPosition()
@@ -79,26 +79,23 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
         bottomSheetDownToBackKey()
         viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt,1)
     }
-    override fun onPause() {
-        super.onPause()
-        Log.e("","포이 onPause")
-        //Todo 지도 지우기
-        dataBinding.infoMap.visibility = View.GONE
-    }
     override fun onResume() {
         super.onResume()
-        Log.e("","포이 onResume ${viewModel}")
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
-        if(dataBinding.root.findViewById<MapView>(R.id.info_map) == null){
-            //Todo 지운 지도 재생성
-            //dataBinding.infoMap.visibility = View.VISIBLE
+        Log.e("","지도 재생성 여부 ${dataBinding.infoMap.isEmpty()}")
+        if(dataBinding.infoMap.isEmpty()){
+            dataBinding.infoMap.addView(mapView)
         }else{
             firstSettingPoiMapView(mapView)
         }
     }
+    override fun onPause() {
+        super.onPause()
+        //Todo 지도 지우기
+        dataBinding.infoMap.removeView(mapView)
+    }
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.e("","포이 onDestroyView")
         poiBalloonListener.job?.cancel()
         job?.cancel()
     }
@@ -161,7 +158,6 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     override fun initObserve() {
         super.initObserve()
         viewModel.poiList.observe(this){
-            Log.e("","포이정보 진입")
             with(dataBinding.poiInfoRecycler){
                 run{
                     //poiAdapter = POIRecyclerAdapter(this@POIMapFragment)

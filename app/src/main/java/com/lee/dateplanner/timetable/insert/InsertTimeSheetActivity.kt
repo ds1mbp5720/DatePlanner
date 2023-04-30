@@ -36,13 +36,15 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
     private var longitude = "127.062831022"
     private var position: Int = 0 // 수정시 해당 일정의 위치 정보
     private lateinit var scheduleMarker:MapPOIItem
+    lateinit var mapView :MapView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = InputScheduleLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[TimetableViewModel::class.java]
-
+        mapView = MapView(this)
+        binding.insertMap.addView(mapView)
         type = intent.getStringExtra("input_signal")
         setInputType()
         insertMapSetting()
@@ -92,7 +94,7 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
     }
     private fun setCheckBox(){
         binding.showMapCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            with(binding.insertMap){
+            with(mapView){
                 if(isChecked) addPOIItem(scheduleMarker)
                 else removeAllPOIItems()
             }
@@ -100,8 +102,8 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
     }
     //카카오 지도 설정
     private fun insertMapSetting(){
-        mapSetting(binding.insertMap,this,this@InsertTimeSheetActivity)
-        with(binding.insertMap) {
+        mapSetting(mapView,this,this@InsertTimeSheetActivity)
+        with(mapView) {
             if(latitude != "" && longitude != ""){
                 scheduleMarker = settingMarker(getString(R.string.insertMarkerTitle),latitude.toDouble(),longitude.toDouble(),true,MapPOIItem.MarkerType.BluePin)
                 setMapCenterPoint(MapPoint.mapPointWithGeoCoord(latitude.toDouble(), longitude.toDouble()), false)
@@ -177,12 +179,6 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
             timeTable.timeSheetList.sortBy { it.time }
             timeTable.timeSheetList.let { it1 -> viewModel.updateTimetable(it1,id) }
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        //binding.root.removeAllViews()
-        finish()
     }
 
     override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {}
