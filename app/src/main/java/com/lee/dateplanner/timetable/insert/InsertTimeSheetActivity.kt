@@ -44,6 +44,7 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[TimetableViewModel::class.java]
         mapView = MapView(this)
+        binding.insertMap.addView(mapView)
         type = intent.getStringExtra("input_signal")
         setInputType()
         insertMapSetting()
