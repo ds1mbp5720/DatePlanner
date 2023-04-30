@@ -1,15 +1,11 @@
 package com.lee.dateplanner.common
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
-import android.content.res.ColorStateList
-import android.util.TypedValue
-import android.view.LayoutInflater
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import androidx.databinding.ViewDataBinding
 import com.lee.dateplanner.festival.data.FestivalInfoData
-import com.naver.maps.map.overlay.Marker
+import com.lee.dateplanner.timetable.time.room.Timetable
 
 
 fun MutableList<FestivalInfoData.CulturalEventInfo.Row>.filterByTodayDate(): MutableList<FestivalInfoData.CulturalEventInfo.Row>{
@@ -59,6 +55,7 @@ fun Context.copyToClipboard(text: String) {
             ClipData.newPlainText(text, text)
         it.setPrimaryClip(clip)
     }
+}
 
 fun String.idxToKakaoHash(): Int {
     if (this.isNotEmpty()) {

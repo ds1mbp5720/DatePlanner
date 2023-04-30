@@ -31,9 +31,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
         supportFragmentManager.beginTransaction().add(R.id.tabContent,timeTableFragment).commit()
         supportFragmentManager.beginTransaction().add(R.id.tabContent,festivalListFragment).commit()
+        supportFragmentManager.beginTransaction().add(R.id.tabContent,poiMapFragment).commit()
         setListener(findViewById(R.id.tabLayout))
         //초기 보여질 화면
-        supportFragmentManager.beginTransaction().hide(festivalListFragment).show(timeTableFragment).commit()
+        supportFragmentManager.beginTransaction().hide(festivalListFragment).hide(poiMapFragment).show(timeTableFragment).commit()
     }
 
     private fun createFragment(savedInstanceState: Bundle?){
@@ -59,19 +60,19 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     // 선택에 따른 fragment 이동
                     when(param){
                         getString(R.string.main_tab_1) -> {
-                            remove(poiMapFragment)
+                            hide(poiMapFragment)
                             hide(festivalListFragment)
                             show(timeTableFragment).commit()
                         }
                         getString(R.string.main_tab_2) -> {
-                            remove(poiMapFragment)
+                            hide(poiMapFragment)
                             hide(timeTableFragment)
                             show(festivalListFragment).commit()
                         }
                         getString(R.string.main_tab_3) -> {
                             hide(timeTableFragment)
                             hide(festivalListFragment)
-                            add(R.id.tabContent,poiMapFragment).commit()
+                            show(poiMapFragment).commit()
                         }
                         else -> throw IllegalAccessException("Unexpected value: " + tab.position)
                     }
