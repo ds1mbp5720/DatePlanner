@@ -17,6 +17,7 @@ import com.lee.dateplanner.base.BaseFragment
 import com.lee.dateplanner.common.mapSetting
 import com.lee.dateplanner.common.settingMarker
 import com.lee.dateplanner.databinding.PoiMapFragmentLayoutBinding
+import com.lee.dateplanner.map.KakaoMapFragment
 import com.lee.dateplanner.poimap.adpter.POIRecyclerAdapter
 import com.lee.dateplanner.poimap.data.POIData
 import com.lee.dateplanner.poimap.select.SelectMarkerPOIFragment
@@ -47,6 +48,7 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     private lateinit var festivalMarker: MapPOIItem
     private var job : Job? = null
     lateinit var mapView :MapView
+    //lateinit var mapView :KakaoMapFragment
     var selectMarkerPOIFragment = SelectMarkerPOIFragment()
     // 정보 리스트와 maker 연동 목적 map
     var markerResolver: MutableMap<POIData.Document,MapPOIItem> = HashMap()
@@ -76,15 +78,20 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
         mapView = MapView(this.activity)
         getFestivalPosition()
         dataBinding.infoMap.addView(mapView)
+        //mapView = KakaoMapFragment().also { childFragmentManager.beginTransaction().add(R.id.info_map,it).commit() }
         bottomSheetDownToBackKey()
         viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt,1)
     }
     override fun onResume() {
         super.onResume()
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
-        Log.e("","지도 재생성 여부 ${dataBinding.infoMap.isEmpty()}")
-        if(dataBinding.infoMap.isEmpty()){
-            dataBinding.infoMap.addView(mapView)
+       if(dataBinding.infoMap.isEmpty()){
+           //mapView = KakaoMapFragment().also { childFragmentManager.beginTransaction().add(R.id.info_map,it).addToBackStack("").commit() }
+           mapView = MapView(this.activity)
+           getFestivalPosition()
+           dataBinding.infoMap.addView(mapView)
+           firstSettingPoiMapView(mapView)
+           viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt,1)
         }else{
             firstSettingPoiMapView(mapView)
         }

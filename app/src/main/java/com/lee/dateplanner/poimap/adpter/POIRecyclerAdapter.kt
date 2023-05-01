@@ -54,7 +54,7 @@ class POIRecyclerAdapter(private val owner:POIMapFragment): RecyclerView.Adapter
         // 해당 위치로 지도 중심점 이동, 지도 확대
         if(marker != null){
             val update = CameraUpdateFactory.newMapPoint(marker.mapPoint, 2F)
-            with(owner.mapView){
+            /*with(owner.mapView){
                 animateCamera(update, object: net.daum.mf.map.api.CancelableCallback{
                     override fun onFinish() {
                         selectPOIItem(marker,true) // 선택한 상점 마커 선택
@@ -62,7 +62,7 @@ class POIRecyclerAdapter(private val owner:POIMapFragment): RecyclerView.Adapter
                     }
                     override fun onCancel() {}
                 })
-            }
+            }*/
         }else{
             Log.e(TAG,"마커 null")
         }

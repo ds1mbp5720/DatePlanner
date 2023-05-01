@@ -51,6 +51,11 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
         setCheckBox()
     }
 
+    override fun onPause() {
+        super.onPause()
+        binding.insertMap.removeAllViews()
+    }
+
     // 입력 혹은 수정, 추가 경우에 따른 입력 기능 분류 함수
     private fun setInputType(){
         when(type){
