@@ -32,7 +32,7 @@ class KakaoMapController(private val mapView: MapView) : MapInterface, MapView.P
                 mapView.removePOIItem(this)
                 val marker = MapPOIItem()
                 marker.itemName = item.name
-                marker.markerType = MapPOIItem.MarkerType.CustomImage
+                marker.markerType = item.markerType
                 marker.mapPoint = MapPoint.mapPointWithGeoCoord(item.mapPoint.first, item.mapPoint.second)
                 marker.tag = item.hash
                 mapView.addPOIItem(marker)
@@ -40,7 +40,7 @@ class KakaoMapController(private val mapView: MapView) : MapInterface, MapView.P
         } ?: run {
             val marker = MapPOIItem()
             marker.itemName = item.name
-            marker.markerType = MapPOIItem.MarkerType.CustomImage
+            marker.markerType = item.markerType
             marker.mapPoint = MapPoint.mapPointWithGeoCoord(item.mapPoint.first, item.mapPoint.second)
             marker.tag = item.hash
             mapView.addPOIItem(marker)

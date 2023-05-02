@@ -1,13 +1,13 @@
 package com.lee.dateplanner.map
 
-import androidx.databinding.ViewDataBinding
+import net.daum.mf.map.api.MapPOIItem.MarkerType
 
 object MapData {
     data class MarkerItem(
         val hash: Int,
         val name: String,
         val mapPoint: Pair<Double, Double>,
-        val view: ViewDataBinding,
+        val markerType: MarkerType,
         val isKakaoRemove:Boolean = false
     )
 

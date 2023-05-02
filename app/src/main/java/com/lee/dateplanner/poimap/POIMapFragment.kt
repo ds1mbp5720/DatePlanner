@@ -18,6 +18,7 @@ import com.lee.dateplanner.common.mapSetting
 import com.lee.dateplanner.common.settingMarker
 import com.lee.dateplanner.databinding.PoiMapFragmentLayoutBinding
 import com.lee.dateplanner.map.KakaoMapFragment
+import com.lee.dateplanner.map.MapData
 import com.lee.dateplanner.poimap.adpter.POIRecyclerAdapter
 import com.lee.dateplanner.poimap.data.POIData
 import com.lee.dateplanner.poimap.select.SelectMarkerPOIFragment
@@ -48,7 +49,7 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     private lateinit var festivalMarker: MapPOIItem
     private var job : Job? = null
     lateinit var mapView :MapView
-    //lateinit var mapView :KakaoMapFragment
+    lateinit var kakaoMapView :KakaoMapFragment
     var selectMarkerPOIFragment = SelectMarkerPOIFragment()
     // 정보 리스트와 maker 연동 목적 map
     var markerResolver: MutableMap<POIData.Document,MapPOIItem> = HashMap()
@@ -85,6 +86,12 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     override fun onResume() {
         super.onResume()
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
+        /*kakaoMapView.addMarker(MapData.MarkerItem(
+            0, getString(R.string.festivalMarkerTitle),
+            Pair(festivalLat.toDouble(),festivalLgt.toDouble()),
+            MapPOIItem.MarkerType.RedPin,
+        true
+        ))*/
        if(dataBinding.infoMap.isEmpty()){
            //mapView = KakaoMapFragment().also { childFragmentManager.beginTransaction().add(R.id.info_map,it).addToBackStack("").commit() }
            mapView = MapView(this.activity)
@@ -98,7 +105,6 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     }
     override fun onPause() {
         super.onPause()
-        //Todo 지도 지우기
         dataBinding.infoMap.removeView(mapView)
     }
     override fun onDestroyView() {
@@ -132,6 +138,12 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
             festivalLat = bundle.getDouble("latitude").toString()
             festivalLgt = bundle.getDouble("longitude").toString()
         }
+        /*kakaoMapView.addMarker(MapData.MarkerItem(
+            0, getString(R.string.festivalMarkerTitle),
+            Pair(festivalLat.toDouble(),festivalLgt.toDouble()),
+            MapPOIItem.MarkerType.RedPin,
+        true
+        ))*/
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
     }
     // 전체 마커 map 표시 함수
@@ -143,6 +155,12 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
                 val document = data.documents[i]
                 val marker = settingMarker(document.placeName,document.y.toDouble(),document.x.toDouble(),false,MapPOIItem.MarkerType.BluePin)
                 addPOIItem(marker) // 현 마커 추가
+                kakaoMapView.addMarker(MapData.MarkerItem(
+                    0, document.placeName,
+                    Pair(document.y.toDouble(),document.x.toDouble()),
+                    MapPOIItem.MarkerType.BluePin,
+                    true
+                ))
                 markerResolver[document] = marker
                 markerResolver2[marker] = document
             }
