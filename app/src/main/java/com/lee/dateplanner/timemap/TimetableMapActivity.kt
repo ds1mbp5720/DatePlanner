@@ -38,6 +38,7 @@ class TimetableMapActivity:AppCompatActivity() {
     lateinit var binding: MyScheduleMapActivityLayoutBinding
     private lateinit var viewModel: TimetableViewModel
     private val accessFineLocation = 1000
+    lateinit var mapView :MapView
     //recyclerView 에서 터치시 해당 maker 로 이동하기 위한 map
     var markerResolver: MutableMap<TimeSheet,MapPOIItem> = HashMap()
 
@@ -48,7 +49,9 @@ class TimetableMapActivity:AppCompatActivity() {
         viewModel = ViewModelProvider(this)[TimetableViewModel::class.java]
 
         val id = intent.getIntExtra("id",0)
-        mapSetting(binding.scheduleMap,this,POIEventClickListener())
+        mapView = MapView(this)
+        binding.scheduleMap.addView(mapView)
+        mapSetting(mapView,this,POIEventClickListener())
         settingListener()
         bottomSheetDownToBackKey()
         viewModel.findTimetable(id)
@@ -66,6 +69,12 @@ class TimetableMapActivity:AppCompatActivity() {
             displayPOI(timetable[0])
         }
     }
+
+    override fun onPause() {
+        super.onPause()
+        binding.scheduleMap.removeAllViews()
+    }
+
     private fun settingListener(){
         binding.searchLocation.clicks().subscribe {
             if (checkLocationService()) {
@@ -87,7 +96,7 @@ class TimetableMapActivity:AppCompatActivity() {
 
     // 전체 마커 map 표시 함수
     private fun displayPOI(data: Timetable){
-        with(binding.scheduleMap){
+        with(mapView){
             removeAllPOIItems() // 기존 마커들 제거
             for(i in 0 until (data.timeSheetList.size)){
                 // 위치 좌표가 없는 일정의 경우 마커 생성 생략
@@ -170,12 +179,12 @@ class TimetableMapActivity:AppCompatActivity() {
 
     // 위치추적 시작
     private fun startTracking() {
-        binding.scheduleMap.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
+        mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
     }
 
     // 위치추적 중지
     private fun stopTracking() {
-        binding.scheduleMap.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOff
+        mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOff
     }
     private fun bottomSheetDownToBackKey(){
         val behavior = BottomSheetBehavior.from(binding.bottomScheduleList)

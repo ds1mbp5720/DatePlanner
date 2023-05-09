@@ -154,7 +154,6 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
         viewModel.poiList.observe(this){
             with(dataBinding.poiInfoRecycler){
                 run{
-                    //poiAdapter = POIRecyclerAdapter(this@POIMapFragment)
                     poiAdapter.setPoiItem(it.documents)
                     job = poiAdapter.job
                     adapter = poiAdapter

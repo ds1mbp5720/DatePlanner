@@ -36,7 +36,7 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
     private var longitude = "127.062831022"
     private var position: Int = 0 // 수정시 해당 일정의 위치 정보
     private lateinit var scheduleMarker:MapPOIItem
-    lateinit var mapView :MapView
+    private lateinit var mapView :MapView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

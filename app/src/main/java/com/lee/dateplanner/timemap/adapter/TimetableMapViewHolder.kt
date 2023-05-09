@@ -23,11 +23,11 @@ class TimetableMapViewHolder(val binding: TimesheetPlanRecyclerBinding): Recycle
             // 해당 위치로 지도 중심점 이동, 지도 확대
             if (marker != null) {
                 val update = CameraUpdateFactory.newMapPoint(marker.mapPoint, 2F)
-                with(owner.binding) {
-                    scheduleMap.animateCamera(update, object : CancelableCallback {
+                with(owner.mapView) {
+                    animateCamera(update, object : CancelableCallback {
                         override fun onFinish() {
-                            owner.binding.scheduleMap.selectPOIItem(marker, true) //마커 선택
-                            scheduleMap.refreshMapTiles()
+                            selectPOIItem(marker, true) //마커 선택
+                            refreshMapTiles()
                         }
                         override fun onCancel() {}
                     })
