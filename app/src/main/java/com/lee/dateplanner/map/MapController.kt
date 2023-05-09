@@ -29,12 +29,10 @@ class MapController (private val naverMap: NaverMap) : MapInterface, Overlay.OnC
     override fun addMarker(item: MapData.MarkerItem) {
         if (mapMarkerList.containsKey(item.hash)) {
             mapMarkerList[item.hash]?.apply {
-                icon = OverlayImage.fromView(item.view.root)
                 position = LatLng(item.mapPoint.first, item.mapPoint.second)
             }
         } else {
             val marker = Marker()
-            marker.icon = OverlayImage.fromView(item.view.root)
             marker.onClickListener = this
             marker.position = LatLng(item.mapPoint.first, item.mapPoint.second)
             marker.tag = item.hash

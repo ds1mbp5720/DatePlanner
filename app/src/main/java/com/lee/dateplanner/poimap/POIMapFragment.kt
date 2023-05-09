@@ -18,6 +18,7 @@ import com.lee.dateplanner.common.mapSetting
 import com.lee.dateplanner.common.settingMarker
 import com.lee.dateplanner.databinding.PoiMapFragmentLayoutBinding
 import com.lee.dateplanner.map.KakaoMapFragment
+import com.lee.dateplanner.map.MapData
 import com.lee.dateplanner.poimap.adpter.POIRecyclerAdapter
 import com.lee.dateplanner.poimap.data.POIData
 import com.lee.dateplanner.poimap.select.SelectMarkerPOIFragment
@@ -48,7 +49,7 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     private lateinit var festivalMarker: MapPOIItem
     private var job : Job? = null
     lateinit var mapView :MapView
-    //lateinit var mapView :KakaoMapFragment
+    //lateinit var kakaoMapView :KakaoMapFragment // todo: 추후 사용 예정
     var selectMarkerPOIFragment = SelectMarkerPOIFragment()
     // 정보 리스트와 maker 연동 목적 map
     var markerResolver: MutableMap<POIData.Document,MapPOIItem> = HashMap()
@@ -78,7 +79,7 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
         mapView = MapView(this.activity)
         getFestivalPosition()
         dataBinding.infoMap.addView(mapView)
-        //mapView = KakaoMapFragment().also { childFragmentManager.beginTransaction().add(R.id.info_map,it).commit() }
+        //kakaoMapView = KakaoMapFragment().also { childFragmentManager.beginTransaction().add(R.id.info_map,it).addToBackStack("").commit() }
         bottomSheetDownToBackKey()
         viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt,1)
     }
@@ -86,7 +87,6 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
         super.onResume()
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
        if(dataBinding.infoMap.isEmpty()){
-           //mapView = KakaoMapFragment().also { childFragmentManager.beginTransaction().add(R.id.info_map,it).addToBackStack("").commit() }
            mapView = MapView(this.activity)
            getFestivalPosition()
            dataBinding.infoMap.addView(mapView)
@@ -98,7 +98,6 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     }
     override fun onPause() {
         super.onPause()
-        //Todo 지도 지우기
         dataBinding.infoMap.removeView(mapView)
     }
     override fun onDestroyView() {
@@ -113,18 +112,6 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
         viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt,1)
         mapView.addPOIItem(festivalMarker) // 행사위치 핑
         mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
-    }
-    private fun createNewMapView(): MapView{
-        val poiMap = MapView(this.activity)
-        val layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        with(poiMap){
-            poiMap.layoutParams = layoutParams
-            id=R.id.info_map
-            mapSetting(this, this@POIMapFragment.requireContext(),poiBalloonListener)
-            addPOIItem(festivalMarker) // 새로 생성한 map 행사위치 핑
-            setMapViewEventListener(mapViewListener)
-        }
-        return poiMap
     }
     // 전달받은 행사장 좌표값
     private fun getFestivalPosition(){
