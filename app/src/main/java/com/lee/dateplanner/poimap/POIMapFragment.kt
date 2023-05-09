@@ -49,7 +49,7 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     private lateinit var festivalMarker: MapPOIItem
     private var job : Job? = null
     lateinit var mapView :MapView
-    lateinit var kakaoMapView :KakaoMapFragment
+    //lateinit var kakaoMapView :KakaoMapFragment // todo: 추후 사용 예정
     var selectMarkerPOIFragment = SelectMarkerPOIFragment()
     // 정보 리스트와 maker 연동 목적 map
     var markerResolver: MutableMap<POIData.Document,MapPOIItem> = HashMap()
@@ -79,21 +79,14 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
         mapView = MapView(this.activity)
         getFestivalPosition()
         dataBinding.infoMap.addView(mapView)
-        //mapView = KakaoMapFragment().also { childFragmentManager.beginTransaction().add(R.id.info_map,it).commit() }
+        //kakaoMapView = KakaoMapFragment().also { childFragmentManager.beginTransaction().add(R.id.info_map,it).addToBackStack("").commit() }
         bottomSheetDownToBackKey()
         viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt,1)
     }
     override fun onResume() {
         super.onResume()
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
-        /*kakaoMapView.addMarker(MapData.MarkerItem(
-            0, getString(R.string.festivalMarkerTitle),
-            Pair(festivalLat.toDouble(),festivalLgt.toDouble()),
-            MapPOIItem.MarkerType.RedPin,
-        true
-        ))*/
        if(dataBinding.infoMap.isEmpty()){
-           //mapView = KakaoMapFragment().also { childFragmentManager.beginTransaction().add(R.id.info_map,it).addToBackStack("").commit() }
            mapView = MapView(this.activity)
            getFestivalPosition()
            dataBinding.infoMap.addView(mapView)
@@ -120,30 +113,12 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
         mapView.addPOIItem(festivalMarker) // 행사위치 핑
         mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
     }
-    private fun createNewMapView(): MapView{
-        val poiMap = MapView(this.activity)
-        val layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        with(poiMap){
-            poiMap.layoutParams = layoutParams
-            id=R.id.info_map
-            mapSetting(this, this@POIMapFragment.requireContext(),poiBalloonListener)
-            addPOIItem(festivalMarker) // 새로 생성한 map 행사위치 핑
-            setMapViewEventListener(mapViewListener)
-        }
-        return poiMap
-    }
     // 전달받은 행사장 좌표값
     private fun getFestivalPosition(){
         setFragmentResultListener("positionKey"){ _, bundle ->
             festivalLat = bundle.getDouble("latitude").toString()
             festivalLgt = bundle.getDouble("longitude").toString()
         }
-        /*kakaoMapView.addMarker(MapData.MarkerItem(
-            0, getString(R.string.festivalMarkerTitle),
-            Pair(festivalLat.toDouble(),festivalLgt.toDouble()),
-            MapPOIItem.MarkerType.RedPin,
-        true
-        ))*/
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
     }
     // 전체 마커 map 표시 함수
@@ -155,12 +130,6 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
                 val document = data.documents[i]
                 val marker = settingMarker(document.placeName,document.y.toDouble(),document.x.toDouble(),false,MapPOIItem.MarkerType.BluePin)
                 addPOIItem(marker) // 현 마커 추가
-                kakaoMapView.addMarker(MapData.MarkerItem(
-                    0, document.placeName,
-                    Pair(document.y.toDouble(),document.x.toDouble()),
-                    MapPOIItem.MarkerType.BluePin,
-                    true
-                ))
                 markerResolver[document] = marker
                 markerResolver2[marker] = document
             }

@@ -64,6 +64,9 @@ class KakaoMapFragment: BaseFragment<MapFragmentBinding,MapViewModel>(), MapInte
         if(parentFragment != null) parentFragment?.lifecycle?.addObserver(lifecycleObserver)
         else activity?.lifecycle?.addObserver(lifecycleObserver)
     }
+    fun setMapEventListener(listener: MapView.MapViewEventListener){
+        mapView.setMapViewEventListener(listener)
+    }
 
     fun setMapClickEvent(action: () -> Unit) {
         mapClickEvent = action

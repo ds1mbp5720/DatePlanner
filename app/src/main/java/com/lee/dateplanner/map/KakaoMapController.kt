@@ -14,7 +14,7 @@ class KakaoMapController(private val mapView: MapView) : MapInterface, MapView.P
         mapView.zoomIn(true)
         mapView.zoomOut(true)
         mapView.setPOIItemEventListener(this)
-//        mapView.setCalloutBalloonAdapter(BalloonAdapter())
+        mapView.setCalloutBalloonAdapter(BalloonAdapter())
     }
 
     override fun clear() {
