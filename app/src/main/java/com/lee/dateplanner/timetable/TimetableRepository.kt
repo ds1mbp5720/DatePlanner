@@ -12,8 +12,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TimetableRepository(application: Application) {
+class TimetableRepository @Inject constructor(application: Application) {
     private var timetableDao: TimetableDAO? // dao 호출
     private var coroutineScope = CoroutineScope(Dispatchers.IO)  // 입출력 코루틴 동작
     val allTimetables: LiveData<MutableList<Timetable>>? // room db 전체 저장

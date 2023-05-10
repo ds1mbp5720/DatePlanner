@@ -4,11 +4,18 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.lee.dateplanner.base.BaseViewModel
+import com.lee.dateplanner.poimap.POIRepository
 import com.lee.dateplanner.timetable.timesheet.TimeSheet
 import com.lee.dateplanner.timetable.time.room.Timetable
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class TimetableViewModel(application: Application): AndroidViewModel(application) {
-    private val repository: TimetableRepository = TimetableRepository(application)
+@HiltViewModel
+class TimetableViewModel @Inject constructor(
+    private var repository: TimetableRepository,
+    application: Application
+): BaseViewModel(application){
     private val allTimetables: LiveData<MutableList<Timetable>>? = repository.allTimetables
     private val searchResults: MutableLiveData<MutableList<Timetable>> = repository.searchResults
 

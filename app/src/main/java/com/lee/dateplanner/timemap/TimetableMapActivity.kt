@@ -10,14 +10,17 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
+import com.lee.dateplanner.base.BaseActivity
 import com.lee.dateplanner.common.mapSetting
 import com.lee.dateplanner.common.settingMarker
 import com.lee.dateplanner.common.toastMessage
@@ -27,6 +30,7 @@ import com.lee.dateplanner.timemap.adapter.TimetableMapAdapter
 import com.lee.dateplanner.timetable.TimetableViewModel
 import com.lee.dateplanner.timetable.timesheet.TimeSheet
 import com.lee.dateplanner.timetable.time.room.Timetable
+import dagger.hilt.android.AndroidEntryPoint
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
@@ -34,9 +38,11 @@ import net.daum.mf.map.api.MapView
 /**
  * 시간 계획표 마커 표시 지도 activity
  */
-class TimetableMapActivity:AppCompatActivity() {
+@AndroidEntryPoint
+class TimetableMapActivity: BaseActivity<MyScheduleMapActivityLayoutBinding,TimetableViewModel>() {
     lateinit var binding: MyScheduleMapActivityLayoutBinding
-    private lateinit var viewModel: TimetableViewModel
+    override val layoutId: Int = R.layout.my_schedule_map_activity_layout
+    override val viewModel: TimetableViewModel by viewModels()
     private val accessFineLocation = 1000
     lateinit var mapView :MapView
     //recyclerView 에서 터치시 해당 maker 로 이동하기 위한 map
@@ -46,7 +52,6 @@ class TimetableMapActivity:AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = MyScheduleMapActivityLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this)[TimetableViewModel::class.java]
 
         val id = intent.getIntExtra("id",0)
         mapView = MapView(this)
