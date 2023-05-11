@@ -10,14 +10,17 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
+import com.lee.dateplanner.base.BaseActivity
 import com.lee.dateplanner.common.mapSetting
 import com.lee.dateplanner.common.settingMarker
 import com.lee.dateplanner.common.toastMessage
@@ -27,6 +30,7 @@ import com.lee.dateplanner.timemap.adapter.TimetableMapAdapter
 import com.lee.dateplanner.timetable.TimetableViewModel
 import com.lee.dateplanner.timetable.timesheet.TimeSheet
 import com.lee.dateplanner.timetable.time.room.Timetable
+import dagger.hilt.android.AndroidEntryPoint
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
@@ -34,10 +38,13 @@ import net.daum.mf.map.api.MapView
 /**
  * 시간 계획표 마커 표시 지도 activity
  */
-class TimetableMapActivity:AppCompatActivity() {
+@AndroidEntryPoint
+class TimetableMapActivity: BaseActivity<MyScheduleMapActivityLayoutBinding,TimetableViewModel>() {
     lateinit var binding: MyScheduleMapActivityLayoutBinding
-    private lateinit var viewModel: TimetableViewModel
+    override val layoutId: Int = R.layout.my_schedule_map_activity_layout
+    override val viewModel: TimetableViewModel by viewModels()
     private val accessFineLocation = 1000
+    lateinit var mapView :MapView
     //recyclerView 에서 터치시 해당 maker 로 이동하기 위한 map
     var markerResolver: MutableMap<TimeSheet,MapPOIItem> = HashMap()
 
@@ -45,10 +52,11 @@ class TimetableMapActivity:AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = MyScheduleMapActivityLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this)[TimetableViewModel::class.java]
 
         val id = intent.getIntExtra("id",0)
-        mapSetting(binding.scheduleMap,this,POIEventClickListener())
+        mapView = MapView(this)
+        binding.scheduleMap.addView(mapView)
+        mapSetting(mapView,this,POIEventClickListener())
         settingListener()
         bottomSheetDownToBackKey()
         viewModel.findTimetable(id)
@@ -66,6 +74,12 @@ class TimetableMapActivity:AppCompatActivity() {
             displayPOI(timetable[0])
         }
     }
+
+    override fun onPause() {
+        super.onPause()
+        binding.scheduleMap.removeAllViews()
+    }
+
     private fun settingListener(){
         binding.searchLocation.clicks().subscribe {
             if (checkLocationService()) {
@@ -87,7 +101,7 @@ class TimetableMapActivity:AppCompatActivity() {
 
     // 전체 마커 map 표시 함수
     private fun displayPOI(data: Timetable){
-        with(binding.scheduleMap){
+        with(mapView){
             removeAllPOIItems() // 기존 마커들 제거
             for(i in 0 until (data.timeSheetList.size)){
                 // 위치 좌표가 없는 일정의 경우 마커 생성 생략
@@ -170,12 +184,12 @@ class TimetableMapActivity:AppCompatActivity() {
 
     // 위치추적 시작
     private fun startTracking() {
-        binding.scheduleMap.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
+        mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
     }
 
     // 위치추적 중지
     private fun stopTracking() {
-        binding.scheduleMap.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOff
+        mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOff
     }
     private fun bottomSheetDownToBackKey(){
         val behavior = BottomSheetBehavior.from(binding.bottomScheduleList)

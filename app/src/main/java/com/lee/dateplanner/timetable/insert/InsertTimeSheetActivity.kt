@@ -4,16 +4,19 @@ import android.app.TimePickerDialog
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
+import com.lee.dateplanner.base.BaseActivity
 import com.lee.dateplanner.common.*
 import com.lee.dateplanner.databinding.InputScheduleLayoutBinding
 import com.lee.dateplanner.timetable.TimetableViewModel
 import com.lee.dateplanner.timetable.insert.dialog.SelectTimeTableDialog
 import com.lee.dateplanner.timetable.timesheet.TimeSheet
 import com.lee.dateplanner.timetable.time.room.Timetable
+import dagger.hilt.android.AndroidEntryPoint
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
@@ -22,9 +25,11 @@ import java.util.*
 /**
  * 시간계획 입력 activity
  */
-class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener{
+@AndroidEntryPoint
+class InsertTimeSheetActivity: BaseActivity<InputScheduleLayoutBinding,TimetableViewModel>() ,MapView.POIItemEventListener{
     private lateinit var binding: InputScheduleLayoutBinding
-    private lateinit var viewModel: TimetableViewModel
+    override val layoutId: Int = R.layout.input_schedule_layout
+    override val viewModel: TimetableViewModel by viewModels()
     // 입력받을 정보들 저장 목적 변수
     private var type: String? = null
     private var id: Int = 0
@@ -36,13 +41,12 @@ class InsertTimeSheetActivity: AppCompatActivity() ,MapView.POIItemEventListener
     private var longitude = "127.062831022"
     private var position: Int = 0 // 수정시 해당 일정의 위치 정보
     private lateinit var scheduleMarker:MapPOIItem
-    lateinit var mapView :MapView
+    private lateinit var mapView :MapView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = InputScheduleLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this)[TimetableViewModel::class.java]
         mapView = MapView(this)
         binding.insertMap.addView(mapView)
         type = intent.getStringExtra("input_signal")
