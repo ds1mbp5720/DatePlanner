@@ -83,7 +83,6 @@ class TimetableMapActivity: BaseActivity<MyScheduleMapActivityLayoutBinding,Time
             displayPOI(timetable[0])
         }
     }
-
     override fun initViews() {
         super.initViews()
         dataBinding.searchLocation.clicks().subscribe {
