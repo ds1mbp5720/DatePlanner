@@ -15,21 +15,26 @@ import net.daum.mf.map.api.CancelableCallback
 /**
  * 개인 일정 map(TimetableMapActivity) 의 bottomSheet 보여질 일정 adapter
  */
-class TimetableMapAdapter(private val owner: TimetableMapActivity, private val timetable: Timetable): RecyclerView.Adapter<TimetableMapViewHolder>() {
+class TimetableMapAdapter(private val owner: TimetableMapActivity): RecyclerView.Adapter<TimetableMapViewHolder>() {
     private lateinit var binding: TimesheetPlanRecyclerBinding
-
+    private var timetable = mutableListOf<TimeSheet>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimetableMapViewHolder {
         binding = TimesheetPlanRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TimetableMapViewHolder(binding)
     }
     override fun onBindViewHolder(holder: TimetableMapViewHolder, position: Int) {
-        val timeSheet = timetable.timeSheetList.get(position)
+        val timeSheet = timetable[position]
         holder.setView(timeSheet)
         holder.setListener(timeSheet,owner)
     }
 
     override fun getItemCount(): Int{
-        return timetable.timeSheetList.size
+        return timetable.size
+    }
+
+    fun setTimetable(table: List<TimeSheet>){
+        timetable.clear()
+        timetable.addAll(table)
     }
 
 }

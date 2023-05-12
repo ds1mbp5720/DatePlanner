@@ -12,12 +12,9 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isEmpty
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
@@ -29,8 +26,8 @@ import com.lee.dateplanner.databinding.MyScheduleMapActivityLayoutBinding
 import com.lee.dateplanner.poimap.POIEventClickListener
 import com.lee.dateplanner.timemap.adapter.TimetableMapAdapter
 import com.lee.dateplanner.timetable.TimetableViewModel
-import com.lee.dateplanner.timetable.timesheet.TimeSheet
 import com.lee.dateplanner.timetable.time.room.Timetable
+import com.lee.dateplanner.timetable.timesheet.TimeSheet
 import dagger.hilt.android.AndroidEntryPoint
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
@@ -41,9 +38,9 @@ import net.daum.mf.map.api.MapView
  */
 @AndroidEntryPoint
 class TimetableMapActivity: BaseActivity<MyScheduleMapActivityLayoutBinding,TimetableViewModel>() {
-    lateinit var binding: MyScheduleMapActivityLayoutBinding
     override val layoutId: Int = R.layout.my_schedule_map_activity_layout
     override val viewModel: TimetableViewModel by viewModels()
+    private lateinit var timeTableMapAdapter : TimetableMapAdapter
     private val accessFineLocation = 1000
     lateinit var mapView :MapView
     //recyclerView 에서 터치시 해당 maker 로 이동하기 위한 map
@@ -51,64 +48,58 @@ class TimetableMapActivity: BaseActivity<MyScheduleMapActivityLayoutBinding,Time
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = MyScheduleMapActivityLayoutBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        val id = intent.getIntExtra("id",0)
+        viewModel.findTimetable(intent.getIntExtra("id",0))
+        timeTableMapAdapter = TimetableMapAdapter(this)
         mapView = MapView(this)
-        binding.scheduleMap.addView(mapView)
+        dataBinding.scheduleMap.addView(mapView)
         mapSetting(mapView,this,POIEventClickListener())
-        settingListener()
         bottomSheetDownToBackKey()
-        viewModel.findTimetable(id)
+    }
+    override fun onResume() {
+        super.onResume()
+        if(dataBinding.scheduleMap.isEmpty()){
+            mapView = MapView(this)
+            dataBinding.scheduleMap.addView(mapView)
+            mapSetting(mapView,this,POIEventClickListener())
+        }
+    }
+    override fun onPause() {
+        super.onPause()
+        dataBinding.scheduleMap.removeView(mapView)
+    }
+
+    override fun initObserve() {
+        super.initObserve()
         viewModel.getSearchResults().observe(this){ timetable ->
             timetable?.let {
-                with(binding.scheduleInfoRecycler){
+                with(dataBinding.scheduleInfoRecycler){
                     run{
                         // bottomSheet 보여질 list 에 대한 adapter 연결
-                        val scheduleAdapter = TimetableMapAdapter(this@TimetableMapActivity,timetable[0])
-                        adapter = scheduleAdapter
-                        scheduleAdapter
+                        timeTableMapAdapter.setTimetable(timetable[0].timeSheetList)
+                        adapter = timeTableMapAdapter
                     }
                 }
             }
             displayPOI(timetable[0])
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        if(binding.scheduleMap.isEmpty()){
-            mapView = MapView(this)
-            binding.scheduleMap.addView(mapView)
-            mapSetting(mapView,this,POIEventClickListener())
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        binding.scheduleMap.removeView(mapView)
-    }
-
-    private fun settingListener(){
-        binding.searchLocation.clicks().subscribe {
-            if (checkLocationService()) {
-                // GPS가 켜져있을 경우
+    override fun initViews() {
+        super.initViews()
+        dataBinding.searchLocation.clicks().subscribe {
+            if (checkLocationService()) { // GPS가 켜져있을 경우
                 permissionCheck()
-            } else {
-                // GPS가 꺼져있을 경우
+            } else { // GPS가 꺼져있을 경우
                 toastMessage(getString(R.string.askGPS))
             }
-            binding.searchLocation.visibility = View.INVISIBLE
-            binding.stopLocation.visibility = View.VISIBLE
+            dataBinding.searchLocation.visibility = View.INVISIBLE
+            dataBinding.stopLocation.visibility = View.VISIBLE
         }
-        binding.stopLocation.clicks().subscribe {
+        dataBinding.stopLocation.clicks().subscribe {
             stopTracking()
-            binding.searchLocation.visibility = View.VISIBLE
-            binding.stopLocation.visibility = View.INVISIBLE
+            dataBinding.searchLocation.visibility = View.VISIBLE
+            dataBinding.stopLocation.visibility = View.INVISIBLE
         }
     }
-
     // 전체 마커 map 표시 함수
     private fun displayPOI(data: Timetable){
         with(mapView){
@@ -169,7 +160,6 @@ class TimetableMapActivity: BaseActivity<MyScheduleMapActivityLayoutBinding,Time
             startTracking()
         }
     }
-
     // 권한 요청 후 행동
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -185,24 +175,22 @@ class TimetableMapActivity: BaseActivity<MyScheduleMapActivityLayoutBinding,Time
             }
         }
     }
-
     // GPS 켜져있는지 확인
     private fun checkLocationService(): Boolean {
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
-
     // 위치추적 시작
     private fun startTracking() {
         mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
     }
-
     // 위치추적 중지
     private fun stopTracking() {
         mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOff
     }
+
     private fun bottomSheetDownToBackKey(){
-        val behavior = BottomSheetBehavior.from(binding.bottomScheduleList)
+        val behavior = BottomSheetBehavior.from(dataBinding.bottomScheduleList)
         onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if(behavior.state == BottomSheetBehavior.STATE_EXPANDED) {

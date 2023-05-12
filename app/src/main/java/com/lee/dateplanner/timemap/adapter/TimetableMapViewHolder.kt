@@ -17,7 +17,7 @@ class TimetableMapViewHolder(val binding: TimesheetPlanRecyclerBinding): Recycle
         scheduleMemo.text = timeSheet.memo
     }
     fun setListener(timeSheet: TimeSheet, owner: TimetableMapActivity)= with(binding){
-        val behavior = BottomSheetBehavior.from(owner.binding.bottomScheduleList)
+        val behavior = BottomSheetBehavior.from(owner.dataBinding.bottomScheduleList)
         root.setOnClickListener {
             val marker = owner.markerResolver[timeSheet] // 마커와 리스트 map을 통한 연결
             // 해당 위치로 지도 중심점 이동, 지도 확대
