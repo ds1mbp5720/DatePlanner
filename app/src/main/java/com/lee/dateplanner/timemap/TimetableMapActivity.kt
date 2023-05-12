@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isEmpty
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -75,9 +76,18 @@ class TimetableMapActivity: BaseActivity<MyScheduleMapActivityLayoutBinding,Time
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(binding.scheduleMap.isEmpty()){
+            mapView = MapView(this)
+            binding.scheduleMap.addView(mapView)
+            mapSetting(mapView,this,POIEventClickListener())
+        }
+    }
+
     override fun onPause() {
         super.onPause()
-        binding.scheduleMap.removeAllViews()
+        binding.scheduleMap.removeView(mapView)
     }
 
     private fun settingListener(){
