@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isEmpty
 import androidx.lifecycle.ViewModelProvider
 import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
@@ -55,9 +56,18 @@ class InsertTimeSheetActivity: BaseActivity<InputScheduleLayoutBinding,Timetable
         setCheckBox()
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(binding.insertMap.isEmpty()){
+            mapView = MapView(this)
+            binding.insertMap.addView(mapView)
+            insertMapSetting()
+        }
+    }
+
     override fun onPause() {
         super.onPause()
-        binding.insertMap.removeAllViews()
+        binding.insertMap.removeView(mapView)
     }
 
     // 입력 혹은 수정, 추가 경우에 따른 입력 기능 분류 함수
