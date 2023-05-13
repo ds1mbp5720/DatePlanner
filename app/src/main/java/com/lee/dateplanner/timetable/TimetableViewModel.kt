@@ -28,11 +28,9 @@ class TimetableViewModel @Inject constructor(
     fun updateDate(Date: String, id:Int){
         repository.updateDate(Date, id)
     }
-
     fun findTimetable(id: Int){
         repository.findTimetable(id)
     }
-
     fun deleteTimetable(id: Int){
         repository.deleteTimetable(id)
     }
@@ -43,4 +41,6 @@ class TimetableViewModel @Inject constructor(
     fun getAllTimetables(): LiveData<MutableList<Timetable>>? {
         return allTimetables
     }
+
+
 }
