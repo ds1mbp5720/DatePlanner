@@ -28,7 +28,6 @@ import java.util.*
  */
 @AndroidEntryPoint
 class InsertTimeSheetActivity: BaseActivity<InputScheduleLayoutBinding,TimetableViewModel>() ,MapView.POIItemEventListener{
-    private lateinit var binding: InputScheduleLayoutBinding
     override val layoutId: Int = R.layout.input_schedule_layout
     override val viewModel: TimetableViewModel by viewModels()
     // 입력받을 정보들 저장 목적 변수
@@ -46,28 +45,24 @@ class InsertTimeSheetActivity: BaseActivity<InputScheduleLayoutBinding,Timetable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = InputScheduleLayoutBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         mapView = MapView(this)
-        binding.insertMap.addView(mapView)
+        dataBinding.insertMap.addView(mapView)
         type = intent.getStringExtra("input_signal")
         setInputType()
         insertMapSetting()
         setCheckBox()
     }
-
     override fun onResume() {
         super.onResume()
-        if(binding.insertMap.isEmpty()){
+        if(dataBinding.insertMap.isEmpty()){
             mapView = MapView(this)
-            binding.insertMap.addView(mapView)
+            dataBinding.insertMap.addView(mapView)
             insertMapSetting()
         }
     }
-
     override fun onPause() {
         super.onPause()
-        binding.insertMap.removeView(mapView)
+        dataBinding.insertMap.removeView(mapView)
     }
 
     // 입력 혹은 수정, 추가 경우에 따른 입력 기능 분류 함수
@@ -91,14 +86,14 @@ class InsertTimeSheetActivity: BaseActivity<InputScheduleLayoutBinding,Timetable
     // 버튼 설정
     private fun setListener(timeTable : Timetable){
         // 시간 버튼 클릭
-        binding.inputTimeBtn.clicks().subscribe{
+        dataBinding.inputTimeBtn.clicks().subscribe{
             val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                binding.inputTimeBtn.text = timeStringFormat(hourOfDay,minute)
+                dataBinding.inputTimeBtn.text = timeStringFormat(hourOfDay,minute)
             }
             makeTimePickerDialog(this,timeSetListener)
         }
         //등록 선택시
-        binding.insertBtn.clicks().subscribe{
+        dataBinding.insertBtn.clicks().subscribe{
             when(type){
                 getString(R.string.add) -> setInsertData(timeTable,id,getString(R.string.add))
                 getString(R.string.edit)-> setInsertData(timeTable,id,getString(R.string.edit))
@@ -107,12 +102,12 @@ class InsertTimeSheetActivity: BaseActivity<InputScheduleLayoutBinding,Timetable
             finish()
         }
         //뒤로가기 선택시
-        binding.inputBackBtn.clicks().subscribe{
+        dataBinding.inputBackBtn.clicks().subscribe{
             finish()
         }
     }
     private fun setCheckBox(){
-        binding.showMapCheckbox.setOnCheckedChangeListener { _, isChecked ->
+        dataBinding.showMapCheckbox.setOnCheckedChangeListener { _, isChecked ->
             with(mapView){
                 if(isChecked) addPOIItem(scheduleMarker)
                 else removeAllPOIItems()
@@ -126,7 +121,7 @@ class InsertTimeSheetActivity: BaseActivity<InputScheduleLayoutBinding,Timetable
             if(latitude != "" && longitude != ""){
                 scheduleMarker = settingMarker(getString(R.string.insertMarkerTitle),latitude.toDouble(),longitude.toDouble(),true,MapPOIItem.MarkerType.BluePin)
                 setMapCenterPoint(MapPoint.mapPointWithGeoCoord(latitude.toDouble(), longitude.toDouble()), false)
-                addPOIItem(scheduleMarker) // 행사위치 핑
+                addPOIItem(scheduleMarker)
             }
         }
     }
@@ -150,7 +145,7 @@ class InsertTimeSheetActivity: BaseActivity<InputScheduleLayoutBinding,Timetable
         longitude = intent.getStringExtra("longitude").toString()
 
         //입력받는 view 에 적용
-        with(binding){
+        with(dataBinding){
             inputTitle.setText(title)
             inputLocation.setText(place)
             inputMemo.setText(memo)
@@ -167,17 +162,17 @@ class InsertTimeSheetActivity: BaseActivity<InputScheduleLayoutBinding,Timetable
         longitude = intent.getStringExtra("longitude").toString()
 
         // 입력받는 view에 적용
-        with(binding){
+        with(dataBinding){
             inputTitle.setText(title)
             inputLocation.setText(place)
         }
-        binding.inputTimeBtn.setOnClickListener {
+        dataBinding.inputTimeBtn.setOnClickListener {
             val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                binding.inputTimeBtn.text = timeStringFormat(hourOfDay,minute)
+                dataBinding.inputTimeBtn.text = timeStringFormat(hourOfDay,minute)
             }
              makeTimePickerDialog(this,timeSetListener)
         }
-        binding.insertBtn.setOnClickListener{
+        dataBinding.insertBtn.setOnClickListener{
             val dialog = SelectTimeTableDialog("일정을 선택하세요.",viewModel,this)
             dialog.show()
         }
@@ -186,7 +181,7 @@ class InsertTimeSheetActivity: BaseActivity<InputScheduleLayoutBinding,Timetable
         setInsertData(timeTable,id,getString(R.string.apiInput))
     }
     private fun setInsertData(timeTable : Timetable, id: Int, type: String){
-        with(binding){
+        with(dataBinding){
             title = inputTitle.text.toString()
             time = inputTimeBtn.text.toString()
             place = inputLocation.text.toString()
