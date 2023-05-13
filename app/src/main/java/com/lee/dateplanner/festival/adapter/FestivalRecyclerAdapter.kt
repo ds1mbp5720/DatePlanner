@@ -5,15 +5,19 @@ import android.location.Geocoder
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
 import com.lee.dateplanner.R
+import com.lee.dateplanner.common.FestivalInfoEventBus
+import com.lee.dateplanner.common.toast
 import com.lee.dateplanner.common.toastMessage
 import com.lee.dateplanner.databinding.FestivalInfoRecyclerBinding
 import com.lee.dateplanner.festival.FestivalListFragment
 import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.festival.data.FestivalSpaceData
+import org.greenrobot.eventbus.EventBus
 
 /**
  * 행사 정보 출력 adapter
@@ -89,15 +93,15 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment):
             placeCount ++
         }
         if(placeCount == searchPlace.size){
-            toastMessage(fragment.getString(R.string.notFindFestivalLocation))
+            binding.root.context.toast(fragment.getString(R.string.notFindFestivalLocation))
         }
     }
-    // 좌표값 AroundMapFragment 로 보내기
+    // 좌표값 POIMapFragment 로 보내기
     fun setPositionAndSendToPOIFragment(latitude: Double, longitude: Double){
         this.latitude = latitude
         this.longitude = longitude
-        fragment.setFragmentResult("positionKey", bundleOf("latitude" to latitude, "longitude" to longitude))
-        toastMessage(fragment.getString(R.string.findFestivalLocation))
+        EventBus.getDefault().post(FestivalInfoEventBus(latitude, longitude))
+        binding.root.context.toast(fragment.getString(R.string.findFestivalLocation))
     }
     @SuppressLint("NotifyDataSetChanged")
     fun refreshFestival(){

@@ -3,6 +3,7 @@ package com.lee.dateplanner.common
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.timetable.time.room.Timetable
@@ -56,7 +57,9 @@ fun Context.copyToClipboard(text: String) {
         it.setPrimaryClip(clip)
     }
 }
-
+fun Context.toast(message: String, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, message, duration).show()
+}
 fun String.idxToKakaoHash(): Int {
     if (this.isNotEmpty()) {
         var code = when {
