@@ -18,9 +18,10 @@
 + OkHttp4/Retrofit 활용 Coroutine을 이용한 REST 처리 
 + Dagger-Hilt 를 이용한 DI 
 + Databinding, ViewBinding
++ EventBus
 ------------
 ### 사용 API
-+ kakao Map
++ kakao Map, Naver Map(별도 함수화)
 + kakao POI REST API
 + 서울 문화행사 정보
 + 서울 문화행사 시설 정보
