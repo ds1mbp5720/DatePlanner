@@ -5,15 +5,14 @@ import android.location.Geocoder
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
-import com.lee.dateplanner.R
-import com.lee.dateplanner.common.toastMessage
+import com.lee.dateplanner.common.FestivalInfoEventBus
 import com.lee.dateplanner.databinding.FestivalInfoRecyclerBinding
 import com.lee.dateplanner.festival.FestivalListFragment
+import com.lee.dateplanner.festival.FestivalViewModel
 import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.festival.data.FestivalSpaceData
+import org.greenrobot.eventbus.EventBus
 
 /**
  * 행사 정보 출력 adapter
@@ -23,6 +22,7 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment):
     private lateinit var binding: FestivalInfoRecyclerBinding
     private val festivalData = mutableListOf<FestivalInfoData.CulturalEventInfo.Row>()
     private val festivalSpaceData = mutableListOf<FestivalSpaceData.CulturalSpaceInfo.Row>()
+    private lateinit var viewModel: FestivalViewModel
 
     var latitude = 0.0
     var longitude = 0.0
@@ -45,12 +45,13 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment):
         festivalSpaceData.clear()
         festivalSpaceData.addAll(item)
     }
+    fun setViewModel(festivalViewModel: FestivalViewModel){
+        viewModel = festivalViewModel
+    }
     // 행사 장소 string 통해 위도, 경도 값 변환 함수
     fun getFestivalPosition(festival: FestivalInfoData.CulturalEventInfo.Row) {
         val geoCoder = fragment.context?.let { Geocoder(it) } // 좌표변환 목적 geocoder 변수
-        /**
-         * 행사 장소 좌표 전달
-         */
+        //행사 장소 좌표 전달
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             // Deprecated 되지 않은 getFromLocationName 함수 활용 좌표 변환함수
             geoCoder?.getFromLocationName(festival.pLACE,1
@@ -89,15 +90,15 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment):
             placeCount ++
         }
         if(placeCount == searchPlace.size){
-            toastMessage(fragment.getString(R.string.notFindFestivalLocation))
+            viewModel.onGetLocationCheck(false)
         }
     }
-    // 좌표값 AroundMapFragment 로 보내기
+    // 좌표값 POIMapFragment 로 보내기
     fun setPositionAndSendToPOIFragment(latitude: Double, longitude: Double){
         this.latitude = latitude
         this.longitude = longitude
-        fragment.setFragmentResult("positionKey", bundleOf("latitude" to latitude, "longitude" to longitude))
-        toastMessage(fragment.getString(R.string.findFestivalLocation))
+        viewModel.onGetLocationCheck(true)
+        EventBus.getDefault().post(FestivalInfoEventBus(latitude, longitude))
     }
     @SuppressLint("NotifyDataSetChanged")
     fun refreshFestival(){

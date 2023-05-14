@@ -4,21 +4,16 @@ import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.ActionBar.LayoutParams
 import androidx.core.view.isEmpty
-import androidx.core.view.isVisible
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.lee.dateplanner.R
 import com.lee.dateplanner.base.BaseFragment
+import com.lee.dateplanner.common.FestivalInfoEventBus
 import com.lee.dateplanner.common.mapSetting
 import com.lee.dateplanner.common.settingMarker
 import com.lee.dateplanner.databinding.PoiMapFragmentLayoutBinding
-import com.lee.dateplanner.map.KakaoMapFragment
-import com.lee.dateplanner.map.MapData
 import com.lee.dateplanner.poimap.adpter.POIRecyclerAdapter
 import com.lee.dateplanner.poimap.data.POIData
 import com.lee.dateplanner.poimap.select.SelectMarkerPOIFragment
@@ -28,6 +23,8 @@ import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
 import net.daum.mf.map.api.MapView.MapViewEventListener
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 /**
  * 주변 상권정보 카테고리별 제공 fragment
@@ -75,6 +72,7 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        EventBus.getDefault().register(this)
         poiAdapter = POIRecyclerAdapter(this)
         mapView = MapView(this.activity)
         getFestivalPosition()
@@ -86,7 +84,7 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     override fun onResume() {
         super.onResume()
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
-       if(dataBinding.infoMap.isEmpty()){
+        if(dataBinding.infoMap.isEmpty()){
            mapView = MapView(this.activity)
            getFestivalPosition()
            dataBinding.infoMap.addView(mapView)
@@ -102,6 +100,7 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     }
     override fun onDestroyView() {
         super.onDestroyView()
+        EventBus.getDefault().unregister(this)
         poiBalloonListener.job?.cancel()
         job?.cancel()
     }
@@ -115,10 +114,6 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     }
     // 전달받은 행사장 좌표값
     private fun getFestivalPosition(){
-        setFragmentResultListener("positionKey"){ _, bundle ->
-            festivalLat = bundle.getDouble("latitude").toString()
-            festivalLgt = bundle.getDouble("longitude").toString()
-        }
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
     }
     // 전체 마커 map 표시 함수
@@ -181,6 +176,14 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
         viewModel.errorMessage.observe(viewLifecycleOwner){
             Log.e(TAG,it)
         }
+    }
+    @Subscribe
+    fun onEvent(event: FestivalInfoEventBus){
+        festivalLat = event.latitude.toString()
+        festivalLgt = event.longitude.toString()
+        viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt,1)
+        festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
+        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
     }
     //Todo Eventbus 활용 data 받기
     object PoiCategoryType {
