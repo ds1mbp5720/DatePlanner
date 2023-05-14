@@ -11,10 +11,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import com.lee.dateplanner.R
 import com.lee.dateplanner.base.BaseFragment
-import com.lee.dateplanner.common.dateStringFormat
-import com.lee.dateplanner.common.filterByDate
-import com.lee.dateplanner.common.filterByTodayDate
-import com.lee.dateplanner.common.makeDatePickerDialog
+import com.lee.dateplanner.common.*
 import com.lee.dateplanner.databinding.FestivallistFragmentLayoutBinding
 import com.lee.dateplanner.festival.adapter.FestivalRecyclerAdapter
 import com.lee.dateplanner.festival.data.FestivalInfoData
@@ -37,6 +34,7 @@ class FestivalListFragment : BaseFragment<FestivallistFragmentLayoutBinding, Fes
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter.setViewModel(viewModel)
         viewModel.getAllFestivalFromViewModel(category, this.year, this.month, this.day)
         viewModel.getFestivalLocationFromViewModel()
         listenerSetup()
@@ -67,6 +65,10 @@ class FestivalListFragment : BaseFragment<FestivallistFragmentLayoutBinding, Fes
             } else {
                 dataBinding.progressBar.visibility = View.GONE
             }
+        }
+        viewModel.getLocationCheck.observe(this){
+            if(it==true) context?.toast(R.string.findFestivalLocation)
+            else context?.toast(R.string.notFindFestivalLocation)
         }
         viewModel.eventClick.observe(this){
             when(it){

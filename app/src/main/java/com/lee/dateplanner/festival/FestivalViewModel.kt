@@ -23,8 +23,15 @@ class FestivalViewModel @Inject constructor(
     val festivalPlaceList: LiveData<FestivalSpaceData> get() = _festivalPlaceList
     private val _eventClick = SingleLiveEvent<Event>()
     val eventClick: LiveData<Event> get() = _eventClick
+    private val _getLocationCheck = SingleLiveEvent<Boolean>()
+    val getLocationCheck: LiveData<Boolean> get() = _getLocationCheck
+
     fun onEventClick(event: Event){
         _eventClick.value = event
+    }
+    fun onGetLocationCheck(check : Boolean){
+        if(check) _getLocationCheck.postValue(true)
+        else _getLocationCheck.postValue(false)
     }
 
     fun getAllFestivalFromViewModel(category: String, year: Int = 0, month: Int = 0, day: Int = 0) {
@@ -36,7 +43,6 @@ class FestivalViewModel @Inject constructor(
             _festivalList.value = it.body()
         }
     }
-
     fun getFestivalLocationFromViewModel() {
         runScope({
             repository.getFestivalPlace()
