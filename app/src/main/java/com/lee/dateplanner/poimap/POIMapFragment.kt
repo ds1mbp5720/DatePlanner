@@ -44,6 +44,7 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     private var festivalLgt: String = "127.062831022" // 행사장 좌표
     private var centerLgt: String = "127.062831022" // 행사장 좌표
     private lateinit var festivalMarker: MapPOIItem
+    lateinit var selectMarker: MapPOIItem
     private var job : Job? = null
     lateinit var mapView :MapView
     //lateinit var kakaoMapView :KakaoMapFragment // todo: 추후 사용 예정
@@ -67,7 +68,10 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
         override fun onMapViewDoubleTapped(mapView: MapView?, mapPoint: MapPoint?) {}
         override fun onMapViewLongPressed(mapView: MapView?, mapPoint: MapPoint?) {}
         override fun onMapViewDragStarted(mapView: MapView?, mapPoint: MapPoint?) {}
-        override fun onMapViewMoveFinished(mapView: MapView?, mapPoint: MapPoint?) {}
+        override fun onMapViewMoveFinished(mapView: MapView?, mapPoint: MapPoint?) {
+            centerLat = mapPoint?.mapPointGeoCoord?.latitude.toString()
+            centerLgt = mapPoint?.mapPointGeoCoord?.longitude.toString()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,22 +80,22 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
         poiAdapter = POIRecyclerAdapter(this)
         mapView = MapView(this.activity)
         getFestivalPosition()
+        selectMarker = festivalMarker
         dataBinding.infoMap.addView(mapView)
         //kakaoMapView = KakaoMapFragment().also { childFragmentManager.beginTransaction().add(R.id.info_map,it).addToBackStack("").commit() }
         bottomSheetDownToBackKey()
-        viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt,1)
     }
     override fun onResume() {
         super.onResume()
-        festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
         if(dataBinding.infoMap.isEmpty()){
-           mapView = MapView(this.activity)
-           getFestivalPosition()
-           dataBinding.infoMap.addView(mapView)
-           firstSettingPoiMapView(mapView)
-           viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt,1)
+            mapView = MapView(this.activity)
+            getFestivalPosition()
+            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(centerLat.toDouble(),centerLgt.toDouble()),false)
+            dataBinding.infoMap.addView(mapView)
+            firstSettingPoiMapView(mapView)
         }else{
             firstSettingPoiMapView(mapView)
+            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
         }
     }
     override fun onPause() {
@@ -108,9 +112,9 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     private fun firstSettingPoiMapView(mapView: MapView){
         mapSetting(mapView, this@POIMapFragment.requireContext(),poiBalloonListener)
         mapView.setMapViewEventListener(mapViewListener)
-        viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt,1)
+        viewModel.getAllPoiFromViewModel(poiCategory, centerLat,centerLgt,1)
         mapView.addPOIItem(festivalMarker) // 행사위치 핑
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
+        mapView.selectPOIItem(selectMarker,false)
     }
     // 전달받은 행사장 좌표값
     private fun getFestivalPosition(){

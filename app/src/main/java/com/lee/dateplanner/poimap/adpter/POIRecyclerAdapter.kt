@@ -8,7 +8,6 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.lee.dateplanner.databinding.PoiListRecyclerBinding
-import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.poimap.POIMapFragment
 import com.lee.dateplanner.poimap.data.POIData
 import kotlinx.coroutines.*
@@ -53,6 +52,7 @@ class POIRecyclerAdapter(private val owner:POIMapFragment): RecyclerView.Adapter
         val marker = owner.markerResolver[poi]
         // 해당 위치로 지도 중심점 이동, 지도 확대
         if(marker != null){
+            owner.selectMarker = marker
             val update = CameraUpdateFactory.newMapPoint(marker.mapPoint, 2F)
             with(owner.mapView){
                 animateCamera(update, object: net.daum.mf.map.api.CancelableCallback{

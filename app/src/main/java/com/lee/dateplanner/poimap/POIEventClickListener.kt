@@ -35,6 +35,9 @@ class POIEventClickListener(private val owner: POIMapFragment = POIMapFragment()
 
         if (info != null) {
             with(info){
+                if (poiItem != null) {
+                    owner.selectMarker = poiItem
+                }
                 job = CoroutineScope(Dispatchers.Main).launch(exceptionHandler) {
                     owner.childFragmentManager.setFragmentResult("poiKey", bundleOf("placeName" to placeName, "addressName" to addressName,
                         "phone" to phone, "category" to categoryName, "placeUrl" to placeUrl, "longitude" to x, "latitude" to y)
