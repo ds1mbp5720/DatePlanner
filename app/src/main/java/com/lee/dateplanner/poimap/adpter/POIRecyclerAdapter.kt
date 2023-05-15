@@ -3,6 +3,7 @@ package com.lee.dateplanner.poimap.adpter
 import android.content.ContentValues.TAG
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
@@ -45,6 +46,7 @@ class POIRecyclerAdapter(private val owner:POIMapFragment): RecyclerView.Adapter
                         owner.selectMarkerPOIFragment
                     ).addToBackStack(null).commit()
             }
+            owner.dataBinding.viewMiddle.visibility = View.VISIBLE
         }
     }
     // 마커로 지도 중심 이동 함수

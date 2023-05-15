@@ -165,14 +165,23 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
             when(it){
                 POIViewModel.Event.Restaurant -> {
                     poiCategory = PoiCategoryType.RESTAURANT
+                    dataBinding.btRestaurantBtn.setBackgroundColor(context?.resources?.getColor(R.color.lemon)!!)
+                    dataBinding.btCafeBtn.setBackgroundColor(context?.resources?.getColor(R.color.white)!!)
+                    dataBinding.btEnjoyBtn.setBackgroundColor(context?.resources?.getColor(R.color.white)!!)
                     viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
                 }
                 POIViewModel.Event.Cafe -> {
                     poiCategory = PoiCategoryType.CAFE
+                    dataBinding.btRestaurantBtn.setBackgroundColor(context?.resources?.getColor(R.color.white)!!)
+                    dataBinding.btCafeBtn.setBackgroundColor(context?.resources?.getColor(R.color.lemon)!!)
+                    dataBinding.btEnjoyBtn.setBackgroundColor(context?.resources?.getColor(R.color.white)!!)
                     viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
                 }
                 POIViewModel.Event.Enjoy -> {
                     poiCategory = PoiCategoryType.ENJOY
+                    dataBinding.btRestaurantBtn.setBackgroundColor(context?.resources?.getColor(R.color.white)!!)
+                    dataBinding.btCafeBtn.setBackgroundColor(context?.resources?.getColor(R.color.white)!!)
+                    dataBinding.btEnjoyBtn.setBackgroundColor(context?.resources?.getColor(R.color.lemon)!!)
                     viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
                 }
             }

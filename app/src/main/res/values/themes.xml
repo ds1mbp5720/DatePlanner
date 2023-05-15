@@ -12,7 +12,7 @@
         <item name="colorControlHighlight">#F6733E</item>
         <item name="colorPrimaryVariant">#101010</item>
         <item name="android:windowBackground">#FFFFFF</item>
-        <item name="backgroundTint">#686868</item>
+        <item name="backgroundTint">#FFFFFF</item>
 
 
         <!-- Secondary brand color. -->
