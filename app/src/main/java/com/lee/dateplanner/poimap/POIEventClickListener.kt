@@ -2,6 +2,7 @@ package com.lee.dateplanner.poimap
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import android.view.View
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
@@ -45,6 +46,7 @@ class POIEventClickListener(private val owner: POIMapFragment = POIMapFragment()
                     owner.childFragmentManager.beginTransaction()
                         .replace(com.lee.dateplanner.R.id.selected_marker_info,owner.selectMarkerPOIFragment).addToBackStack(null).commit()
                 }
+                owner.dataBinding.viewMiddle.visibility = View.VISIBLE
             }
         }
     }
