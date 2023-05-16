@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="title"
+            type="String" />
+        <variable
+            name="msg"
+            type="String" />
+        <variable
+            name="viewModel"
+            type="com.lee.dateplanner.dialog.MessageViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tw_dialog_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center"
+            android:lineSpacingExtra="8dp"
+            android:text="@{title}"
+            android:visibility="gone"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="다이얼로그 제목" />
+
+        <TextView
+            android:id="@+id/tw_dialog_msg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center"
+            android:lineSpacingExtra="8dp"
+            android:text="@{msg}"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tw_dialog_title"
+            tools:text="다이얼로그 내용" />
+
+        <View
+            android:id="@+id/vw_dialog_bottom"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="72dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tw_dialog_msg" />
+
+        <View
+            android:id="@+id/vw_dialog_middle"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/vw_dialog_bottom"
+            app:layout_constraintStart_toStartOf="@id/vw_dialog_bottom"
+            app:layout_constraintTop_toBottomOf="@id/vw_dialog_bottom" />
+
+        <TextView
+            android:id="@+id/tw_dialog_left"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:lineSpacingExtra="6dp"
+            android:onClick="@{()->viewModel.onLeftClick()}"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/txt_dialog_right"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/vw_dialog_bottom"
+            tools:text="아니요" />
+
+        <TextView
+            android:id="@+id/txt_dialog_right"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:lineSpacingExtra="6dp"
+            android:onClick="@{()->viewModel.onRightClick()}"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tw_dialog_left"
+            app:layout_constraintTop_toTopOf="@id/vw_dialog_bottom"
+            tools:text="예" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_btn_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="tw_dialog_left,vw_dialog_middle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
