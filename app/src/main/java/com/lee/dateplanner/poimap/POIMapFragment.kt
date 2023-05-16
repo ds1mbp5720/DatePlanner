@@ -49,6 +49,7 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     lateinit var mapView :MapView
     //lateinit var kakaoMapView :KakaoMapFragment // todo: 추후 사용 예정
     var selectMarkerPOIFragment = SelectMarkerPOIFragment()
+    val behavior by lazy { BottomSheetBehavior.from(dataBinding.bottomPoiList) } // = BottomSheetBehavior.from(dataBinding.bottomPoiList)
     // 정보 리스트와 maker 연동 목적 map
     var markerResolver: MutableMap<POIData.Document,MapPOIItem> = HashMap()
     var markerResolver2: MutableMap<MapPOIItem,POIData.Document> = HashMap()
@@ -83,7 +84,6 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
         selectMarker = festivalMarker
         dataBinding.infoMap.addView(mapView)
         //kakaoMapView = KakaoMapFragment().also { childFragmentManager.beginTransaction().add(R.id.info_map,it).addToBackStack("").commit() }
-        bottomSheetDownToBackKey()
     }
     override fun onResume() {
         super.onResume()
@@ -133,19 +133,6 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
                 markerResolver2[marker] = document
             }
         }
-    }
-
-    private fun bottomSheetDownToBackKey(){
-        val behavior = BottomSheetBehavior.from(dataBinding.bottomPoiList)
-        activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if(behavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-                    behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                }else{
-                    activity!!.finish()
-                }
-            }
-        })
     }
 
     override fun initObserve() {

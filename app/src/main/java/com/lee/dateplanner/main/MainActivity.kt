@@ -2,10 +2,12 @@ package com.lee.dateplanner.main
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayout
 import com.lee.dateplanner.R
 import com.lee.dateplanner.base.BaseActivity
 import com.lee.dateplanner.databinding.ActivityMainBinding
+import com.lee.dateplanner.dialog.MessageDialog
 import com.lee.dateplanner.festival.FestivalListFragment
 import com.lee.dateplanner.poimap.POIMapFragment
 import com.lee.dateplanner.timetable.TimeTableFragment
@@ -81,5 +83,16 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
+    }
+
+    override fun onBackPressed() {
+        if(poiMapFragment.behavior.state == BottomSheetBehavior.STATE_EXPANDED)
+            poiMapFragment.behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        else{
+            MessageDialog(getString(R.string.destroy_app),getString(R.string.check),getString(R.string.cancel)).onRightBtn{
+                super.onBackPressed()
+            }.show(supportFragmentManager,"")
+        }
+
     }
 }
