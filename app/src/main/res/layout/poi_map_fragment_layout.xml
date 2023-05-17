@@ -61,15 +61,15 @@
 
         </LinearLayout>
 
-        <androidx.cardview.widget.CardView
+        <FrameLayout
             android:id="@+id/bottom_poiList"
             android:layout_width="match_parent"
             android:layout_height="700dp"
             android:descendantFocusability="beforeDescendants"
             android:focusableInTouchMode="true"
+            android:background="@drawable/bottomsheet_background"
             app:behavior_hideable="false"
             app:behavior_peekHeight="100dp"
-            app:cardCornerRadius="30dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <ProgressBar
@@ -115,6 +115,6 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/poi_list_recycler" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </FrameLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

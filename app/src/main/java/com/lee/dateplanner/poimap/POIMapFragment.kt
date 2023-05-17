@@ -113,6 +113,9 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
         mapSetting(mapView, this@POIMapFragment.requireContext(),poiBalloonListener)
         mapView.setMapViewEventListener(mapViewListener)
         viewModel.getAllPoiFromViewModel(poiCategory, centerLat,centerLgt,1)
+        dataBinding.btRestaurantBtn.setBackgroundColor(context?.resources?.getColor(R.color.white)!!)
+        dataBinding.btCafeBtn.setBackgroundColor(context?.resources?.getColor(R.color.lemon)!!)
+        dataBinding.btEnjoyBtn.setBackgroundColor(context?.resources?.getColor(R.color.white)!!)
         mapView.addPOIItem(festivalMarker) // 행사위치 핑
         mapView.selectPOIItem(selectMarker,false)
     }
