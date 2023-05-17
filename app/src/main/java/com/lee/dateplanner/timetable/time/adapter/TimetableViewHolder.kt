@@ -9,13 +9,13 @@ import com.lee.dateplanner.R
 import com.lee.dateplanner.common.dateStringFormat
 import com.lee.dateplanner.common.makeDatePickerDialog
 import com.lee.dateplanner.databinding.TimetableRecyclerLayoutBinding
+import com.lee.dateplanner.dialog.MessageDialog
 import com.lee.dateplanner.timemap.TimetableMapActivity
 import com.lee.dateplanner.timetable.TimeTableFragment
 import com.lee.dateplanner.timetable.TimetableViewModel
 import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
 import com.lee.dateplanner.timetable.time.room.Timetable
 import com.lee.dateplanner.timetable.timesheet.adapter.TimeSheetAdapter
-import com.lee.dateplanner.timetable.timesheet.dialog.DeleteCheckDialog
 
 class TimetableViewHolder(val binding: TimetableRecyclerLayoutBinding, private val fragment: TimeTableFragment,private val viewModel: TimetableViewModel): RecyclerView.ViewHolder(binding.root){
     fun setView(timetableList: List<Timetable>?, position: Int, adapter: TimeSheetAdapter?) = with(binding){
@@ -53,9 +53,10 @@ class TimetableViewHolder(val binding: TimetableRecyclerLayoutBinding, private v
 
             // 해당 일일 일정 삭제
             deleteTimeBtn.clicks().subscribe{
-                val dialog = DeleteCheckDialog(fragment,timetableList!![position], 0, fragment.getString(
-                    R.string.deleteTypeTimeTable))
-                dialog.show()
+                MessageDialog(this.root.context.getString(R.string.dialogMessageToDelete),this.root.context.getString(R.string.check),this.root.context.getString(R.string.cancel)).onRightBtn{
+                    if(timetableList?.isNotEmpty() == true)
+                        fragment.viewModel.deleteTimetable(timetableList[position].id)
+                }.show(fragment.childFragmentManager,"")
             }
         }
 

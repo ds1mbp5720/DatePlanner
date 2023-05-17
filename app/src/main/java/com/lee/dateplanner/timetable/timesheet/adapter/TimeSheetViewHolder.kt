@@ -1,20 +1,18 @@
 package com.lee.dateplanner.timetable.timesheet.adapter
 
-import android.content.ContentValues.TAG
 import android.content.Intent
-import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.TimesheetPlanRecyclerBinding
+import com.lee.dateplanner.dialog.MessageDialog
 import com.lee.dateplanner.timetable.TimeTableFragment
 import com.lee.dateplanner.timetable.insert.InsertTimeSheetActivity
 import com.lee.dateplanner.timetable.time.room.Timetable
 import com.lee.dateplanner.timetable.timesheet.TimeSheet
-import com.lee.dateplanner.timetable.timesheet.dialog.DeleteCheckDialog
 
-class TimeSheetViewHolder(val binding: TimesheetPlanRecyclerBinding,private val owner: TimeTableFragment): RecyclerView.ViewHolder(binding.root){
+class TimeSheetViewHolder(val binding: TimesheetPlanRecyclerBinding,private val fragment: TimeTableFragment): RecyclerView.ViewHolder(binding.root){
     fun setView(timeSheet: TimeSheet) = with(binding){
         // 기존 정보들  입력 받은 정보들
         scheduleTitle.text = timeSheet.title
@@ -41,9 +39,12 @@ class TimeSheetViewHolder(val binding: TimesheetPlanRecyclerBinding,private val 
             }
             //삭제버튼 클릭시
             deleteTimesheetBtn.clicks().subscribe {
-                Log.e(TAG,"널 체크 ${owner.timetableAdapter!!.timeSheetAdapter}")
-                val dialog = DeleteCheckDialog(owner,timeTable, position, owner.getString(R.string.deleteTypeTimeSheet))
-                dialog.show()
+                MessageDialog(this.root.context.getString(R.string.dialogMessageToDelete),this.root.context.getString(R.string.check),this.root.context.getString(R.string.cancel)).onRightBtn{
+                    timeTable.timeSheetList.removeAt(position)
+                    timeTable.timeSheetList.let { it1 ->
+                        fragment.viewModel.updateTimetable(it1,timeTable.id)
+                    }
+                }.show(fragment.childFragmentManager,"")
             }
         }
 
