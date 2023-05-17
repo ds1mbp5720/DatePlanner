@@ -27,7 +27,7 @@ class TimetableRecyclerAdapter(private val viewModel: TimetableViewModel, privat
         holder.setListener(timetableList, position)
     }
 
-    fun dialogCallBack(select: Boolean, timeTable: Timetable){
+    fun deleteTimetable(select: Boolean, timeTable: Timetable){
         if(select){
             viewModel.deleteTimetable(timeTable.id)
         }
