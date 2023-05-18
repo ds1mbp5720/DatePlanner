@@ -4,15 +4,12 @@ import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isEmpty
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.lee.dateplanner.R
 import com.lee.dateplanner.base.BaseFragment
-import com.lee.dateplanner.common.FestivalInfoEventBus
-import com.lee.dateplanner.common.mapSetting
-import com.lee.dateplanner.common.settingMarker
+import com.lee.dateplanner.common.*
 import com.lee.dateplanner.databinding.PoiMapFragmentLayoutBinding
 import com.lee.dateplanner.poimap.adpter.POIRecyclerAdapter
 import com.lee.dateplanner.poimap.data.POIData
@@ -54,10 +51,7 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     var markerResolver: MutableMap<POIData.Document,MapPOIItem> = HashMap()
     var markerResolver2: MutableMap<MapPOIItem,POIData.Document> = HashMap()
     private val mapViewListener = object :MapViewEventListener{
-        override fun onMapViewInitialized(mapView: MapView?) {
-            centerLat = festivalLat
-            centerLgt = festivalLgt
-        }
+        override fun onMapViewInitialized(mapView: MapView?) {}
         override fun onMapViewDragEnded(mapView: MapView, mapPoint: MapPoint?) {
             centerLat = mapView.mapCenterPoint.mapPointGeoCoord.latitude.toString()
             centerLgt = mapView.mapCenterPoint.mapPointGeoCoord.longitude.toString()
@@ -113,11 +107,10 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
         mapSetting(mapView, this@POIMapFragment.requireContext(),poiBalloonListener)
         mapView.setMapViewEventListener(mapViewListener)
         viewModel.getAllPoiFromViewModel(poiCategory, centerLat,centerLgt,1)
-        dataBinding.btRestaurantBtn.setBackgroundColor(context?.resources?.getColor(R.color.white)!!)
-        dataBinding.btCafeBtn.setBackgroundColor(context?.resources?.getColor(R.color.lemon)!!)
-        dataBinding.btEnjoyBtn.setBackgroundColor(context?.resources?.getColor(R.color.white)!!)
+        dataBinding.btRestaurantBtn.unSelect()
+        dataBinding.btCafeBtn.select()
+        dataBinding.btEnjoyBtn .unSelect()
         mapView.addPOIItem(festivalMarker) // 행사위치 핑
-        mapView.selectPOIItem(selectMarker,false)
     }
     // 전달받은 행사장 좌표값
     private fun getFestivalPosition(){
@@ -132,6 +125,12 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
                 val document = data.documents[i]
                 val marker = settingMarker(document.placeName,document.y.toDouble(),document.x.toDouble(),false,MapPOIItem.MarkerType.BluePin)
                 addPOIItem(marker) // 현 마커 추가
+                if(marker.itemName == selectMarker.itemName){
+                    mapView.selectPOIItem(marker,false)
+                    mapView.postDelayed({
+                        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(centerLat.toDouble(), centerLgt.toDouble()), false) // map 중심점}
+                    },10)
+                }
                 markerResolver[document] = marker
                 markerResolver2[marker] = document
             }
@@ -155,23 +154,23 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
             when(it){
                 POIViewModel.Event.Restaurant -> {
                     poiCategory = PoiCategoryType.RESTAURANT
-                    dataBinding.btRestaurantBtn.setBackgroundColor(context?.resources?.getColor(R.color.lemon)!!)
-                    dataBinding.btCafeBtn.setBackgroundColor(context?.resources?.getColor(R.color.white)!!)
-                    dataBinding.btEnjoyBtn.setBackgroundColor(context?.resources?.getColor(R.color.white)!!)
+                    dataBinding.btRestaurantBtn.select()
+                    dataBinding.btCafeBtn.unSelect()
+                    dataBinding.btEnjoyBtn .unSelect()
                     viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
                 }
                 POIViewModel.Event.Cafe -> {
                     poiCategory = PoiCategoryType.CAFE
-                    dataBinding.btRestaurantBtn.setBackgroundColor(context?.resources?.getColor(R.color.white)!!)
-                    dataBinding.btCafeBtn.setBackgroundColor(context?.resources?.getColor(R.color.lemon)!!)
-                    dataBinding.btEnjoyBtn.setBackgroundColor(context?.resources?.getColor(R.color.white)!!)
+                    dataBinding.btRestaurantBtn.unSelect()
+                    dataBinding.btCafeBtn.select()
+                    dataBinding.btEnjoyBtn .unSelect()
                     viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
                 }
                 POIViewModel.Event.Enjoy -> {
                     poiCategory = PoiCategoryType.ENJOY
-                    dataBinding.btRestaurantBtn.setBackgroundColor(context?.resources?.getColor(R.color.white)!!)
-                    dataBinding.btCafeBtn.setBackgroundColor(context?.resources?.getColor(R.color.white)!!)
-                    dataBinding.btEnjoyBtn.setBackgroundColor(context?.resources?.getColor(R.color.lemon)!!)
+                    dataBinding.btRestaurantBtn.unSelect()
+                    dataBinding.btCafeBtn.unSelect()
+                    dataBinding.btEnjoyBtn .select()
                     viewModel.getAllPoiFromViewModel(poiCategory, centerLat, centerLgt,1)
                 }
             }

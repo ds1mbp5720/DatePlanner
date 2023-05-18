@@ -6,6 +6,8 @@ import android.content.Context
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import com.google.android.material.button.MaterialButton
+import com.lee.dateplanner.R
 import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.timetable.time.room.Timetable
 
@@ -64,17 +66,11 @@ fun Context.toast(message: String, duration: Int = Toast.LENGTH_SHORT) {
 fun Context.toast(@StringRes resId: Int, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, this.getString(resId), duration).show()
 }
-fun String.idxToKakaoHash(): Int {
-    if (this.isNotEmpty()) {
-        var code = when {
-            this[0] == 'O' -> return ("1" + this.drop(7)).toInt()
-            this[0] == 'R' -> "2"
-            this[0] == 'S' -> "3"
-            else -> return -1
-        }
-        code += this.drop(1).dropLast(5)
-        code += this.substring(this.length - 5, this.length).replace("0", "")
-        return code.toInt()
-    }
-    return -1
+fun MaterialButton.select(){
+    this.setBackgroundColor(context?.resources?.getColor(R.color.orange)!!)
+    this.setTextColor(context?.resources?.getColor(R.color.white)!!)
+}
+fun MaterialButton.unSelect(){
+    this.setBackgroundColor(context?.resources?.getColor(R.color.white)!!)
+    this.setTextColor(context?.resources?.getColor(R.color.orange)!!)
 }
