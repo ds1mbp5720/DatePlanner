@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.lee.dateplanner.timetable.insert.address.AddressMapViewModel.Event"/>
+
+        <variable
+            name="viewModel"
+            type="com.lee.dateplanner.timetable.insert.address.AddressMapViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/input_back_btn"
+            android:layout_width="52dp"
+            android:layout_height="45dp"
+            style="?attr/materialButtonOutlinedStyle"
+            app:icon="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_baseline_pin_drop_24"
+            app:layout_constraintBottom_toBottomOf="@id/map_view"
+            app:layout_constraintEnd_toEndOf="@id/map_view"
+            app:layout_constraintStart_toStartOf="@id/map_view"
+            app:layout_constraintTop_toTopOf="@id/map_view" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/insert_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            style="?attr/materialButtonOutlinedStyle"
+            android:text="@string/insert_btn"
+            android:textSize="20sp"
+            tools:ignore="RtlHardcoded"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

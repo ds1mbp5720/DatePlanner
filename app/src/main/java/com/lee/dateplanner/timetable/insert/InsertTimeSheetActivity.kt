@@ -5,9 +5,7 @@ import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isEmpty
-import androidx.lifecycle.ViewModelProvider
 import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
 import com.lee.dateplanner.base.BaseActivity
@@ -21,7 +19,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
-import java.util.*
 
 /**
  * 시간계획 입력 activity
