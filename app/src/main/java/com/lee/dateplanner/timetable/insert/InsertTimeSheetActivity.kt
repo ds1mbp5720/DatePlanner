@@ -1,19 +1,21 @@
 package com.lee.dateplanner.timetable.insert
 
+import android.app.Activity
 import android.app.TimePickerDialog
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isEmpty
-import androidx.lifecycle.ViewModelProvider
 import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
 import com.lee.dateplanner.base.BaseActivity
 import com.lee.dateplanner.common.*
 import com.lee.dateplanner.databinding.InputScheduleLayoutBinding
 import com.lee.dateplanner.timetable.TimetableViewModel
+import com.lee.dateplanner.timetable.insert.address.AddressMapActivity
 import com.lee.dateplanner.timetable.insert.dialog.SelectTimeTableDialog
 import com.lee.dateplanner.timetable.timesheet.TimeSheet
 import com.lee.dateplanner.timetable.time.room.Timetable
@@ -21,7 +23,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
-import java.util.*
 
 /**
  * 시간계획 입력 activity
@@ -42,6 +43,16 @@ class InsertTimeSheetActivity: BaseActivity<InputScheduleLayoutBinding,Timetable
     private var position: Int = 0 // 수정시 해당 일정의 위치 정보
     private lateinit var scheduleMarker:MapPOIItem
     private lateinit var mapView :MapView
+
+    private val locationLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if(result.resultCode == Activity.RESULT_OK){
+                result.data?.apply {
+                    latitude = getDoubleExtra("latitude",0.0).toString()
+                    longitude = getDoubleExtra("longitude",0.0).toString()
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,6 +115,14 @@ class InsertTimeSheetActivity: BaseActivity<InputScheduleLayoutBinding,Timetable
         //뒤로가기 선택시
         dataBinding.inputBackBtn.clicks().subscribe{
             finish()
+        }
+        dataBinding.setAddressBtn.clicks().subscribe{
+            locationLauncher.launch(
+                Intent(this, AddressMapActivity::class.java).apply {
+                    putExtra("lgt",0.0)
+                    putExtra("lng",0.0)
+                }
+            )
         }
     }
     private fun setCheckBox(){
