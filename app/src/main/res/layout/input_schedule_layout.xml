@@ -121,6 +121,15 @@
                     android:text="@string/map"
                     android:layout_weight="2"
                     />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/set_address_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:text="@string/str_location_change"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    tools:ignore="RtlHardcoded" />
                 <CheckBox
                     android:id="@+id/show_map_checkbox"
                     android:layout_width="wrap_content"

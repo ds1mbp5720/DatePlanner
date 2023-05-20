@@ -1,14 +1,13 @@
 package com.lee.dateplanner.timetable.insert.address
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.isEmpty
 import com.lee.dateplanner.R
 import com.lee.dateplanner.base.BaseActivity
 import com.lee.dateplanner.common.mapSetting
-import com.lee.dateplanner.common.settingMarker
 import com.lee.dateplanner.databinding.AddressMapActivityBinding
-import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
 
@@ -16,9 +15,12 @@ class AddressMapActivity : BaseActivity<AddressMapActivityBinding,AddressMapView
     override val layoutId: Int = R.layout.address_map_activity
     override val viewModel: AddressMapViewModel by viewModels()
     private lateinit var mapView : MapView
+    private var lat = 0.0
+    private var lng = 0.0
     private val mapViewListener = object : MapView.MapViewEventListener {
-        override fun onMapViewCenterPointMoved(mapView: MapView?, mapPoint: MapPoint?) {
-            //todo 중앙값 받아오기
+        override fun onMapViewCenterPointMoved(mapView: MapView?, mapPoint: MapPoint) {
+            lat = mapPoint.mapPointGeoCoord.latitude
+            lng = mapPoint.mapPointGeoCoord.longitude
         }
         override fun onMapViewInitialized(mapView: MapView?) {}
         override fun onMapViewDragEnded(mapView: MapView, mapPoint: MapPoint?) {}
@@ -33,10 +35,11 @@ class AddressMapActivity : BaseActivity<AddressMapActivityBinding,AddressMapView
         super.onCreate(savedInstanceState)
         mapView = MapView(this)
         dataBinding.mapView.addView(mapView)
+        insertMapSetting()
         dataBinding.mapView.postDelayed({
             if(intent.hasExtra("address")){
-                val lat = intent.getDoubleExtra("lat",0.0)
-                val lng = intent.getDoubleExtra("lng",0.0)
+                lat = intent.getDoubleExtra("lat",0.0)
+                lng = intent.getDoubleExtra("lng",0.0)
                 if(lat > 0.0 && lng > 0.0)
                     mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(lat,lng),false)
             }
@@ -63,7 +66,11 @@ class AddressMapActivity : BaseActivity<AddressMapActivityBinding,AddressMapView
             when(it){
                 AddressMapViewModel.Event.Close -> finish()
                 AddressMapViewModel.Event.Save -> {
-                    //todo lat,lng 전달 EventBus사용하기
+                    setResult(RESULT_OK, Intent().run {
+                        putExtra("latitude",lat)
+                        putExtra("longitude",lng)
+                    })
+                    finish()
                 }
             }
         }
@@ -74,7 +81,7 @@ class AddressMapActivity : BaseActivity<AddressMapActivityBinding,AddressMapView
     }
     private fun insertMapSetting(){
         mapSetting(mapView,this)
-
+        mapView.setMapViewEventListener(mapViewListener)
     }
 
 }
