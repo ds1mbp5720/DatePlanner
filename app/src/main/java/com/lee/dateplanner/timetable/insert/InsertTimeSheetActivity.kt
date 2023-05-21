@@ -140,6 +140,7 @@ class InsertTimeSheetActivity: BaseActivity<InputScheduleLayoutBinding,Timetable
             if(latitude != "" && longitude != ""){
                 scheduleMarker = settingMarker(getString(R.string.insertMarkerTitle),latitude.toDouble(),longitude.toDouble(),true,MapPOIItem.MarkerType.BluePin)
                 setMapCenterPoint(MapPoint.mapPointWithGeoCoord(latitude.toDouble(), longitude.toDouble()), false)
+                removeAllPOIItems()
                 addPOIItem(scheduleMarker)
             }
         }
@@ -213,7 +214,6 @@ class InsertTimeSheetActivity: BaseActivity<InputScheduleLayoutBinding,Timetable
             timeTable.timeSheetList.let { it1 -> viewModel.updateTimetable(it1,id) }
         }
     }
-
     override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {}
     override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {}
     override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?, p2: MapPOIItem.CalloutBalloonButtonType?){}
