@@ -38,7 +38,6 @@ class FestivalListFragment : BaseFragment<FestivallistFragmentLayoutBinding, Fes
         viewModel.getAllFestivalFromViewModel(category, this.year, this.month, this.day)
         viewModel.getFestivalLocationFromViewModel()
         listenerSetup()
-        pressBackKey()
         dataBinding.festivalList.adapter = adapter
     }
 
@@ -107,12 +106,5 @@ class FestivalListFragment : BaseFragment<FestivallistFragmentLayoutBinding, Fes
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-    }
-    private fun pressBackKey() {
-        activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                activity!!.finish()
-            }
-        })
     }
 }
