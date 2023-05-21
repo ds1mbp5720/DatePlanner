@@ -85,12 +85,15 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         })
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if(poiMapFragment.behavior.state == BottomSheetBehavior.STATE_EXPANDED)
             poiMapFragment.behavior.state = BottomSheetBehavior.STATE_COLLAPSED
         else{
             MessageDialog(getString(R.string.destroy_app),getString(R.string.check),getString(R.string.cancel)).onRightBtn{
                 super.onBackPressed()
+                finish()
+                finishAndRemoveTask() // 완전히 종료
             }.show(supportFragmentManager,"")
         }
 

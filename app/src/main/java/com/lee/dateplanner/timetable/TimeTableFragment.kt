@@ -31,11 +31,9 @@ class TimeTableFragment:BaseFragment<TimetablelistFragmentLayoutBinding,Timetabl
     override val layoutId: Int = R.layout.timetablelist_fragment_layout
     override val viewModel: TimetableViewModel by viewModels()
     var timetableAdapter: TimetableRecyclerAdapter? = null  // 시간계획 recyclerview adapter
-    //private lateinit var binding: TimetablelistFragmentLayoutBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        pressBackKey()
     }
     override fun initObserve() {
         super.initObserve()
@@ -62,12 +60,5 @@ class TimeTableFragment:BaseFragment<TimetablelistFragmentLayoutBinding,Timetabl
             // room db 추가
             viewModel.insertTimeTable(Timetable(timeSheetList ,date))
         }
-    }
-    private fun pressBackKey(){
-        activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                activity!!.finish()
-            }
-        })
     }
 }
