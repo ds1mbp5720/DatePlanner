@@ -185,7 +185,7 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
         festivalLgt = event.longitude.toString()
         viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt,1)
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
+        mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), 3,false) // map 중심점
     }
     //Todo Eventbus 활용 data 받기
     object PoiCategoryType {

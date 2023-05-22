@@ -140,6 +140,7 @@ class InsertTimeSheetActivity: BaseActivity<InputScheduleLayoutBinding,Timetable
             if(latitude != "" && longitude != ""){
                 scheduleMarker = settingMarker(getString(R.string.insertMarkerTitle),latitude.toDouble(),longitude.toDouble(),true,MapPOIItem.MarkerType.BluePin)
                 setMapCenterPoint(MapPoint.mapPointWithGeoCoord(latitude.toDouble(), longitude.toDouble()), false)
+                removeAllPOIItems()
                 addPOIItem(scheduleMarker)
             }
         }
@@ -195,6 +196,14 @@ class InsertTimeSheetActivity: BaseActivity<InputScheduleLayoutBinding,Timetable
             val dialog = SelectTimeTableDialog("일정을 선택하세요.",viewModel,this)
             dialog.show()
         }
+        dataBinding.setAddressBtn.clicks().subscribe{
+            locationLauncher.launch(
+                Intent(this, AddressMapActivity::class.java).apply {
+                    putExtra("lgt",0.0)
+                    putExtra("lng",0.0)
+                }
+            )
+        }
     }
     fun setBtnTypeAPI(timeTable : Timetable, id: Int){
         setInsertData(timeTable,id,getString(R.string.apiInput))
@@ -213,7 +222,6 @@ class InsertTimeSheetActivity: BaseActivity<InputScheduleLayoutBinding,Timetable
             timeTable.timeSheetList.let { it1 -> viewModel.updateTimetable(it1,id) }
         }
     }
-
     override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {}
     override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {}
     override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?, p2: MapPOIItem.CalloutBalloonButtonType?){}
