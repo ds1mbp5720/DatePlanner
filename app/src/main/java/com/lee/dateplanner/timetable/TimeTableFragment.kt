@@ -1,6 +1,7 @@
 package com.lee.dateplanner.timetable
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,9 @@ import androidx.fragment.app.viewModels
 import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
 import com.lee.dateplanner.base.BaseFragment
+import com.lee.dateplanner.common.dateStringFormat
+import com.lee.dateplanner.common.filterByDate
+import com.lee.dateplanner.common.makeDatePickerDialog
 import com.lee.dateplanner.common.toast
 import com.lee.dateplanner.databinding.TimetablelistFragmentLayoutBinding
 import com.lee.dateplanner.timetable.timesheet.TimeSheet
@@ -56,9 +60,13 @@ class TimeTableFragment:BaseFragment<TimetablelistFragmentLayoutBinding,Timetabl
         }
         dataBinding.addBtn.clicks().subscribe {
             val timeSheetList =  mutableListOf<TimeSheet>()
-            val date = getString(R.string.fixDateMessage)
-            // room db 추가
-            viewModel.insertTimeTable(Timetable(timeSheetList ,date))
+            val dateSetListener = DatePickerDialog.OnDateSetListener { _, _, month, dayOfMonth ->
+                //val date = getString(R.string.fixDateMessage)
+                val date = dateStringFormat(month, dayOfMonth)
+                // room db 추가
+                viewModel.insertTimeTable(Timetable(timeSheetList ,date))
+            }
+            this.context?.let { it1 -> makeDatePickerDialog(it1, dateSetListener,"계획 추가") }
         }
     }
 }

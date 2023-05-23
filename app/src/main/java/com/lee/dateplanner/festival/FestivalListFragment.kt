@@ -79,7 +79,7 @@ class FestivalListFragment : BaseFragment<FestivallistFragmentLayoutBinding, Fes
                         this.day = dayOfMonth
                         adapter.setFestivalData(festivalList.filterByDate(this.year,this.month,this.day))
                     }
-                    this.context?.let { it1 -> makeDatePickerDialog(it1, dateSetListener) }
+                    this.context?.let { it1 -> makeDatePickerDialog(it1, dateSetListener, "행사 날짜 선택") }
                 }
                 FestivalViewModel.Event.Category -> {
 
