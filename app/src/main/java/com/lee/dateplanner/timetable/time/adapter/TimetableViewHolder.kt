@@ -33,7 +33,7 @@ class TimetableViewHolder(val binding: TimetableRecyclerLayoutBinding, private v
                     viewModel.updateDate(tableDateBtn.text.toString(), timetableList!![position].id)
                 }
                 //달력 띄우기
-                fragment.context?.let { it1 -> makeDatePickerDialog(it1,dateSetListener) }
+                fragment.context?.let { it1 -> makeDatePickerDialog(it1,dateSetListener,"날짜 수정") }
             }
 
             // 시간계획 추가 버튼

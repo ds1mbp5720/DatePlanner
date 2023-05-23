@@ -1,12 +1,15 @@
 package com.lee.dateplanner.common
 
 
+import android.R
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.text.format.DateFormat
 import android.util.TypedValue
+import android.view.Gravity
+import android.widget.TextView
 import android.widget.Toast
 import com.lee.dateplanner.poimap.adpter.POIWindowAdapter
 import net.daum.mf.map.api.MapPOIItem
@@ -14,6 +17,7 @@ import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 // toast 사용 목적 함수
 fun toastMessage(message: String){
@@ -68,9 +72,18 @@ fun settingMarker(title: String,latitude: Double, longitude: Double, drag: Boole
     }
     return marker
 }
-fun makeDatePickerDialog(context: Context, listener: DatePickerDialog.OnDateSetListener){
+fun makeDatePickerDialog(context: Context, listener: DatePickerDialog.OnDateSetListener, title: String){
     val cal = Calendar.getInstance()
-    DatePickerDialog(context,listener,cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show()
+    DatePickerDialog(context,listener,cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).apply {
+        val titleView = TextView(context)
+        titleView.text = title
+        titleView.setPadding(0, 10, 0, 10)
+        titleView.gravity = Gravity.CENTER
+        titleView.textSize = 20f
+        titleView.setTextColor(context.getColor(R.color.black))
+        this.setCustomTitle(titleView)
+        //this.setTitle(title)
+    }.show()
 }
 fun makeTimePickerDialog(context: Context, listener: TimePickerDialog.OnTimeSetListener){
     val cal = Calendar.getInstance()
