@@ -3,7 +3,7 @@
 > 1. 일자 별 일정 계획을 세워 메모할수있으며 kakao map을 통해 일정 별 위치를 볼수있습니다.   
 > 2. 서울시 문화행사 정보를 제공하며 선택한 행사 장소 주변 상권 정보를 제공하며 계획에 추가할수있습니다.  
 > 3. 선택한 문화행사 혹은 이동한 kakao map의 중심부터 일정 거리 안에 주변상권(음식점, 카페, 문화시설) 정보를 얻을수있습니다.
-> 4. dataBinding 및 di hilt, 구조 리펙토링('23.04.09 ~)  
+> 4. dataBinding 및 di hilt, 구조 리펙토링 및 일부 기능 추가('23.04.09 ~)  
 > 5. 개발 플랫폼:  Android Studio Dolphin, API Level 33
 ------------
 ### 개발환경
@@ -16,10 +16,12 @@
 + Materail3 UI/UX 
 + Rx에 기반한 UI Event 처리 
 + Room DB 
-+ OkHttp4/Retrofit 활용 Coroutine을 이용한 REST 처리 
++ OkHttp/Retrofit 활용 Coroutine을 이용한 REST 처리 
 + Dagger-Hilt 를 이용한 DI 
 + Databinding, ViewBinding
 + EventBus
++ Navigation(custom) -추가중
++ customView - 예정
 ------------
 ### 사용 API
 + kakao Map, Naver Map(별도 함수화)
@@ -32,7 +34,7 @@
 + 선택한 행사지 중심으로 주변 poi정보 제공(식당, 카페, 놀거리)
 + 확인한 정보들로 데이트 시간계획 작성
 ------------
-### 실행사진
+### 실행사진(업데이트 예정)
 1. 일정 리스트 
 
 https://user-images.githubusercontent.com/37658906/208428798-56fc63fd-058a-4f10-901f-a37961ee8417.mp4 
