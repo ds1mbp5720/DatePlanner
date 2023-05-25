@@ -188,11 +188,14 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     }
     @Subscribe
     fun onEvent(event: FestivalInfoEventBus){
+        mapView.removeAllPOIItems()
         festivalLat = event.latitude.toString()
         festivalLgt = event.longitude.toString()
         viewModel.getAllPoiFromViewModel(poiCategory, festivalLat,festivalLgt,1)
         festivalMarker = settingMarker(getString(R.string.festivalMarkerTitle),festivalLat.toDouble(),festivalLgt.toDouble(),false,MapPOIItem.MarkerType.RedPin)
+        mapView.addPOIItem(festivalMarker)
         mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), 3,false) // map 중심점
+        mapView.selectPOIItem(festivalMarker,false)
     }
     //Todo Eventbus 활용 data 받기
     object PoiCategoryType {
