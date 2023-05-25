@@ -44,6 +44,7 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     lateinit var selectMarker: MapPOIItem
     private var job : Job? = null
     lateinit var mapView :MapView
+    private var reCreateMapFlag = false
     //lateinit var kakaoMapView :KakaoMapFragment // todo: 추후 사용 예정
     var selectMarkerPOIFragment = SelectMarkerPOIFragment()
     val behavior by lazy { BottomSheetBehavior.from(dataBinding.bottomPoiList) } // = BottomSheetBehavior.from(dataBinding.bottomPoiList)
@@ -87,6 +88,7 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
             mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(centerLat.toDouble(),centerLgt.toDouble()),false)
             dataBinding.infoMap.addView(mapView)
             firstSettingPoiMapView(mapView)
+            reCreateMapFlag = true
         }else{
             firstSettingPoiMapView(mapView)
             mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(festivalLat.toDouble(), festivalLgt.toDouble()), false) // map 중심점
@@ -119,20 +121,25 @@ class POIMapFragment : BaseFragment<PoiMapFragmentLayoutBinding, POIViewModel>()
     // 전체 마커 map 표시 함수
     private fun displayPOI(data: POIData, map:MapView){
         with(map){
-            removeAllPOIItems() // 기존 마커들 제거
+            if(data.documents.size < map.poiItems.size){
+                for(i in map.poiItems.size-1 downTo 0){
+                    if(map.poiItems[i].itemName != selectMarker.itemName){
+                        map.removePOIItem(map.poiItems[i])
+                    }
+                }
+            }
             addPOIItem(festivalMarker) // 카테고리 바꿀시 새로 생성할 행사위치 핑
             for(i in 0 until  data.documents.size){
                 val document = data.documents[i]
                 val marker = settingMarker(document.placeName,document.y.toDouble(),document.x.toDouble(),false,MapPOIItem.MarkerType.BluePin)
                 addPOIItem(marker) // 현 마커 추가
-                if(marker.itemName == selectMarker.itemName){
-                    mapView.selectPOIItem(marker,false)
-                    mapView.postDelayed({
-                        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(centerLat.toDouble(), centerLgt.toDouble()), false) // map 중심점}
-                    },10)
-                }
                 markerResolver[document] = marker
                 markerResolver2[marker] = document
+            }
+            if(reCreateMapFlag){
+                map.addPOIItem(selectMarker)
+                map.selectPOIItem(selectMarker,false)
+                reCreateMapFlag = false
             }
         }
     }
