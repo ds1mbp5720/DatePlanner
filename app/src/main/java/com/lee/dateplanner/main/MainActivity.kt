@@ -3,6 +3,7 @@ package com.lee.dateplanner.main
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.plusAssign
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayout
@@ -11,6 +12,7 @@ import com.lee.dateplanner.base.BaseActivity
 import com.lee.dateplanner.databinding.ActivityMainBinding
 import com.lee.dateplanner.dialog.MessageDialog
 import com.lee.dateplanner.festival.FestivalListFragment
+import com.lee.dateplanner.navigation.ShowHideNavigation
 import com.lee.dateplanner.poimap.POIMapFragment
 import com.lee.dateplanner.timetable.TimeTableFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,29 +22,22 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override val layoutId: Int = R.layout.activity_main
     override val viewModel: MainViewModel by viewModels()
 
-    //private lateinit var binding: ActivityMainBinding
     private lateinit var timeTableFragment: TimeTableFragment // 시간계획
     private lateinit var festivalListFragment: FestivalListFragment // 축제정보
     private lateinit var poiMapFragment: POIMapFragment // 주변 상권정보
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*binding = ActivityMainBinding.inflate(layoutInflater).also {
-            setContentView(it.root)
-        }*/
         // 최초 fragment instance 생성
         createFragment(savedInstanceState)
         val navHostFragment = supportFragmentManager.findFragmentById(dataBinding.fcvFragmentContainer.id) as NavHostFragment
         val navController = navHostFragment.navController
+
+        val navigator = ShowHideNavigation(this, navHostFragment.childFragmentManager, dataBinding.fcvFragmentContainer.id)
+        navController.navigatorProvider += navigator
+
         navController.setGraph(R.navigation.main_nav_graph)
         dataBinding.bnvBottomNavigation.setupWithNavController(navController)
-
-        /*supportFragmentManager.beginTransaction().add(R.id.fcv_fragment_container,timeTableFragment).commit()
-        supportFragmentManager.beginTransaction().add(R.id.fcv_fragment_container,festivalListFragment).commit()
-        supportFragmentManager.beginTransaction().add(R.id.fcv_fragment_container,poiMapFragment).commit()
-        setListener(findViewById(R.id.tabLayout))
-        //초기 보여질 화면
-        supportFragmentManager.beginTransaction().hide(festivalListFragment).hide(poiMapFragment).show(timeTableFragment).commit()*/
     }
     private fun createFragment(savedInstanceState: Bundle?){
         if(savedInstanceState == null){

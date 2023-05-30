@@ -5,19 +5,19 @@
     android:id="@+id/main_nav_graph"
     app:startDestination="@id/timeTableFragment">
 
-    <fragment
+    <show_hide_navigation_fragment
         android:id="@+id/timeTableFragment"
         android:name="com.lee.dateplanner.timetable.TimeTableFragment"
         android:label="TimeTableFragment"
         tools:layout="@layout/timetablelist_fragment_layout"/>
 
-    <fragment
+    <show_hide_navigation_fragment
         android:id="@+id/festivalListFragment"
         android:name="com.lee.dateplanner.festival.FestivalListFragment"
         android:label="FestivalListFragment"
-        tools:layout="@layout/festivallist_fragment_layout"
-        />
-    <fragment
+        tools:layout="@layout/festivallist_fragment_layout" />
+
+    <show_hide_navigation_fragment
         android:id="@+id/poiMapFragment"
         android:name="com.lee.dateplanner.poimap.POIMapFragment"
         android:label="POIMapFragment"
