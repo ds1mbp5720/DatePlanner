@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import com.lee.dateplanner.R
 import com.lee.dateplanner.base.BaseFragment

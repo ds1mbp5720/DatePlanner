@@ -3,7 +3,6 @@ package com.lee.dateplanner.main
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.plusAssign
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayout
@@ -33,8 +32,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         val navHostFragment = supportFragmentManager.findFragmentById(dataBinding.fcvFragmentContainer.id) as NavHostFragment
         val navController = navHostFragment.navController
 
-        val navigator = ShowHideNavigation(this, navHostFragment.childFragmentManager, dataBinding.fcvFragmentContainer.id)
-        navController.navigatorProvider += navigator
+        // 버전 2.3.5 이하로 해야 custom nav가 기능함
+        navController.navigatorProvider.apply {
+            this.addNavigator(
+                ShowHideNavigation(this@MainActivity, navHostFragment.childFragmentManager, dataBinding.fcvFragmentContainer.id)
+            ) }
 
         navController.setGraph(R.navigation.main_nav_graph)
         dataBinding.bnvBottomNavigation.setupWithNavController(navController)

@@ -2,7 +2,6 @@ package com.lee.dateplanner.navigation
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
@@ -22,7 +21,6 @@ class ShowHideNavigation(private val context: Context, private val manager: Frag
 
         // 재생성 방지문
         if(currentFragment != null){
-            Log.e("","화면 숨김")
             transaction.hide(currentFragment)
         }
         else{
@@ -33,10 +31,8 @@ class ShowHideNavigation(private val context: Context, private val manager: Frag
         if(fragment == null){ // 생성된 적이 없다면
             val className = destination.className
             fragment = manager.fragmentFactory.instantiate(context.classLoader, className)
-            Log.e("","화면 생성")
             transaction.add(containerId, fragment, tag)
         } else{
-            Log.e("","화면 보임")
             transaction.show(fragment)
         } // 이미 생성된 fragment 면
 
