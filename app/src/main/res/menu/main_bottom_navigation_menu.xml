@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/timeTableFragment"
+        android:title="시간계획"
+        android:icon="@drawable/ic_baseline_calendar_month_24"
+        />
+    <item
+        android:id="@+id/festivalListFragment"
+        android:title="행사정보"
+        android:icon="@drawable/ic_baseline_view_list_24"
+        />
+    <item
+        android:id="@+id/poiMapFragment"
+        android:title="주변정보"
+        android:icon="@drawable/ic_baseline_map_24"
+        />
+</menu>

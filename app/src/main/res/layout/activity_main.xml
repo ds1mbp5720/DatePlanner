@@ -12,38 +12,46 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".main.MainActivity">
-        <FrameLayout
-            android:id="@+id/tabContent"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fcv_fragment_container"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            app:defaultNavHost="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/tabLayout"
+            android:layout_above="@id/bnv_bottom_navigation"
             android:layout_alignParentTop="true"
-            app:layout_constraintBottom_toTopOf="@+id/tabLayout"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toTopOf="@+id/bnv_bottom_navigation"
+            app:layout_constraintTop_toTopOf="parent"/>
+<!--            app:navGraph="@navigation/main_nav_graph" />-->
 
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bnv_bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:tabIndicatorHeight="3dp"
-            app:tabBackground="?android:attr/windowBackground">
+            app:menu="@menu/main_bottom_navigation_menu"/>
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:icon="@drawable/ic_baseline_calendar_month_24" />
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:icon="@drawable/ic_baseline_view_list_24" />
+<!--        <com.google.android.material.tabs.TabLayout-->
+<!--            android:id="@+id/tabLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:tabIndicatorHeight="3dp"-->
+<!--            app:tabBackground="?android:attr/windowBackground">-->
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:icon="@drawable/ic_baseline_map_24" />
-        </com.google.android.material.tabs.TabLayout>
+<!--            <com.google.android.material.tabs.TabItem-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:icon="@drawable/ic_baseline_calendar_month_24" />-->
+<!--            <com.google.android.material.tabs.TabItem-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:icon="@drawable/ic_baseline_view_list_24" />-->
+<!--            <com.google.android.material.tabs.TabItem-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:icon="@drawable/ic_baseline_map_24" />-->
+<!--        </com.google.android.material.tabs.TabLayout>-->
     </RelativeLayout>
 </layout>
