@@ -1,9 +1,11 @@
 package com.lee.dateplanner.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayout
 import com.lee.dateplanner.R
@@ -24,12 +26,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var timeTableFragment: TimeTableFragment // 시간계획
     private lateinit var festivalListFragment: FestivalListFragment // 축제정보
     private lateinit var poiMapFragment: POIMapFragment // 주변 상권정보
-
+    private var navHostFragment = NavHostFragment()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // 최초 fragment instance 생성
         createFragment(savedInstanceState)
-        val navHostFragment = supportFragmentManager.findFragmentById(dataBinding.fcvFragmentContainer.id) as NavHostFragment
+        navHostFragment = supportFragmentManager.findFragmentById(dataBinding.fcvFragmentContainer.id) as NavHostFragment
         val navController = navHostFragment.navController
 
         // 버전 2.3.5 이하로 해야 custom nav가 기능함
@@ -89,15 +91,22 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        if(poiMapFragment.behavior.state == BottomSheetBehavior.STATE_EXPANDED)
-            poiMapFragment.behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        else{
+        supportFragmentManager.fragments.forEach {
+            Log.e("","생성된 화면 ${it}")
+        }
+        Log.e("","마지막 화면 ${navHostFragment.navController.currentDestination?.label}")
+        Log.e("","생성된 화면 ${navHostFragment.fragmentManager?.fragments?.size}")
+        /*if(poiMapFragment.behavior.state == BottomSheetBehavior.STATE_EXPANDED)
+            poiMapFragment.behavior.state = BottomSheetBehavior.STATE_COLLAPSED*/
+       /* if(navHostFragment.navController.currentDestination?.label == "TimeTableFragment"){
+            Log.e("","마지막 화면 맞춤")
+        }
+        else{*/
             MessageDialog(getString(R.string.destroy_app),getString(R.string.check),getString(R.string.cancel)).onRightBtn{
                 super.onBackPressed()
                 finish()
                 finishAndRemoveTask() // 완전히 종료
             }.show(supportFragmentManager,"")
-        }
-
+        //}
     }
 }

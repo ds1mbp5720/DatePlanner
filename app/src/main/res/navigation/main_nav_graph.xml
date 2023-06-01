@@ -15,7 +15,11 @@
         android:id="@+id/festivalListFragment"
         android:name="com.lee.dateplanner.festival.FestivalListFragment"
         android:label="FestivalListFragment"
-        tools:layout="@layout/festivallist_fragment_layout" />
+        tools:layout="@layout/festivallist_fragment_layout" >
+        <action
+            android:id="@+id/action_festival_move_poi"
+            app:destination="@id/poiMapFragment"/>
+    </show_hide_navigation_fragment>
 
     <show_hide_navigation_fragment
         android:id="@+id/poiMapFragment"

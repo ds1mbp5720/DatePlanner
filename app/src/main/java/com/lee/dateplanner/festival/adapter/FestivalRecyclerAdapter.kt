@@ -7,7 +7,9 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.lee.dateplanner.R
 import com.lee.dateplanner.common.FestivalInfoEventBus
 import com.lee.dateplanner.databinding.FestivalInfoRecyclerBinding
 import com.lee.dateplanner.festival.FestivalListFragment

@@ -2,9 +2,11 @@ package com.lee.dateplanner.festival.adapter
 
 import android.content.Intent
 import androidx.core.content.ContextCompat.startActivity
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.jakewharton.rxbinding4.view.clicks
+import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.FestivalInfoRecyclerBinding
 import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.webview.WebViewActivity
@@ -31,9 +33,9 @@ class FestivalViewHolder(val binding: FestivalInfoRecyclerBinding): RecyclerView
                 adapter.getFestivalPosition(festival,false)
             }
             // 주변정보 보기 버튼
-            festivalMovePoiBtn.clicks().subscribe{
-                //aroundMap Fragment 로 좌표값, 행사장 정보 넘기기
+            festivalMovePoiBtn.setOnClickListener {
                 adapter.getFestivalPosition(festival, true)
+                //it.findNavController().navigate(R.id.action_festival_move_poi)
             }
         }
     }
