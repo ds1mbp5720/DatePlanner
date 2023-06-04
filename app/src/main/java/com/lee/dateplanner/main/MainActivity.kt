@@ -30,28 +30,33 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // 최초 fragment instance 생성
-        createFragment(savedInstanceState)
+        //createFragment(savedInstanceState)
         navHostFragment = supportFragmentManager.findFragmentById(dataBinding.fcvFragmentContainer.id) as NavHostFragment
         val navController = navHostFragment.navController
 
-        // 버전 2.3.5 이하로 해야 custom nav가 기능함
-        navController.navigatorProvider.apply {
+        //todo 버전 2.3.5 이하로 해야 custom nav가 기능함
+        /*navController.navigatorProvider.apply {
             this.addNavigator(
                 ShowHideNavigation(this@MainActivity, navHostFragment.childFragmentManager, dataBinding.fcvFragmentContainer.id)
-            ) }
+            )
+        }*/
 
         navController.setGraph(R.navigation.main_nav_graph)
-        dataBinding.bnvBottomNavigation.setupWithNavController(navController)
+        navController
+
+        dataBinding.bnvBottomNavigation.apply {
+            this.setupWithNavController(navController)
+            this.isSaveEnabled = true
+        }
     }
-    private fun createFragment(savedInstanceState: Bundle?){
+    /*private fun createFragment(savedInstanceState: Bundle?){
         if(savedInstanceState == null){
             timeTableFragment = TimeTableFragment()
             festivalListFragment = FestivalListFragment()
             poiMapFragment = POIMapFragment()
         }
-    }
-
-    private fun setListener(tabLayout: TabLayout){
+    }*/
+   /* private fun setListener(tabLayout: TabLayout){
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 val param = when(tab.position){
@@ -87,7 +92,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
-    }
+    }*/
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
@@ -96,17 +101,18 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
         Log.e("","마지막 화면 ${navHostFragment.navController.currentDestination?.label}")
         Log.e("","생성된 화면 ${navHostFragment.fragmentManager?.fragments?.size}")
+        super.onBackPressed()
         /*if(poiMapFragment.behavior.state == BottomSheetBehavior.STATE_EXPANDED)
             poiMapFragment.behavior.state = BottomSheetBehavior.STATE_COLLAPSED*/
        /* if(navHostFragment.navController.currentDestination?.label == "TimeTableFragment"){
             Log.e("","마지막 화면 맞춤")
         }
         else{*/
-            MessageDialog(getString(R.string.destroy_app),getString(R.string.check),getString(R.string.cancel)).onRightBtn{
+            /*MessageDialog(getString(R.string.destroy_app),getString(R.string.check),getString(R.string.cancel)).onRightBtn{
                 super.onBackPressed()
                 finish()
                 finishAndRemoveTask() // 완전히 종료
-            }.show(supportFragmentManager,"")
+            }.show(supportFragmentManager,"")*/
         //}
     }
 }

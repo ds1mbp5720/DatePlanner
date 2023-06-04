@@ -4,15 +4,21 @@
         android:id="@+id/timeTableFragment"
         android:title="시간계획"
         android:icon="@drawable/ic_baseline_calendar_month_24"
+        android:menuCategory="secondary"
+        android:enabled="true"
         />
     <item
         android:id="@+id/festivalListFragment"
         android:title="행사정보"
         android:icon="@drawable/ic_baseline_view_list_24"
+        android:menuCategory="secondary"
+        android:enabled="true"
         />
     <item
         android:id="@+id/poiMapFragment"
         android:title="주변정보"
         android:icon="@drawable/ic_baseline_map_24"
+        android:menuCategory="secondary"
+        android:enabled="true"
         />
 </menu>

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.lee.dateplanner.R
 import com.lee.dateplanner.common.FestivalInfoEventBus
@@ -39,7 +40,7 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment):
     override fun onBindViewHolder(holder: FestivalViewHolder, position: Int) {
         val festival = festivalData[position]
         holder.setView(festival)
-        holder.setListener(festival,this)
+        holder.setListener(festival,this,fragment)
     }
     fun setFestivalData(item: MutableList<FestivalInfoData.CulturalEventInfo.Row>){
         festivalData.clear()
@@ -102,11 +103,17 @@ class FestivalRecyclerAdapter(var fragment: FestivalListFragment):
     fun setPositionAndSendToPOIFragment(festival: FestivalInfoData.CulturalEventInfo.Row, latitude: Double, longitude: Double, useEventBus: Boolean){
         this.latitude = latitude
         this.longitude = longitude
-        viewModel.onGetLocationCheck(true)
-        if(useEventBus)
+        if(useEventBus){
+            binding.root.postDelayed({
+
+            },500)
             sendToEventBus()
-        else
+            viewModel.onGetLocationCheck(true)
+        }
+        else{
+            viewModel.onGetLocationCheck(true)
             sentToInsertActivity(festival)
+        }
     }
     private fun sendToEventBus(){
         EventBus.getDefault().post(FestivalInfoEventBus(latitude, longitude))
