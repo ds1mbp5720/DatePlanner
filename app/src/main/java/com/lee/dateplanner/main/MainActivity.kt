@@ -2,8 +2,14 @@ package com.lee.dateplanner.main
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -42,11 +48,49 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }*/
 
         navController.setGraph(R.navigation.main_nav_graph)
-        navController
 
         dataBinding.bnvBottomNavigation.apply {
-            this.setupWithNavController(navController)
-            this.isSaveEnabled = true
+            //this.setupWithNavController(navController)
+            //this.isSaveEnabled = true
+        }
+        dataBinding.bnvBottomNavigation.setOnItemSelectedListener {
+            when(it.itemId){
+                R.id.timeTableFragment -> {
+                    Log.e("","생성된 화면 ${navController.currentDestination}")
+                    val navOption = NavOptions.Builder()
+                        .setLaunchSingleTop(true)
+                        .setRestoreState(true)
+                        .setPopUpTo(
+                            navController.currentDestination!!.route // .graph.findStartDestination().id
+                            ,inclusive = false,
+                            saveState = true
+                        ).build()
+                    navController.navigate(R.id.move_to_timetable,null,navOption)
+                }
+                R.id.festivalListFragment -> {
+                    Log.e("","생성된 화면 ${navController.currentDestination}")
+                    val navOption = NavOptions.Builder()
+                        .setLaunchSingleTop(true)
+                        .setRestoreState(true)
+                        .setPopUpTo(navController.currentDestination!!.route //navController.graph.findStartDestination().id
+                            ,inclusive = false,
+                            saveState = true
+                        ).build()
+                    navController.navigate(R.id.move_to_festival,null,navOption)
+                }
+                R.id.poiMapFragment -> {
+                    Log.e("","생성된 화면 ${navController.currentDestination}")
+                    val navOption = NavOptions.Builder()
+                        .setLaunchSingleTop(true)
+                        .setRestoreState(true)
+                        .setPopUpTo(navController.currentDestination!!.route //navController.graph.findStartDestination().id
+                            ,inclusive = false,
+                            saveState = true
+                        ).build()
+                    navController.navigate(R.id.move_to_poi,null,navOption)
+                }
+            }
+            true
         }
     }
     /*private fun createFragment(savedInstanceState: Bundle?){
@@ -101,18 +145,18 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
         Log.e("","마지막 화면 ${navHostFragment.navController.currentDestination?.label}")
         Log.e("","생성된 화면 ${navHostFragment.fragmentManager?.fragments?.size}")
-        super.onBackPressed()
+        //super.onBackPressed()
         /*if(poiMapFragment.behavior.state == BottomSheetBehavior.STATE_EXPANDED)
             poiMapFragment.behavior.state = BottomSheetBehavior.STATE_COLLAPSED*/
-       /* if(navHostFragment.navController.currentDestination?.label == "TimeTableFragment"){
+        if(navHostFragment.navController.currentDestination?.label == "TimeTableFragment"){
             Log.e("","마지막 화면 맞춤")
         }
-        else{*/
-            /*MessageDialog(getString(R.string.destroy_app),getString(R.string.check),getString(R.string.cancel)).onRightBtn{
+        else{
+            MessageDialog(getString(R.string.destroy_app),getString(R.string.check),getString(R.string.cancel)).onRightBtn{
                 super.onBackPressed()
                 finish()
                 finishAndRemoveTask() // 완전히 종료
-            }.show(supportFragmentManager,"")*/
-        //}
+            }.show(supportFragmentManager,"")
+        }
     }
 }
