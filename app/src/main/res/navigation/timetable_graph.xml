@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/timetable_graph"
+    app:startDestination="@id/timeTableFragment">
+    <fragment
+        android:id="@+id/timeTableFragment"
+        android:name="com.lee.dateplanner.timetable.TimeTableFragment"
+        android:label="TimeTableFragment"
+        tools:layout="@layout/timetablelist_fragment_layout">
+    </fragment>
+</navigation>

@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.NavHostFragment
 import com.lee.dateplanner.R
 import com.lee.dateplanner.base.BaseFragment
 import com.lee.dateplanner.common.*
@@ -65,7 +66,9 @@ class FestivalListFragment : BaseFragment<FestivallistFragmentLayoutBinding, Fes
             }
         }
         viewModel.getLocationCheck.observe(this){
-            if(it==true) context?.toast(R.string.findFestivalLocation)
+            if(it==true) {
+                context?.toast(R.string.findFestivalLocation)
+            }
             else context?.toast(R.string.notFindFestivalLocation)
         }
         viewModel.eventClick.observe(this){

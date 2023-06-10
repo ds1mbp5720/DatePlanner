@@ -2,10 +2,14 @@ package com.lee.dateplanner.festival.adapter
 
 import android.content.Intent
 import androidx.core.content.ContextCompat.startActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.jakewharton.rxbinding4.view.clicks
+import com.lee.dateplanner.R
 import com.lee.dateplanner.databinding.FestivalInfoRecyclerBinding
+import com.lee.dateplanner.festival.FestivalListFragment
 import com.lee.dateplanner.festival.data.FestivalInfoData
 import com.lee.dateplanner.webview.WebViewActivity
 
@@ -17,7 +21,7 @@ class FestivalViewHolder(val binding: FestivalInfoRecyclerBinding): RecyclerView
         festivalDate.text = festival.dATE
         Glide.with(this.festivalPoster.context).load(festival.mAINIMG).into(this.festivalPoster)// 이미지 처리
     }
-    fun setListener(festival: FestivalInfoData.CulturalEventInfo.Row, adapter: FestivalRecyclerAdapter){
+    fun setListener(festival: FestivalInfoData.CulturalEventInfo.Row, adapter: FestivalRecyclerAdapter,fragment: FestivalListFragment){
         with(binding){
             //포스터 클릭 정의
             festivalPoster.clicks().subscribe{
@@ -31,9 +35,9 @@ class FestivalViewHolder(val binding: FestivalInfoRecyclerBinding): RecyclerView
                 adapter.getFestivalPosition(festival,false)
             }
             // 주변정보 보기 버튼
-            festivalMovePoiBtn.clicks().subscribe{
-                //aroundMap Fragment 로 좌표값, 행사장 정보 넘기기
+            festivalMovePoiBtn.setOnClickListener {
                 adapter.getFestivalPosition(festival, true)
+                NavHostFragment.findNavController(fragment).navigate(R.id.move_to_poi)
             }
         }
     }
