@@ -5,26 +5,21 @@
     android:id="@+id/main_nav_graph"
     app:startDestination="@id/timeTableFragment">
 
-    <fragment
-        android:id="@+id/timeTableFragment"
-        android:name="com.lee.dateplanner.timetable.TimeTableFragment"
-        android:label="TimeTableFragment"
-        tools:layout="@layout/timetablelist_fragment_layout">
-    </fragment>
-
-    <fragment
-        android:id="@+id/festivalListFragment"
-        android:name="com.lee.dateplanner.festival.FestivalListFragment"
-        android:label="FestivalListFragment"
-        tools:layout="@layout/festivallist_fragment_layout" >
-        <action
-            android:id="@+id/action_festival_to_poi"
-            app:destination="@id/poiMapFragment"
-            app:popUpTo="@id/festivalListFragment"
-            app:popUpToInclusive="false"
-            app:restoreState="true"
-            app:popUpToSaveState="true"/>
-    </fragment>
+<!--    <include app:graph="@navigation/timetable_graph" />-->
+<!--    <include app:graph="@navigation/festival_graph" />-->
+<!--    <include app:graph="@navigation/poi_graph" />-->
+    <action
+        android:id="@+id/move_to_timetable"
+        app:destination="@id/timeTableFragment"
+        />
+    <action
+        android:id="@+id/move_to_festival"
+        app:destination="@id/festivalListFragment"
+        />
+    <action
+        android:id="@+id/move_to_poi"
+        app:destination="@id/poiMapFragment"
+        />
 
     <fragment
         android:id="@+id/poiMapFragment"
@@ -32,15 +27,16 @@
         android:label="POIMapFragment"
         tools:layout="@layout/poi_map_fragment_layout">
     </fragment>
-
-    <action
-        android:id="@+id/move_to_timetable"
-        app:destination="@id/timeTableFragment"/>
-    <action
-        android:id="@+id/move_to_poi"
-        app:destination="@id/poiMapFragment"/>
-    <action
-        android:id="@+id/move_to_festival"
-        app:destination="@id/festivalListFragment"/>
+    <fragment
+        android:id="@+id/timeTableFragment"
+        android:name="com.lee.dateplanner.timetable.TimeTableFragment"
+        android:label="TimeTableFragment"
+        tools:layout="@layout/timetablelist_fragment_layout">
+    </fragment>
+    <fragment
+        android:id="@+id/festivalListFragment"
+        android:name="com.lee.dateplanner.festival.FestivalListFragment"
+        android:label="FestivalListFragment"
+        tools:layout="@layout/festivallist_fragment_layout" />
 
 </navigation>

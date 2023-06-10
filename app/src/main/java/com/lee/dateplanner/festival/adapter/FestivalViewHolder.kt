@@ -37,7 +37,7 @@ class FestivalViewHolder(val binding: FestivalInfoRecyclerBinding): RecyclerView
             // 주변정보 보기 버튼
             festivalMovePoiBtn.setOnClickListener {
                 adapter.getFestivalPosition(festival, true)
-                NavHostFragment.findNavController(fragment).navigate(R.id.action_festival_to_poi)
+                NavHostFragment.findNavController(fragment).navigate(R.id.move_to_poi)
             }
         }
     }

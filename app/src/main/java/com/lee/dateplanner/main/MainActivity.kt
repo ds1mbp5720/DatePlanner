@@ -5,12 +5,12 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.onNavDestinationSelected
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.*
 import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayout
@@ -33,26 +33,33 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var festivalListFragment: FestivalListFragment // 축제정보
     private lateinit var poiMapFragment: POIMapFragment // 주변 상권정보
     private var navHostFragment = NavHostFragment()
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // 최초 fragment instance 생성
         //createFragment(savedInstanceState)
         navHostFragment = supportFragmentManager.findFragmentById(dataBinding.fcvFragmentContainer.id) as NavHostFragment
-        val navController = navHostFragment.navController
+        navController = navHostFragment.navController
 
         //todo 버전 2.3.5 이하로 해야 custom nav가 기능함
-        /*navController.navigatorProvider.apply {
+       /* navController.navigatorProvider.apply {
             this.addNavigator(
                 ShowHideNavigation(this@MainActivity, navHostFragment.childFragmentManager, dataBinding.fcvFragmentContainer.id)
             )
         }*/
-
         navController.setGraph(R.navigation.main_nav_graph)
 
-        dataBinding.bnvBottomNavigation.apply {
-            //this.setupWithNavController(navController)
-            //this.isSaveEnabled = true
-        }
+        dataBinding.bnvBottomNavigation.setupWithNavController(navController)
+
+        /*appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.timetable_graph, R.id.festival_graph,  R.id.poi_graph)
+        )*/
+       /* dataBinding.bnvBottomNavigation.setOnItemSelectedListener { item ->
+            NavigationUI.onNavDestinationSelected(item,navController)
+            return@setOnItemSelectedListener true
+        }*/
         dataBinding.bnvBottomNavigation.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.timeTableFragment -> {
@@ -93,6 +100,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             true
         }
     }
+
+    /*override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp(appBarConfiguration)
+    }*/
     /*private fun createFragment(savedInstanceState: Bundle?){
         if(savedInstanceState == null){
             timeTableFragment = TimeTableFragment()
