@@ -39,15 +39,15 @@ fun String.filterFestivalDateInt(): Int {
     return (filterToList[0] + filterToList[1] + filterToList[2]).toInt()
 }
 
-
+// 일정 string 형식 반환 함수
 fun Timetable.copyClipBoard():String {
     var schedule = ""
     this.timeSheetList.forEach{
-        schedule = it.time + " : " + it.title + "\n"
+        schedule = schedule + it.time + " : " + it.title + "\n"
     }
     return schedule
 }
-
+// string 클립보드에 복사 함수
 fun Context.copyToClipboard(text: String) {
     val clipboard =
         ContextCompat.getSystemService<ClipboardManager>(

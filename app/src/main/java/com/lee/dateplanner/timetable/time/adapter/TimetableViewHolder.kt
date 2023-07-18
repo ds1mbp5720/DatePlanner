@@ -6,6 +6,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding4.view.clicks
 import com.lee.dateplanner.R
+import com.lee.dateplanner.common.copyClipBoard
+import com.lee.dateplanner.common.copyToClipboard
 import com.lee.dateplanner.common.dateStringFormat
 import com.lee.dateplanner.common.makeDatePickerDialog
 import com.lee.dateplanner.databinding.TimetableRecyclerLayoutBinding
@@ -57,6 +59,9 @@ class TimetableViewHolder(val binding: TimetableRecyclerLayoutBinding, private v
                     if(timetableList?.isNotEmpty() == true)
                         fragment.viewModel.deleteTimetable(timetableList[position].id)
                 }.show(fragment.childFragmentManager,"")
+            }
+            mbCopyBtn.clicks().subscribe{
+                fragment.context?.copyToClipboard( timetableList!![position].copyClipBoard()) // 해당 일정 클립보드에 복사 함수
             }
         }
 
