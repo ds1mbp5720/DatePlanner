@@ -160,6 +160,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         /*if(poiMapFragment.behavior.state == BottomSheetBehavior.STATE_EXPANDED)
             poiMapFragment.behavior.state = BottomSheetBehavior.STATE_COLLAPSED*/
         if(navHostFragment.navController.currentDestination?.label == "TimeTableFragment"){
+            MessageDialog(getString(R.string.destroy_app),getString(R.string.check),getString(R.string.cancel)).onRightBtn{
+                super.onBackPressed()
+                finish()
+                finishAndRemoveTask() // 완전히 종료
+            }.show(supportFragmentManager,"")
             Log.e("","마지막 화면 맞춤")
         }
         else{

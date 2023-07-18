@@ -44,6 +44,18 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/mb_copy_btn"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:gravity="center"
+                        android:paddingStart="4dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="4dp"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        app:icon="@drawable/ic_baseline_content_copy_24"
+                        app:layout_constraintRight_toLeftOf="@id/my_map_btn"
+                        app:layout_constraintTop_toTopOf="parent"/>
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/my_map_btn"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
